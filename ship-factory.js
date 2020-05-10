@@ -3,15 +3,16 @@ const Ship = (name, length, player) => {
   const health = length
   const destroyed = false
 
-  const sections = []
+  const sections = Array(length).fill(0)
 
-  const getName = name
-  const getLength = length
-  const getPlayer = player
+  const getName = name  
+  const getPlayer = player  
   
   const getDestroyed = destroyed
+  const getSections = sections
   
-  const hit = () => {
+  const hit = (section) => {
+    sections[section] = 1
     health -= 1
     isSunkCheck()
   }
@@ -23,9 +24,10 @@ const Ship = (name, length, player) => {
   }
 
   return {
-    getName,
-    getLength,
+    getName,    
     getPlayer,
-    getDestroyed
+    getDestroyed,
+    getSections,
+    hit
   }
 }
