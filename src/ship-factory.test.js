@@ -30,6 +30,8 @@ test('gets hit twice sections', () => {
 
 test('gets sunk', () => {
   const testShip = Ship('cruiser', 3, 'p1');
+  testShip.hit(0);
   testShip.hit(1);
-  expect(testShip.health).toBe(2);
+  testShip.hit(2);
+  expect(testShip.getSunk()).toBe(true);
 });

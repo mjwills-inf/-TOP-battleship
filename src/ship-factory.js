@@ -1,7 +1,7 @@
 const Ship = (name, length, player) => {
   let health = length * 1;
-  let shipSections = Array(length).fill(1);
   let sunk = false;
+  const shipSections = Array(length).fill(1);
 
   const getName = () => name;
   const getPlayer = () => player;
