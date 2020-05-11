@@ -1,26 +1,35 @@
 import Ship from './ship-factory';
 
 test('returns name', () => {
-  let testShip = Ship('destroyer', 2, 'p1');
-  expect(testShip.getName).toBe('destoyer');
+  const testShip = Ship('destroyer', 2, 'p1');
+  expect(testShip.getName()).toBe('destroyer');
 });
 
-// test('returns player', () => {
-//   let testShip = Ship('destroyer', 2, 'p1')
-  
-// })
+test('returns player', () => {
+  const testShip = Ship('destroyer', 2, 'p1');
+  expect(testShip.getPlayer()).toBe('p1');
+});
 
-// test('returns sections', () => {
-//   let testShip = Ship('destroyer', 2, 'p1')
-  
-// })
+test('returns sections array', () => {
+  const testShip = Ship('destroyer', 2, 'p1');
+  expect(testShip.getSections()).toEqual([1, 1]);
+});
 
-// test('gets hit', () => {
-//   let testShip = Ship('destroyer', 2, 'p1')
-  
-// })
+test('gets hit sections', () => {
+  const testShip = Ship('cruiser', 3, 'p1');
+  testShip.hit(1);
+  expect(testShip.getSections()).toEqual([1, 0, 1]);
+});
 
-// test('is destroyed', () => {
-//   let testShip = Ship('destroyer', 2, 'p1')
-  
-// })
+test('gets hit twice sections', () => {
+  const testShip = Ship('cruiser', 3, 'p1');
+  testShip.hit(1);
+  testShip.hit(2);
+  expect(testShip.getSections()).toEqual([1, 0, 0]);
+});
+
+test('gets sunk', () => {
+  const testShip = Ship('cruiser', 3, 'p1');
+  testShip.hit(1);
+  expect(testShip.health).toBe(2);
+});

@@ -1,34 +1,31 @@
 const Ship = (name, length, player) => {
-  
-  let health = length;
-  let destroyed = false;
+  let health = length * 1;
+  let shipSections = Array(length).fill(1);
+  let sunk = false;
 
-  let sections = Array(length).fill(0);
+  const getName = () => name;
+  const getPlayer = () => player;
+  const getSunk = () => sunk;
+  const getSections = () => shipSections;
 
-  const getName = name;  
-  const getPlayer = player;  
-  
-  const getDestroyed = destroyed;
-  const getSections = sections;
-  
+  const isSunkCheck = () => {
+    if (health <= 0) {
+      sunk = true;
+    }
+  };
+
   const hit = (section) => {
-    sections[section] = 1;
+    shipSections[section] = 0;
     health -= 1;
     isSunkCheck();
   };
 
-  const isSunkCheck = () => {
-    if (health == 0) {
-      destroyed = true;
-    }
-  };
-
   return {
-    getName,    
+    getName,
     getPlayer,
-    getDestroyed,
+    getSunk,
     getSections,
-    hit
+    hit,
   };
 };
 
