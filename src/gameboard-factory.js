@@ -30,6 +30,8 @@ const Gameboard = (player) => {
 
   const placeShip = (ship, x, y) => {
     const targetTile = tilesArray.findIndex((item) => item.x === x && item.y === y);
+    tilesArray[targetTile].occupied = true;
+    tilesArray[targetTile].shipSectionRef = // YAR
   };
 
   // const receiveAttack = (x, y) => {
