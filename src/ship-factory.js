@@ -13,7 +13,6 @@ const Ship = (name, length, player) => {
       sunk = true;
     }
   };
-
   const hit = (section) => {
     shipSections[section] = 0;
     health -= 1;
