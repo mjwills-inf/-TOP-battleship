@@ -8,6 +8,7 @@ const Gameboard = (player) => {
   const getFleet = fleet;
   const getTilesArray = tilesArray;
 
+  // fill tiles array
   for (let i = 1; i <= 10; i += 1) {
     for (let j = 1; j <= 10; j += 1) {
       const tile = {
@@ -21,6 +22,7 @@ const Gameboard = (player) => {
     }
   }
 
+  // fill fleet array
   const carrier = Ship('Carrier', 5, player);
   const battleship = Ship('Battleship', 4, player);
   const cruiser = Ship('Cruiser', 3, player);
@@ -28,10 +30,39 @@ const Gameboard = (player) => {
   const destroyer = Ship('Destroyer', 2, player);
   fleet.push(carrier, battleship, cruiser, submarine, destroyer);
 
+  // methods
+  const placeShipValidate = (ship, x, y) => {
+    let valid = false;
+    if (ship.getDirection() === 'xAxis' && (ship.getLength() + x <= 10)) {
+      valid = true;
+    } else if (ship.getDirection() === 'yAxis'
+        && (ship.getLength() + y <= 10)) {
+      valid = true;
+    }
+    return valid;
+  };
+
   const placeShip = (ship, x, y) => {
-    const targetTile = tilesArray.findIndex((item) => item.x === x && item.y === y);
-    tilesArray[targetTile].occupied = true;
-    tilesArray[targetTile].shipSectionRef = // YAR
+    const validMove = placeShipValidate(ship, x, y);
+    const axis = ship.getDirection();
+    const shipLength = ship.getLength();
+
+    if (validMove && axis === 'xAxis') {
+      for (let i = 0; i < shipLength; i += 1) {
+        const targetTile = tilesArray.findIndex((item) => item.x === x + i
+            && item.y === y);
+        tilesArray[targetTile].occupied = true;
+        // tilesArray[targetTile].shipSectionRef =
+      }
+    }
+
+    if (validMove && axis === 'yAxis') {
+      for (let i = 0; i < shipLength; i += 1) {
+        const targetTile = tilesArray.findIndex((item) => item.x === x
+            && item.y === y + i);
+        tilesArray[targetTile].occupied = true;
+      }
+    }
   };
 
   // const receiveAttack = (x, y) => {

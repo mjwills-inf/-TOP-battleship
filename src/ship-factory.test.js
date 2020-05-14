@@ -28,10 +28,20 @@ test('gets hit twice sections', () => {
   expect(testShip.getSections()).toEqual([1, 0, 0]);
 });
 
+const testShipGlobal = Ship('cruiser', 3, 'p1');
+
 test('gets sunk', () => {
-  const testShip = Ship('cruiser', 3, 'p1');
-  testShip.hit(0);
-  testShip.hit(1);
-  testShip.hit(2);
-  expect(testShip.getSunk()).toBe(true);
+  testShipGlobal.hit(0);
+  testShipGlobal.hit(1);
+  testShipGlobal.hit(2);
+  expect(testShipGlobal.getSunk()).toBe(true);
+});
+
+test('will switch direction', () => {
+  testShipGlobal.switchDirection();
+  expect(testShipGlobal.getDirection()).toBe('yAxis');
+});
+
+test('gets length', () => {
+  expect(testShipGlobal.getLength()).toBe(3);
 });
