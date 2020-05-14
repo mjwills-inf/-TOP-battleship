@@ -4,25 +4,28 @@ const Gameboard = (player) => {
   const fleet = [];
   const tilesArray = [];
 
-  const getPlayer = player;
-  const getFleet = fleet;
-  const getTilesArray = tilesArray;
+  const getPlayer = () => player;
+  const getFleet = () => fleet;
+  const getTilesArray = () => tilesArray;
 
   // fill tiles array
+
   for (let i = 1; i <= 10; i += 1) {
     for (let j = 1; j <= 10; j += 1) {
       const tile = {
         x: i,
         y: j,
         occupied: false,
-        shipSectionRef: null,
         firedAt: false,
+        shipNameRef: null,
+        shipSectionIndexRef: null,
       };
       tilesArray.push(tile);
     }
   }
 
   // fill fleet array
+
   const carrier = Ship('Carrier', 5, player);
   const battleship = Ship('Battleship', 4, player);
   const cruiser = Ship('Cruiser', 3, player);
@@ -31,6 +34,25 @@ const Gameboard = (player) => {
   fleet.push(carrier, battleship, cruiser, submarine, destroyer);
 
   // methods
+
+  const updateTile = (index, occupied, nameRef, indexRef) => {
+    tilesArray[index].occupied = occupied;
+    tilesArray[index].shipNameRef = nameRef;
+    tilesArray[index].shipSectionIndexRef = indexRef;
+  };
+
+  const resetTile = (name) => {
+    tilesArray.forEach((item) => {
+      const tileObject = item;
+      if (item.shipNameRef === name) {
+        tileObject.occupied = false;
+        tileObject.firedAt = false;
+        tileObject.shipNameRef = null;
+        tileObject.shipSectionIndexRef = null;
+      }
+    });
+  };
+
   const placeShipValidate = (ship, x, y) => {
     let valid = false;
     if (ship.getDirection() === 'xAxis' && (ship.getLength() + x <= 10)) {
@@ -46,28 +68,24 @@ const Gameboard = (player) => {
     const validMove = placeShipValidate(ship, x, y);
     const axis = ship.getDirection();
     const shipLength = ship.getLength();
+    const shipName = ship.getName();
 
     if (validMove && axis === 'xAxis') {
       for (let i = 0; i < shipLength; i += 1) {
-        const targetTile = tilesArray.findIndex((item) => item.x === x + i
-            && item.y === y);
-        tilesArray[targetTile].occupied = true;
-        // tilesArray[targetTile].shipSectionRef =
+        const targetTileIndex = tilesArray.findIndex((item) => item.x === x
+            && item.y === y + i);
+        updateTile(targetTileIndex, true, shipName, i);
       }
     }
 
     if (validMove && axis === 'yAxis') {
       for (let i = 0; i < shipLength; i += 1) {
-        const targetTile = tilesArray.findIndex((item) => item.x === x
-            && item.y === y + i);
-        tilesArray[targetTile].occupied = true;
+        const targetTileIndex = tilesArray.findIndex((item) => item.x === x + i
+            && item.y === y);
+        updateTile(targetTileIndex, true, shipName, i);
       }
     }
   };
-
-  // const receiveAttack = (x, y) => {
-
-  // }
 
   return {
     getPlayer,
