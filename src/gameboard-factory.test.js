@@ -48,7 +48,7 @@ test('placeShip updates y axis', () => {
   const ship = testBoard.getFleet()[2];
   ship.switchDirection();
   testBoard.placeShip(ship, 5, 1);
-  expect(testBoard.getTilesArray()[60].occupied).toBe(true);
+  expect(testBoard.getTilesArray()[40].occupied).toBe(true);
 });
 
 test('placeShip fails on illegal placement', () => {
@@ -71,3 +71,5 @@ test('placeShip updates tile ship section ref', () => {
   testBoard.placeShip(ship, 8, 1);
   expect(testBoard.getTilesArray()[90].shipSectionIndexRef).toBe(2);
 });
+
+// Need to test ship clear
