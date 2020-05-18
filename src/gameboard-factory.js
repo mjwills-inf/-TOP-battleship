@@ -1,11 +1,11 @@
 import Ship from './ship-factory';
 
 const Gameboard = (player) => {
-  const fleet = [];
+  const fleetArray = [];
   const tilesArray = [];
 
   const getPlayer = () => player;
-  const getFleet = () => fleet;
+  const getFleet = () => fleetArray;
   const getTilesArray = () => tilesArray;
 
   // fill tiles array ////////////////////////////////
@@ -31,7 +31,7 @@ const Gameboard = (player) => {
   const cruiser = Ship('Cruiser', 3, player);
   const submarine = Ship('Submarine', 3, player);
   const destroyer = Ship('Destroyer', 2, player);
-  fleet.push(carrier, battleship, cruiser, submarine, destroyer);
+  fleetArray.push(carrier, battleship, cruiser, submarine, destroyer);
 
   // methods /////////////////////////////////////////
 
@@ -53,7 +53,7 @@ const Gameboard = (player) => {
     });
   };
 
-  const placeShipClear = (ship, x, y) => {
+  const placeShipClearCheck = (ship, x, y) => {
     // ships target tiles are free from other ships
     const shipLength = ship.getLength();
     const axis = ship.getDirection();
@@ -82,7 +82,7 @@ const Gameboard = (player) => {
   };
 
 
-  const placeShipValid = (ship, x, y) => {
+  const placeShipValidCheck = (ship, x, y) => {
     // ships target tiles are within square board
     let valid = false;
     if (ship.getDirection() === 'xAxis' && (ship.getLength() + x <= 10)) {
@@ -95,8 +95,8 @@ const Gameboard = (player) => {
   };
 
   const placeShip = (ship, x, y) => {
-    const validMove = placeShipValid(ship, x, y);
-    const clearMove = placeShipClear(ship, x, y);
+    const validMove = placeShipValidCheck(ship, x, y);
+    const clearMove = placeShipClearCheck(ship, x, y);
     const axis = ship.getDirection();
     const shipLength = ship.getLength();
     const shipName = ship.getName();
@@ -118,13 +118,44 @@ const Gameboard = (player) => {
     }
   };
 
+  const shotValidCheck = (tile) => {
+    let valid = false;
+    const targetTile = tile;
+    if (targetTile.firedAt === false) {
+      valid = true;
+    }
+    return valid;
+  };
+
+  const shotRegister = (tile) => {
+    const targetTile = tile;
+    const shipName = targetTile.shipNameRef;
+    const shipSection = targetTile.shipSectionIndexRef;
+    targetTile.firedAt = true;
+    if (targetTile.occupied === true) {
+      const fleetIndex = fleetArray.findIndex((item) => item.getName() === shipName);
+      const targetShip = fleetArray[fleetIndex];
+      targetShip.hit(shipSection);
+    }
+  };
+
+  const shotHandler = (x, y) => {
+    const targetTileIndex = tilesArray.findIndex((item) => item.x === x
+        && item.y === y);
+    const targetTile = tilesArray[targetTileIndex];
+    if (shotValidCheck(targetTile)) {
+      shotRegister(targetTile);
+    }
+  };
+
   return {
     getPlayer,
     getTilesArray,
     getFleet,
     placeShip,
-    placeShipClear,
+    placeShipClearCheck,
     updateTile,
+    shotHandler,
   };
 };
 

@@ -76,9 +76,21 @@ test('placeShip will fail if not clear', () => {
   const ship1 = testBoard.getFleet()[2];
   const ship2 = testBoard.getFleet()[3];
   ship2.switchDirection();
-  testBoard.placeShip(ship1, 1, 1);
-  testBoard.placeShip(ship2, 1, 2);
-  expect(testBoard.getTilesArray()[11].occupied).toBe(false)
+  testBoard.placeShip(ship1, 2, 1);
+  testBoard.placeShip(ship2, 1, 3);
+  expect(testBoard.getTilesArray()[2].occupied).toBe(false);
 });
 
 // CO-ORDINATES NEEDS TO BE ABOVE 0 IDIOT
+
+test('shot fired records on tile', () => {
+  testBoard.shotHandler(1, 1);
+  expect(testBoard.getTilesArray()[0].firedAt).toBe(true);
+});
+
+test('ship section updated with hit', () => {
+  const ship1 = testBoard.getFleet()[2];
+  testBoard.placeShip(ship1, 1, 1);
+  testBoard.shotHandler(1, 2);
+  expect(ship1.getSections()).toEqual([1, 0, 1]);
+});
