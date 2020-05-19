@@ -34,8 +34,8 @@ test('fleets 3rd ship is cruiser', () => {
 test('placeShip updates first tile occupied', () => {
   const testBoard = Gameboard('player');
   const ship = testBoard.getFleet()[2];
-  testBoard.placeShip(ship, 3, 3);
-  expect(testBoard.getTilesArray()[22].occupied).toBe(true);
+  testBoard.placeShip(ship, 1, 1);
+  expect(testBoard.getTilesArray()[2].occupied).toBe(true);
 });
 
 test('placeShip updates next tile occupied', () => {
@@ -97,41 +97,65 @@ test('check UPDATES BECAUSE AAHHHH', () => {
   expect(testBoard.getTilesArray()[29].shipSectionIndexRef).toBe(4);
 });
 
-// test('placeShip will fail if not clear', () => {
-//   const testBoard = Gameboard('player');
-//   const ship1 = testBoard.getFleet()[2];
-//   const ship2 = testBoard.getFleet()[3];
-//   ship2.switchDirection();
-//   testBoard.placeShip(ship1, 2, 1);
-//   testBoard.placeShip(ship2, 1, 3);
-//   expect(testBoard.getTilesArray()[2].occupied).toBe(false);
-// });
+test('placeShip will fail if not clear', () => {
+  const testBoard = Gameboard('player');
+  const ship1 = testBoard.getFleet()[2];
+  const ship2 = testBoard.getFleet()[3];
+  ship2.switchDirection();
+  testBoard.placeShip(ship1, 2, 1);
+  testBoard.placeShip(ship2, 1, 3);
+  expect(testBoard.getTilesArray()[2].occupied).toBe(false);
+});
 
 // CO-ORDINATES NEEDS TO BE ABOVE 0 IDIOT
 
-// test('shot fired records on tile', () => {
-//   const testBoard = Gameboard('player');
-//   testBoard.shotHandler(1, 1);
-//   expect(testBoard.getTilesArray()[0].firedAt).toBe(true);
-// });
+test('shot fired records on tile', () => {
+  const testBoard = Gameboard('player');
+  testBoard.shotHandler(1, 1);
+  expect(testBoard.getTilesArray()[0].firedAt).toBe(true);
+});
 
-// test('ship section updated with hit', () => {
-//   const testBoard = Gameboard('player');
-//   const ship1 = testBoard.getFleet()[2];
-//   testBoard.placeShip(ship1, 1, 1);
-//   testBoard.shotHandler(1, 2);
-//   expect(ship1.getSections()).toEqual([1, 0, 1]);
-// });
+test('ship section updated with hit', () => {
+  const testBoard = Gameboard('player');
+  const ship1 = testBoard.getFleet()[2];
+  testBoard.placeShip(ship1, 1, 1);
+  testBoard.shotHandler(1, 2);
+  expect(ship1.getSections()).toEqual([1, 0, 1]);
+});
 
-// test('unactioned fleet is not sunk', () => {
-//   const testBoard = Gameboard('player');
-//   expect(testBoard.fleetSunkCheck()).toBe(false);
-// });
+test('unactioned fleet is not sunk', () => {
+  const testBoard = Gameboard('player');
+  expect(testBoard.fleetSunkCheck()).toBe(false);
+});
 
-// test('there must be a better way to test this - fleet sunk', () => {
-//   const testBoard2 = Gameboard('pLaYtWo');
-//   const ship = testBoard2.getFleet()[0];
-//   testBoard2.placeShip(ship, 1, 1);
-//   testBoard2.shotHandler(1, 1);
-//   expect(testBoard2.getFleet()[0].getSections()).toEqual([0, 1, 1, 1, 1]);
-// });
+test('there must be a better way to test this - fleet sunk', () => {
+  const testBoard = Gameboard('pLaYtWo');
+  const ship1 = testBoard.getFleet()[0];
+  const ship2 = testBoard.getFleet()[1];
+  const ship3 = testBoard.getFleet()[2];
+  const ship4 = testBoard.getFleet()[3];
+  const ship5 = testBoard.getFleet()[4];
+  testBoard.placeShip(ship1, 1, 1);
+  testBoard.placeShip(ship2, 2, 1);
+  testBoard.placeShip(ship3, 3, 1);
+  testBoard.placeShip(ship4, 4, 1);
+  testBoard.placeShip(ship5, 5, 1);
+  testBoard.shotHandler(1, 1);
+  testBoard.shotHandler(1, 2);
+  testBoard.shotHandler(1, 3);
+  testBoard.shotHandler(1, 4);
+  testBoard.shotHandler(1, 5);
+  testBoard.shotHandler(2, 1);
+  testBoard.shotHandler(2, 2);
+  testBoard.shotHandler(2, 3);
+  testBoard.shotHandler(2, 4);
+  testBoard.shotHandler(3, 1);
+  testBoard.shotHandler(3, 2);
+  testBoard.shotHandler(3, 3);
+  testBoard.shotHandler(4, 1);
+  testBoard.shotHandler(4, 2);
+  testBoard.shotHandler(4, 3);
+  testBoard.shotHandler(5, 1);
+  testBoard.shotHandler(5, 2);
+  expect(testBoard.fleetSunkCheck()).toBe(true);
+});

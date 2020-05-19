@@ -59,20 +59,24 @@ const Gameboard = (player) => {
     const shipLength = ship.getLength();
     const axis = ship.getDirection();
     if (axis === 'xAxis' && (shipLength + y <= 11)) {
+      const testOccupyArray = [];
       for (let i = 0; i < shipLength; i += 1) {
         const targetTileIndex = tilesArray.findIndex((element) => element.x === x
             && element.y === y + i);
-        if (tilesArray[targetTileIndex].occupied !== true) {
-          valid = true;
-        }
+        testOccupyArray.push(tilesArray[targetTileIndex]);
+      }
+      if (!testOccupyArray.some((element) => element.occupied === true)) {
+        valid = true;
       }
     } else if (axis === 'yAxis' && (shipLength + x <= 11)) {
+      const testOccupyArray = [];
       for (let i = 0; i < shipLength; i += 1) {
         const targetTileIndex = tilesArray.findIndex((element) => element.x === x + i
             && element.y === y);
-        if (tilesArray[targetTileIndex].occupied !== true) {
-          valid = true;
-        }
+        testOccupyArray.push(tilesArray[targetTileIndex]);
+      }
+      if (!testOccupyArray.some((element) => element.occupied === true)) {
+        valid = true;
       }
     }
     return valid;
