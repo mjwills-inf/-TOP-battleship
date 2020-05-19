@@ -42,9 +42,9 @@ const Gameboard = (player) => {
   };
 
   const resetTile = (name) => {
-    tilesArray.forEach((item) => {
-      const tileObject = item;
-      if (item.shipNameRef === name) {
+    tilesArray.forEach((element) => {
+      const tileObject = element;
+      if (element.shipNameRef === name) {
         tileObject.occupied = false;
         tileObject.firedAt = false;
         tileObject.shipNameRef = null;
@@ -53,72 +53,56 @@ const Gameboard = (player) => {
     });
   };
 
-  const placeShipClearCheck = (ship, x, y) => {
-    // ships target tiles are free from other ships
+  const placeShipValid = (ship, x, y) => {
+    // ships target tiles are within square board and unoccupied
+    let valid = false;
     const shipLength = ship.getLength();
     const axis = ship.getDirection();
-    let valid = true;
-
-    if (axis === 'xAxis') {
+    if (axis === 'xAxis' && (shipLength + y <= 11)) {
       for (let i = 0; i < shipLength; i += 1) {
-        const targetTileIndex = tilesArray.findIndex((item) => item.x === x
-            && item.y === y + i);
-        if (tilesArray[targetTileIndex].occupied === true) {
-          valid = false;
+        const targetTileIndex = tilesArray.findIndex((element) => element.x === x
+            && element.y === y + i);
+        if (tilesArray[targetTileIndex].occupied !== true) {
+          valid = true;
         }
       }
-    }
-
-    if (axis === 'yAxis') {
+    } else if (axis === 'yAxis' && (shipLength + x <= 11)) {
       for (let i = 0; i < shipLength; i += 1) {
-        const targetTileIndex = tilesArray.findIndex((item) => item.x === x + i
-            && item.y === y);
-        if (tilesArray[targetTileIndex].occupied === true) {
-          valid = false;
+        const targetTileIndex = tilesArray.findIndex((element) => element.x === x + i
+            && element.y === y);
+        if (tilesArray[targetTileIndex].occupied !== true) {
+          valid = true;
         }
       }
-    }
-    return valid;
-  };
-
-
-  const placeShipValidCheck = (ship, x, y) => {
-    // ships target tiles are within square board
-    let valid = false;
-    if (ship.getDirection() === 'xAxis' && (ship.getLength() + x <= 10)) {
-      valid = true;
-    } else if (ship.getDirection() === 'yAxis'
-        && (ship.getLength() + y <= 10)) {
-      valid = true;
     }
     return valid;
   };
 
   const placeShip = (ship, x, y) => {
-    const validMove = placeShipValidCheck(ship, x, y);
-    const clearMove = placeShipClearCheck(ship, x, y);
+    const validMove = placeShipValid(ship, x, y);
     const axis = ship.getDirection();
     const shipLength = ship.getLength();
     const shipName = ship.getName();
 
-    if (validMove && clearMove && axis === 'xAxis') {
+    if (validMove && axis === 'xAxis') {
       for (let i = 0; i < shipLength; i += 1) {
-        const targetTileIndex = tilesArray.findIndex((item) => item.x === x
-            && item.y === y + i);
+        const targetTileIndex = tilesArray.findIndex((element) => element.x === x
+            && element.y === y + i);
         updateTile(targetTileIndex, true, shipName, i);
       }
     }
 
-    if (validMove && clearMove && axis === 'yAxis') {
+    if (validMove && axis === 'yAxis') {
       for (let i = 0; i < shipLength; i += 1) {
-        const targetTileIndex = tilesArray.findIndex((item) => item.x === x + i
-            && item.y === y);
+        const targetTileIndex = tilesArray.findIndex((element) => element.x === x + i
+            && element.y === y);
         updateTile(targetTileIndex, true, shipName, i);
       }
     }
   };
 
   const shotValidCheck = (tile) => {
+    // shot target tile has already been fire at
     let valid = false;
     const targetTile = tile;
     if (targetTile.firedAt === false) {
@@ -128,34 +112,43 @@ const Gameboard = (player) => {
   };
 
   const shotRegister = (tile) => {
+    // shot target updating ship with hit if occupied
     const targetTile = tile;
     const shipName = targetTile.shipNameRef;
     const shipSection = targetTile.shipSectionIndexRef;
     targetTile.firedAt = true;
     if (targetTile.occupied === true) {
-      const fleetIndex = fleetArray.findIndex((item) => item.getName() === shipName);
+      const fleetIndex = fleetArray.findIndex((element) => element.getName() === shipName);
       const targetShip = fleetArray[fleetIndex];
       targetShip.hit(shipSection);
     }
   };
 
   const shotHandler = (x, y) => {
-    const targetTileIndex = tilesArray.findIndex((item) => item.x === x
-        && item.y === y);
+    const targetTileIndex = tilesArray.findIndex((element) => element.x === x
+        && element.y === y);
     const targetTile = tilesArray[targetTileIndex];
     if (shotValidCheck(targetTile)) {
       shotRegister(targetTile);
     }
   };
 
+  const fleetSunkCheck = () => {
+    let sunk;
+    fleetArray.forEach((element) => {
+      sunk = element.getSunk() !== false;
+    });
+    return sunk;
+  };
+
+
   return {
     getPlayer,
     getTilesArray,
     getFleet,
     placeShip,
-    placeShipClearCheck,
-    updateTile,
     shotHandler,
+    fleetSunkCheck,
   };
 };
 
