@@ -1,11 +1,16 @@
 import Gameboard from './gameboard'
 
-const Player = (name, opponent) => {
+const Player = (name) => {
   const getName = () => name
-  const 
+  const gameboard = Gameboard() 
+  const makeAttack = (opponent, coordinates) => {
+    opponent.gameboard.shotHandler(coordinates.x, coordinates.y)
+  };
 
   return {
-    getName
+    getName,
+    gameboard,
+    makeAttack
   }
 }
 

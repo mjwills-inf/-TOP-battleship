@@ -1,0 +1,1 @@
+import compChoice from './compAI'
