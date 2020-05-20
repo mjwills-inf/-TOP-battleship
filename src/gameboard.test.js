@@ -1,4 +1,4 @@
-import Gameboard from './gameboard-factory';
+import Gameboard from './gameboard.js';
 
 
 test('returns player', () => {
@@ -158,4 +158,12 @@ test('there must be a better way to test this - fleet sunk', () => {
   testBoard.shotHandler(5, 1);
   testBoard.shotHandler(5, 2);
   expect(testBoard.fleetSunkCheck()).toBe(true);
+});
+
+
+test('methods returning true if successful hit', () => {
+  const testBoard = Gameboard('playerOne');
+  const ship1 = testBoard.getFleet()[0];
+  testBoard.placeShip(ship1, 1, 1);
+  expect(testBoard.shotHandler(1, 1)).toBe(true);
 });

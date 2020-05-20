@@ -1,4 +1,4 @@
-import Ship from './ship-factory';
+import Ship from './ship';
 
 test('returns name', () => {
   const testShip = Ship('destroyer', 2, 'p1');

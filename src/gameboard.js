@@ -1,4 +1,4 @@
-import Ship from './ship-factory';
+import Ship from './ship';
 
 const Gameboard = (player) => {
   const fleetArray = [];
@@ -117,6 +117,7 @@ const Gameboard = (player) => {
 
   const shotRegister = (tile) => {
     // shot target updating ship with hit if occupied
+    let shotHit = false;
     const targetTile = tile;
     const shipName = targetTile.shipNameRef;
     const shipSection = targetTile.shipSectionIndexRef;
@@ -125,16 +126,20 @@ const Gameboard = (player) => {
       const fleetIndex = fleetArray.findIndex((element) => element.getName() === shipName);
       const targetShip = fleetArray[fleetIndex];
       targetShip.hit(shipSection);
+      shotHit = true;
     }
+    return shotHit;
   };
 
   const shotHandler = (x, y) => {
+    let shotHit = false;
     const targetTileIndex = tilesArray.findIndex((element) => element.x === x
         && element.y === y);
     const targetTile = tilesArray[targetTileIndex];
     if (shotValidCheck(targetTile)) {
-      shotRegister(targetTile);
+      shotHit = shotRegister(targetTile);
     }
+    return shotHit;
   };
 
   const fleetSunkCheck = () => {
