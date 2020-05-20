@@ -158,6 +158,7 @@ const Gameboard = (player) => {
     placeShip,
     shotHandler,
     fleetSunkCheck,
+    resetTile,
   };
 };
 
