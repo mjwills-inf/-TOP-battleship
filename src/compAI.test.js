@@ -1,9 +1,7 @@
 import compChoice from './compAI';
 import Player from './player';
 
-test('returns tiles', () => {
+test('coords are picked', () => {
   const human = Player('humanName');
-  expect(compChoice(human.gameboard)).toEqual({x: 0, y: 0});
+  expect(compChoice(human.gameboard)).not.toEqual({ x: undefined, y: undefined });
 });
-
-test
