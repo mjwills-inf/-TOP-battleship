@@ -5,7 +5,21 @@ const compChoice = (gameboard) => {
   };
 
   const tiles = gameboard.getTilesArray();
-  const occupiedTiles = tiles;
+  const occupiedTiles = tiles.filter((element) => {
+    element.occupied === true
+  });
+
+  randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+  updateCords = (x, y) => {
+    coordinates.x = x
+    coordinates.y = y
+  }
+
+
+  if (occupiedTiles.every((element) => element.firedAt === false)) {
+    updateCords(randomNumber(1, 10), randomNumber(1, 10));
+  };
 
   // tiles that have been occupied
   // nohits occupied tiles without fired at

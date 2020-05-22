@@ -1,11 +1,5 @@
 import Gameboard from './gameboard';
 
-
-test('returns player', () => {
-  const testBoard = Gameboard('playerTwo');
-  expect(testBoard.getPlayer()).toBe('playerTwo');
-});
-
 test('array length 100 tiles', () => {
   const testBoard = Gameboard('player');
   expect(testBoard.getTilesArray().length).toBe(100);

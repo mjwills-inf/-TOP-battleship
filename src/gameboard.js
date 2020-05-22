@@ -1,10 +1,9 @@
 import Ship from './ship';
 
-const Gameboard = (player) => {
+const Gameboard = () => {
   const fleetArray = [];
   const tilesArray = [];
 
-  const getPlayer = () => player;
   const getFleet = () => fleetArray;
   const getTilesArray = () => tilesArray;
 
@@ -26,11 +25,11 @@ const Gameboard = (player) => {
 
   // fill fleet array ////////////////////////////////
 
-  const carrier = Ship('Carrier', 5, player);
-  const battleship = Ship('Battleship', 4, player);
-  const cruiser = Ship('Cruiser', 3, player);
-  const submarine = Ship('Submarine', 3, player);
-  const destroyer = Ship('Destroyer', 2, player);
+  const carrier = Ship('Carrier', 5);
+  const battleship = Ship('Battleship', 4);
+  const cruiser = Ship('Cruiser', 3);
+  const submarine = Ship('Submarine', 3);
+  const destroyer = Ship('Destroyer', 2);
   fleetArray.push(carrier, battleship, cruiser, submarine, destroyer);
 
   // methods /////////////////////////////////////////
@@ -152,7 +151,6 @@ const Gameboard = (player) => {
 
 
   return {
-    getPlayer,
     getTilesArray,
     getFleet,
     placeShip,
