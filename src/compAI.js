@@ -1,8 +1,10 @@
 const compChoice = (gameboard) => {
+
   let x, y, lastShotTile
 
-
   const tiles = gameboard.getTilesArray();
+
+  const tilesRemaining = [...tiles];
 
   const occupiedTiles = tiles.filter((element) => {
     element.occupied === true
@@ -23,58 +25,39 @@ const compChoice = (gameboard) => {
     let tileLeft = tiles.find((element) => { element.x === refX
         && element.y === (refY - 1) });
     let tileRight = tiles.find((element) => { element.x === refX
-        && element.y === (refY + 1) });
-    
+        && element.y === (refY + 1) });    
   }
 
   // const currentHitTile = hitOccupiedTiles.filter((element) => {
     
   // })
-
-  const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-
-  const updateLastShot = (xRef, yRef) => {
-    let lastShotTile = tiles.find((element) => { element.x === xRef 
-        && element.y ===yRef
-    })
-  } 
-  const updateCoords = (newX, newY) => {
-    x = newX
-    y = newY
-    updateLastShot(x, y)
-  };  
-
-  const checkShotValid = (xRef, yRef) => {
-    let targetTile = tiles.find((element) => { element.x === xRef
-        && element.y === yRef });
-    if (targetTile.firedAt === true) {
-      checkShotValid (randomNumber(1, 10), randomNumber(1, 10))
-    }  else {
-      updateCoords(xRef, yRef)
-    }
+ 
+  function getRandomCoords() {
+    let randomIndex = Math.floor(Math.random() * (tilesRemaining.length + 1))
+    let targetTile = tilesRemaining[randomIndex]
+    x = targetTile.x
+    y = targetTile.y
+    lastShotTile = targetTile;
+    tilesRemaining.splice(randomIndex, 1)
   }
-
+  
   const checkShipSunk = () => {
     let shipName = lastShotTile.shipNameRef
     let ship = gameboard.getFleet().find((element) => element.getName() === shipName)
     if (ship.getSunk() === true) {
-      checkShotValid(randomNumber(1, 10), randomNumber(1, 10))
+      getRandomCoords()
     } else {
       checkSurroundingTiles(lastShotTile)
     }
-
   }
 
-
   if (lastShotTile === undefined) {
-    checkShotValid(randomNumber(1, 10), randomNumber(1, 10));
+    getRandomCoords()
   };
 
   if (lastShotTile.occupied === true) {
     checkShipSunk()
   }
-
-
 
   // console.log(coordinates)
 
