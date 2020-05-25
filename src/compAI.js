@@ -4,7 +4,7 @@ const compChoice = (gameboard) => {
 
   const tiles = gameboard.getTilesArray();
 
-  const tilesRemaining = [...tiles];
+  const shotOptions = [...tiles];
 
   const occupiedTiles = tiles.filter((element) => {
     element.occupied === true
@@ -15,30 +15,37 @@ const compChoice = (gameboard) => {
   });
 
   const checkSurroundingTiles = (element) => {
+
     let refX = element.x
     let refY = element.y
-    
-    let tileAbove = tiles.find((element) => { element.x === (refX - 1)
-        && element.y === refY });
-    let tileBelow = tiles.find((element) => { element.x === (refX + 1)
-        && element.y === refY });
-    let tileLeft = tiles.find((element) => { element.x === refX
-        && element.y === (refY - 1) });
-    let tileRight = tiles.find((element) => { element.x === refX
-        && element.y === (refY + 1) });    
-  }
+    let tileAbove, tileBelow, tileLeft, tileRight
 
-  // const currentHitTile = hitOccupiedTiles.filter((element) => {
-    
-  // })
+    if ((refX - 1) >= 1) {
+      tileAbove = tiles.find((element) => { element.x === (refX - 1)
+          && element.y === refY });
+    }
+    // if tileabove is not undefined ? 
+    if ((refX + 1) <= 10) {
+    tileBelow = tiles.find((element) => { element.x === (refX + 1)
+        && element.y === refY });
+    }
+    if ((refY - 1) >= 1) {
+    tileLeft = tiles.find((element) => { element.x === refX
+        && element.y === (refY - 1) });
+    }
+    if ((refY + 1) <= 10) {
+    tileRight = tiles.find((element) => { element.x === refX
+        && element.y === (refY + 1) });    
+    }
+  }
  
   function getRandomCoords() {
-    let randomIndex = Math.floor(Math.random() * (tilesRemaining.length + 1))
-    let targetTile = tilesRemaining[randomIndex]
+    let randomIndex = Math.floor(Math.random() * (shotOptions.length + 1))
+    let targetTile = shotOptions[randomIndex]
     x = targetTile.x
     y = targetTile.y
     lastShotTile = targetTile;
-    tilesRemaining.splice(randomIndex, 1)
+    shotOptions.splice(randomIndex, 1)
   }
   
   const checkShipSunk = () => {
@@ -60,9 +67,6 @@ const compChoice = (gameboard) => {
   }
 
   // console.log(coordinates)
-
-  // if hits tiles around them
-  // if hits and all around them not occupied then back to random
 
   return {
     x,
