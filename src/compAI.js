@@ -24,18 +24,35 @@ const compChoice = (gameboard) => {
       tileAbove = tiles.find((element) => { element.x === (refX - 1)
           && element.y === refY });
     }
-    // if tileabove is not undefined ? 
+    
+    if (tileAbove === undefined) {
+      // shot is on edge of square (ship is not sunk)
+    }
+
     if ((refX + 1) <= 10) {
     tileBelow = tiles.find((element) => { element.x === (refX + 1)
         && element.y === refY });
     }
+
+    if (tileBelow === undefined) {
+      // shot is on edge of square (ship is not sunk)
+    }    
+
     if ((refY - 1) >= 1) {
     tileLeft = tiles.find((element) => { element.x === refX
         && element.y === (refY - 1) });
     }
+
+    if (tileLeft === undefined) {
+      // shot is on edge of square (ship is not sunk)
+    }
     if ((refY + 1) <= 10) {
     tileRight = tiles.find((element) => { element.x === refX
         && element.y === (refY + 1) });    
+    }
+
+    if (tileRight === undefined) {
+      // shot is on edge of square (ship is not sunk)
     }
   }
  
