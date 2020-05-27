@@ -1,5 +1,5 @@
 import compChoice from './compAI';
-import compStupid from './compStupid'
+import compStupid from './compStupid';
 import Player from './player';
 
 test('coords are picked', () => {
@@ -10,4 +10,4 @@ test('coords are picked', () => {
 test('cords get random pick', () => {
   const human = Player('humanName');
   expect(compStupid(human.gameboard)).not.toEqual({ x: undefined, y: undefined });
-})
+});

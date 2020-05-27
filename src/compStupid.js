@@ -1,27 +1,24 @@
-const compStupid= (gameboard) => {
+const compStupid = (gameboard) => {
+  let x; let y;
 
-    let x, y, lastShotTile
-  
-    const tiles = gameboard.getTilesArray();
-  
-    const shotOptions = [...tiles];
-     
-    function getRandomCoords() {
-      let randomIndex = Math.floor(Math.random() * (shotOptions.length + 1))
-      let targetTile = shotOptions[randomIndex]
-      x = targetTile.x
-      y = targetTile.y
-      lastShotTile = targetTile;
-      shotOptions.splice(randomIndex, 1)
-    }
-    
-    getRandomCoords()
+  const tiles = gameboard.getTilesArray();
 
-    return {
-      x,
-      y
-    }
+  const shotOptions = [...tiles];
+
+  function getRandomCoords() {
+    const randomIndex = Math.floor(Math.random() * (shotOptions.length + 1));
+    const targetTile = shotOptions[randomIndex];
+    x = targetTile.x;
+    y = targetTile.y;
+    shotOptions.splice(randomIndex, 1);
+  }
+
+  getRandomCoords();
+
+  return {
+    x,
+    y,
   };
-  
-  export default compStupid;
-  
+};
+
+export default compStupid;
