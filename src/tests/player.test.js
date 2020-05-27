@@ -1,4 +1,4 @@
-import Player from './player';
+import Player from '../modules/player';
 
 test('make attack will record on opponents board', () => {
   const human = Player('Matt');

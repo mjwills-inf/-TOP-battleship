@@ -1,4 +1,4 @@
-import Gameboard from './gameboard';
+import Gameboard from '../modules/gameboard';
 
 test('array length 100 tiles', () => {
   const testBoard = Gameboard('player');

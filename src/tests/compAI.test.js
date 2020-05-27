@@ -1,6 +1,6 @@
-import compChoice from './compAI';
-import compStupid from './compStupid';
-import Player from './player';
+import compChoice from '../modules/compAI';
+import compStupid from '../modules/compStupid';
+import Player from '../modules/player';
 
 test('coords are picked', () => {
   const human = Player('humanName');
