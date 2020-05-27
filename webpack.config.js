@@ -1,3 +1,5 @@
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+
 module.exports = {
   mode: 'development',
   entry: './src/index.js',
@@ -23,6 +25,20 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+            options: { minimize: true },
+          },
+        ],
+      },
     ],
   },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: './src/index.html',
+    }),
+  ],
 };
