@@ -7,7 +7,7 @@ const Game = () => {
 
   let winner;
   let gameOver = false;
-  let currentPlayer = human;
+  let currentTurn = human;
 
   // Place ships (to be replaced with random + choice)
   const compShip1 = computer.gameboard.getFleet[0];
@@ -34,7 +34,7 @@ const Game = () => {
 
   // Gameflow functions
   const changeTurn = () => {
-    currentPlayer = (currentPlayer === human) ? computer : human;
+    currentTurn = (currentTurn === human) ? computer : human;
   };
 
   const endGameCheck = () => {
@@ -46,7 +46,15 @@ const Game = () => {
       gameOver = true;
       winner = human;
     }
+    return gameOver;
   };
+
+  const humanMove = (event) => {
+    let coord = event.target.data
+    // aaaahhh
+  }
+  
+
 };
 
 
