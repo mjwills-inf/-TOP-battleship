@@ -1,4 +1,5 @@
 import Player from './player';
+import renderGrid from './render';
 
 const Game = () => {
   // Game function is called and Players set up
@@ -50,11 +51,9 @@ const Game = () => {
   };
 
   const humanMove = (event) => {
-    let coord = event.target.data
+    const coord = event.target.data;
     // aaaahhh
-  }
-  
-
+  };
 };
 
 

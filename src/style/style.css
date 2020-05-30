@@ -1,0 +1,11 @@
+#human-grid {
+  display: grid;
+  grid-template-columns: 10;
+  grid-template-rows: 10;
+}
+
+#computer-grid {
+  display: grid;
+  grid-template-columns: 10;
+  grid-template-rows: 10;
+}
