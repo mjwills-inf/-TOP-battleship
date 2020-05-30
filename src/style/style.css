@@ -6,6 +6,6 @@
 
 #computer-grid {
   display: grid;
-  grid-template-columns: 10;
-  grid-template-rows: 10;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
 }
