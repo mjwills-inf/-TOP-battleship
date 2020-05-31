@@ -1,11 +1,8 @@
-#human-grid {
-  display: grid;
-  grid-template-columns: 10;
-  grid-template-rows: 10;
-}
-
-#computer-grid {
+.rendered-grid-div {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
+  width: 500px;
+  height: 500px;
+  background-color: blue;
 }

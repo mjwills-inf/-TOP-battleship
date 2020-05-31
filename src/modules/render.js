@@ -20,7 +20,13 @@ const renderGrid = (gameboard) => {
     if (tiles[i].occupied === true) {
       tile.classList += 'occupied';
     }
-    //  NEED TO SORT CSS LOADER
+    gridDiv.appendChild(tile);
+  }
+
+  if (gameboard.getType() === 'human') {
+    humanGridDiv.appendChild(gridDiv);
+  } else {
+    computerGridDiv.appendChild(gridDiv);
   }
 };
 

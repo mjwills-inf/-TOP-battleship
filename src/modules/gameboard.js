@@ -1,6 +1,7 @@
 import Ship from './ship';
 
-const Gameboard = () => {
+const Gameboard = (type) => {
+  const getType = () => type;
   const fleetArray = [];
   const tilesArray = [];
 
@@ -151,6 +152,7 @@ const Gameboard = () => {
 
 
   return {
+    getType,
     getTilesArray,
     getFleet,
     placeShip,

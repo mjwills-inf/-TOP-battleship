@@ -1,4 +1,4 @@
-const Ship = (name, length, player) => {
+const Ship = (name, length) => {
   let health = length * 1;
   let sunk = false;
   let direction = 'xAxis';
@@ -6,7 +6,6 @@ const Ship = (name, length, player) => {
 
   const getName = () => name;
   const getLength = () => length;
-  const getPlayer = () => player;
   const getSunk = () => sunk;
   const getDirection = () => direction;
   const getSections = () => shipSections;
@@ -33,7 +32,6 @@ const Ship = (name, length, player) => {
   return {
     getName,
     getLength,
-    getPlayer,
     getSunk,
     getSections,
     getDirection,
