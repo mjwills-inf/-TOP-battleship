@@ -6,12 +6,7 @@ const game = () => {
   const render = Render();
   // Game function is called and Players set up
   const human = Player('human');
-  const computer = Player('compuer');
-
-  // let winner;
-  let startGame = false;
-  // let gameOver = false;
-  // let currentTurn = human;
+  const computer = Player('computer');
 
   // Place ships (to be replaced with random + choice)
   const compShip1 = computer.gameboard.getFleet()[0];
@@ -48,41 +43,41 @@ const game = () => {
   human.gameboard.placeShip(humanShip7, 7, 7);
   human.gameboard.placeShip(humanShip8, 5, 7);
 
-  // Render start player board for ship placement
+  // ////////////////////// Render start player board for ship placement
   render.renderGrid(human.gameboard);
+
+  // Process shots/turns
+  const processTurn = (tile) => {
+    console.log(tile);
+  };
 
   // Event listen on start game
   const button = document.querySelector('button');
   button.addEventListener('click', () => {
-    startGame = true;
     render.renderGrid(computer.gameboard);
-    render.transformPlayerGrid();
+    render.renderStart();
+    const compTiles = document.querySelectorAll('#computer-grid .tile-div0');
+    compTiles.forEach((tile) => {
+      tile.addEventListener('click', processTurn(tile));
+    });
+    // render fleet in here
   });
 
-  // Gameflow functions
-  // const changeTurn = () => {
-  //   currentTurn = (currentTurn === human) ? computer : human;
-  // };
+  // Event listen on tiles
 
+  // Gameflow functions
   // const endGameCheck = () => {
   //   if (human.gameboard.fleetSunkCheck === true) {
-  //     gameOver = true;
-  //     winner = computer;
+  //     render.gameOver(human.gameboard.type)
   //   }
   //   if (computer.gameboard.fleetSunkCheck === true) {
-  //     gameOver = true;
-  //     winner = human;
+  //     render.gameOver(computer.gameboard.type)
   //   }
-  //   return gameOver;
   // };
 
   // const humanMove = (event) => {
   //   const coord = event.target.data;
   // };
-
-  if (startGame === true) {
-    alert('start');
-  }
 };
 
 

@@ -33,15 +33,19 @@ const Render = () => {
     }
   };
 
-  const transformPlayerGrid = () => {
+  const renderStart = () => {
     const target = document.querySelector('#human-grid .rendered-grid-div');
     target.classList.remove('rendered-grid-div');
-    target.classList.add('player-start-grid')
+    target.classList.add('player-start-grid');
   };
+
+  // const gameOver = () => {
+  //   const
+  // };
 
   return {
     renderGrid,
-    transformPlayerGrid,
+    renderStart,
   };
 };
 
