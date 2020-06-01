@@ -1,5 +1,5 @@
 const Render = () => {
-  const renderPlayerGrid = (gameboard) => {
+  const renderGrid = (gameboard) => {
     const tiles = gameboard.getTilesArray();
 
     const humanGridDiv = document.querySelector('#human-grid');
@@ -12,14 +12,16 @@ const Render = () => {
       const tile = document.createElement('div');
       tile.classList.add('tile-div');
 
-      const xyRef = `${tiles[i].x},${tiles[i].y}`;
-      tile.setAttribute('data-xy-ref', xyRef);
+      if (gameboard.getType() === 'human') {
+        const xyRef = `${tiles[i].x},${tiles[i].y}`;
+        tile.setAttribute('data-xy-ref', xyRef);
 
-      const shipRef = tiles[i].shipNameRef;
-      tile.setAttribute('data-ship-ref', shipRef);
+        const shipRef = tiles[i].shipNameRef;
+        tile.setAttribute('data-ship-ref', shipRef);
 
-      if (tiles[i].occupied === true) {
-        tile.classList.add('occupied');
+        if (tiles[i].occupied === true) {
+          tile.classList.add('occupied');
+        }
       }
       gridDiv.appendChild(tile);
     }
@@ -31,9 +33,15 @@ const Render = () => {
     }
   };
 
+  const transformPlayerGrid = () => {
+    const target = document.querySelector('#human-grid .rendered-grid-div');
+    target.classList.remove('rendered-grid-div');
+    target.classList.add('player-start-grid')
+  };
 
   return {
-    renderPlayerGrid,
+    renderGrid,
+    transformPlayerGrid,
   };
 };
 

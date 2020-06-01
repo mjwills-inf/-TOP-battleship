@@ -1,12 +1,14 @@
 const Ship = (name, length) => {
   let health = length * 1;
   let sunk = false;
+  const placed = false;
   let direction = 'xAxis';
   const shipSections = Array(length).fill(1);
 
   const getName = () => name;
   const getLength = () => length;
   const getSunk = () => sunk;
+  const getPlaced = () => placed;
   const getDirection = () => direction;
   const getSections = () => shipSections;
 
@@ -33,6 +35,7 @@ const Ship = (name, length) => {
     getName,
     getLength,
     getSunk,
+    getPlaced,
     getSections,
     getDirection,
     switchDirection,
