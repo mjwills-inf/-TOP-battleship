@@ -2,7 +2,16 @@
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   background-color: blue;
+  margin: 5px;
+}
+ 
+.tile-div {
+  border: black solid 1px;
+}
+
+.occupied {
+  background-color: coral;
 }

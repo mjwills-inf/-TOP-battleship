@@ -31,7 +31,12 @@ const Gameboard = (type) => {
   const cruiser = Ship('Cruiser', 3);
   const submarine = Ship('Submarine', 3);
   const destroyer = Ship('Destroyer', 2);
-  fleetArray.push(carrier, battleship, cruiser, submarine, destroyer);
+  const frigate = Ship('Frigate', 2);
+  const corvette = Ship('Corvette', 1);
+  const gunboat = Ship('Gunboat', 1);
+
+  fleetArray.push(carrier, battleship, cruiser, submarine,
+    destroyer, frigate, corvette, gunboat);
 
   // methods /////////////////////////////////////////
 
