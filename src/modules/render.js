@@ -44,6 +44,11 @@ const Render = () => {
     const domTile = e.target;
     console.log(domTile);
     console.log(arrayTile);
+    if (arrayTile.occupied === true) {
+      domTile.style.background = 'purple';
+    } else {
+      domTile.style.background = 'lightblue';
+    }
   };
 
   // const updateFleet = () => {

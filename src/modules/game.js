@@ -1,12 +1,13 @@
 import Player from './player';
 import Render from './render';
+import compStupid from './compStupid';
 
 const game = () => {
-  // Create render object
-  const render = Render();
-  // Game function is called and Players set up
+  // Game function is called in index and Players set up
   const human = Player('human');
   const computer = Player('computer');
+  // Create render object
+  const render = Render();
 
   // Place ships (to be replaced with random + choice)
   const compShip1 = computer.gameboard.getFleet()[0];
@@ -46,26 +47,45 @@ const game = () => {
   // ////////////////////// Render start player board for ship placement
   render.renderGrid(human.gameboard);
 
-  // Process shots/turns
-  const processTurn = (e) => {
+  // ///////////////////// Game flow functions and listeners
+  const processTurnComputer = () => {
+    const computerChoice = compStupid(human.gameboard);
+    const domDataRef = `${computerChoice.x},${computerChoice.y}`;
+    const targetDom = document.querySelector(`#human-grid [data-xy-ref="${domDataRef}"]`);
+    console.log(domDataRef);
+    console.log(targetDom);
+    computer.makeAttack(human, computerChoice);
+    // YARRRRRRRRRRRRRRRRRRRRR
+  };
+
+  // Process Turn on shot being made
+  const processTurnHuman = (e) => {
     const dataRef = e.target.getAttribute('data-xy-ref').split(',');
     const coordObj = { x: Number(dataRef[0]), y: Number(dataRef[1]) };
     human.makeAttack(computer, coordObj);
     const arrayTile = computer.gameboard.getTileInfo(coordObj);
     render.updateTile(e, arrayTile);
+    setTimeout(() => {
+      processTurnComputer();
+    }, 1000);
   };
 
-  // Event listen on start game
-  // Adds event listen on tiles
+  // Add Tile eventListeners that call processTurnHuman on click
+  const addTileListeners = () => {
+    const compTiles = document.querySelectorAll('#computer-grid .tile-div');
+    compTiles.forEach((tile) => {
+      tile.addEventListener('click', processTurnHuman);
+    });
+  };
+
+  // Game begins (and tileListeners added) on start button press
   const button = document.querySelector('button');
   button.addEventListener('click', () => {
+    // if all ships are placed? then....
     render.renderGrid(computer.gameboard);
     render.renderStart();
     // render fleet in here
-    const compTiles = document.querySelectorAll('#computer-grid .tile-div');
-    compTiles.forEach((tile) => {
-      tile.addEventListener('click', processTurn);
-    });
+    addTileListeners();
   });
 
   // Gameflow functions
