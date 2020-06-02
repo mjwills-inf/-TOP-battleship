@@ -40,6 +40,12 @@ const Gameboard = (type) => {
 
   // methods /////////////////////////////////////////
 
+  const getTileInfo = (coords) => {
+    const index = tilesArray.findIndex((element) => element.x === coords.x
+    && element.y === coords.y);
+    return tilesArray[index];
+  };
+
   const updateTile = (index, occupied, nameRef, indexRef) => {
     tilesArray[index].occupied = occupied;
     tilesArray[index].shipNameRef = nameRef;
@@ -88,6 +94,7 @@ const Gameboard = (type) => {
   };
 
   const placeShip = (ship, x, y) => {
+    const targetShip = ship;
     const validMove = placeShipValid(ship, x, y);
     const axis = ship.getDirection();
     const shipLength = ship.getLength();
@@ -99,6 +106,7 @@ const Gameboard = (type) => {
             && element.y === y + i);
         updateTile(targetTileIndex, true, shipName, i);
       }
+      targetShip.placed = true;
     }
 
     if (validMove && axis === 'yAxis') {
@@ -107,13 +115,12 @@ const Gameboard = (type) => {
             && element.y === y);
         updateTile(targetTileIndex, true, shipName, i);
       }
+      targetShip.placed = true;
     }
   };
 
   const shotValidCheck = (tile) => {
     // shot target tile has already been fire at
-    console.log('shotValidCheck')
-    console.log(tile)
     let valid = false;
     const targetTile = tile;
     if (targetTile.firedAt === false) {
@@ -139,16 +146,10 @@ const Gameboard = (type) => {
   };
 
   const shotHandler = (x, y) => {
-    console.log('shotHandler')
-    console.log(x)
     let shotHit = false;
     const targetTileIndex = tilesArray.findIndex((element) => element.x === x
         && element.y === y);
     const targetTile = tilesArray[targetTileIndex];
-    console.log('shotHandler targetTileIndex')
-    console.log(targetTileIndex)
-    console.log('shotHandler targetTile')
-    console.log(targetTile)
     if (shotValidCheck(targetTile)) {
       shotHit = shotRegister(targetTile);
     }
@@ -167,6 +168,7 @@ const Gameboard = (type) => {
   return {
     getType,
     getTilesArray,
+    getTileInfo,
     getFleet,
     placeShip,
     shotHandler,

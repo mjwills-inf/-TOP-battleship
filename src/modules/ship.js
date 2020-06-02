@@ -8,7 +8,6 @@ const Ship = (name, length) => {
   const getName = () => name;
   const getLength = () => length;
   const getSunk = () => sunk;
-  const getPlaced = () => placed;
   const getDirection = () => direction;
   const getSections = () => shipSections;
 
@@ -35,11 +34,11 @@ const Ship = (name, length) => {
     getName,
     getLength,
     getSunk,
-    getPlaced,
     getSections,
     getDirection,
     switchDirection,
     hit,
+    placed,
   };
 };
 

@@ -33,12 +33,22 @@ const Render = () => {
     }
   };
 
-  // to change appearance of players grid
+  // to change appearance of players grid on start
   const renderStart = () => {
     const target = document.querySelector('#human-grid .rendered-grid-div');
     target.classList.remove('rendered-grid-div');
     target.classList.add('player-start-grid');
   };
+
+  const updateTile = (e, arrayTile) => {
+    const domTile = e.target;
+    console.log(domTile);
+    console.log(arrayTile);
+  };
+
+  // const updateFleet = () => {
+  //   const
+  // }
 
   // const gameOver = () => {
   //   const
@@ -47,6 +57,7 @@ const Render = () => {
   return {
     renderGrid,
     renderStart,
+    updateTile,
   };
 };
 

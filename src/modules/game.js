@@ -48,14 +48,15 @@ const game = () => {
 
   // Process shots/turns
   const processTurn = (e) => {
-    console.log('game process turn')
-    console.log(e.target.getAttribute('data-xy-ref'));
-    const dataRef = e.target.getAttribute('data-xy-ref').split();
-    human.makeAttack(computer, { x: (dataRef[0]), y: (dataRef[1]) });
-    console.log(computer.gameboard.getTilesArray())
+    const dataRef = e.target.getAttribute('data-xy-ref').split(',');
+    const coordObj = { x: Number(dataRef[0]), y: Number(dataRef[1]) };
+    human.makeAttack(computer, coordObj);
+    const arrayTile = computer.gameboard.getTileInfo(coordObj);
+    render.updateTile(e, arrayTile);
   };
 
   // Event listen on start game
+  // Adds event listen on tiles
   const button = document.querySelector('button');
   button.addEventListener('click', () => {
     render.renderGrid(computer.gameboard);
@@ -67,8 +68,6 @@ const game = () => {
     });
   });
 
-  // Event listen on tiles
-
   // Gameflow functions
   // const endGameCheck = () => {
   //   if (human.gameboard.fleetSunkCheck === true) {
@@ -77,10 +76,6 @@ const game = () => {
   //   if (computer.gameboard.fleetSunkCheck === true) {
   //     render.gameOver(computer.gameboard.type)
   //   }
-  // };
-
-  // const humanMove = (event) => {
-  //   const coord = event.target.data;
   // };
 };
 
