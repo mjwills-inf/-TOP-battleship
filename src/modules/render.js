@@ -12,10 +12,10 @@ const Render = () => {
       const tile = document.createElement('div');
       tile.classList.add('tile-div');
 
-      if (gameboard.getType() === 'human') {
-        const xyRef = `${tiles[i].x},${tiles[i].y}`;
-        tile.setAttribute('data-xy-ref', xyRef);
+      const xyRef = `${tiles[i].x},${tiles[i].y}`;
+      tile.setAttribute('data-xy-ref', xyRef);
 
+      if (gameboard.getType() === 'human') {
         const shipRef = tiles[i].shipNameRef;
         tile.setAttribute('data-ship-ref', shipRef);
 
@@ -33,6 +33,7 @@ const Render = () => {
     }
   };
 
+  // to change appearance of players grid
   const renderStart = () => {
     const target = document.querySelector('#human-grid .rendered-grid-div');
     target.classList.remove('rendered-grid-div');

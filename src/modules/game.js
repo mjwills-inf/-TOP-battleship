@@ -47,8 +47,12 @@ const game = () => {
   render.renderGrid(human.gameboard);
 
   // Process shots/turns
-  const processTurn = (tile) => {
-    console.log(tile);
+  const processTurn = (e) => {
+    console.log('game process turn')
+    console.log(e.target.getAttribute('data-xy-ref'));
+    const dataRef = e.target.getAttribute('data-xy-ref').split();
+    human.makeAttack(computer, { x: (dataRef[0]), y: (dataRef[1]) });
+    console.log(computer.gameboard.getTilesArray())
   };
 
   // Event listen on start game
@@ -56,11 +60,11 @@ const game = () => {
   button.addEventListener('click', () => {
     render.renderGrid(computer.gameboard);
     render.renderStart();
-    const compTiles = document.querySelectorAll('#computer-grid .tile-div0');
-    compTiles.forEach((tile) => {
-      tile.addEventListener('click', processTurn(tile));
-    });
     // render fleet in here
+    const compTiles = document.querySelectorAll('#computer-grid .tile-div');
+    compTiles.forEach((tile) => {
+      tile.addEventListener('click', processTurn);
+    });
   });
 
   // Event listen on tiles

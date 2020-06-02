@@ -112,6 +112,8 @@ const Gameboard = (type) => {
 
   const shotValidCheck = (tile) => {
     // shot target tile has already been fire at
+    console.log('shotValidCheck')
+    console.log(tile)
     let valid = false;
     const targetTile = tile;
     if (targetTile.firedAt === false) {
@@ -137,10 +139,16 @@ const Gameboard = (type) => {
   };
 
   const shotHandler = (x, y) => {
+    console.log('shotHandler')
+    console.log(x)
     let shotHit = false;
     const targetTileIndex = tilesArray.findIndex((element) => element.x === x
         && element.y === y);
     const targetTile = tilesArray[targetTileIndex];
+    console.log('shotHandler targetTileIndex')
+    console.log(targetTileIndex)
+    console.log('shotHandler targetTile')
+    console.log(targetTile)
     if (shotValidCheck(targetTile)) {
       shotHit = shotRegister(targetTile);
     }
