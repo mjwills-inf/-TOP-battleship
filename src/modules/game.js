@@ -3,13 +3,13 @@ import Render from './render';
 import compStupid from './compStupid';
 
 const game = () => {
-  // Game function is called in index and Players set up
+  // ///////////////////////Game function is called in index and Players set up
   const human = Player('human');
   const computer = Player('computer');
-  // Create render object
+  // ///////////////////////Create render object
   const render = Render();
 
-  // Place ships (to be replaced with random + choice)
+  // ///////////////////////Place ships (to be replaced with random + choice)
   const compShip1 = computer.gameboard.getFleet()[0];
   const compShip2 = computer.gameboard.getFleet()[1];
   const compShip3 = computer.gameboard.getFleet()[2];
@@ -52,25 +52,25 @@ const game = () => {
     const computerChoice = compStupid(human.gameboard);
     const domDataRef = `${computerChoice.x},${computerChoice.y}`;
     const targetDom = document.querySelector(`#human-grid [data-xy-ref="${domDataRef}"]`);
-    console.log(domDataRef);
-    console.log(targetDom);
+    const arrayTile = human.gameboard.getTileInfo(computerChoice);
     computer.makeAttack(human, computerChoice);
-    // YARRRRRRRRRRRRRRRRRRRRR
+    render.updateTile(targetDom, arrayTile);
   };
 
-  // Process Turn on shot being made
+  // ///////////////////// Process Turn on shot being made
   const processTurnHuman = (e) => {
     const dataRef = e.target.getAttribute('data-xy-ref').split(',');
     const coordObj = { x: Number(dataRef[0]), y: Number(dataRef[1]) };
     human.makeAttack(computer, coordObj);
     const arrayTile = computer.gameboard.getTileInfo(coordObj);
-    render.updateTile(e, arrayTile);
+    render.updateTile(e.target, arrayTile);
+    // render.updateFleet in here
     setTimeout(() => {
       processTurnComputer();
     }, 1000);
   };
 
-  // Add Tile eventListeners that call processTurnHuman on click
+  // ////////////////////// Add Tile eventListeners that call processTurnHuman on click
   const addTileListeners = () => {
     const compTiles = document.querySelectorAll('#computer-grid .tile-div');
     compTiles.forEach((tile) => {
@@ -78,15 +78,21 @@ const game = () => {
     });
   };
 
+  // Game begin
+  const gameBegin = () => {
+    const fleetPlaced = human.gameboard.getFleet()
+      .every((element) => element.placed === true);
+    if (fleetPlaced) {
+      render.renderGrid(computer.gameboard);
+      render.renderStart();
+      // render.renderFleet in here
+      addTileListeners();
+    }
+  };
+
   // Game begins (and tileListeners added) on start button press
   const button = document.querySelector('button');
-  button.addEventListener('click', () => {
-    // if all ships are placed? then....
-    render.renderGrid(computer.gameboard);
-    render.renderStart();
-    // render fleet in here
-    addTileListeners();
-  });
+  button.addEventListener('click', gameBegin);
 
   // Gameflow functions
   // const endGameCheck = () => {

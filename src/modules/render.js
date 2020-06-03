@@ -40,15 +40,14 @@ const Render = () => {
     target.classList.add('player-start-grid');
   };
 
-  const updateTile = (e, arrayTile) => {
-    const domTile = e.target;
-    console.log(domTile);
-    console.log(arrayTile);
+  const updateTile = (domElement, arrayTile) => {
+    const domTile = domElement;
     if (arrayTile.occupied === true) {
       domTile.style.background = 'purple';
     } else {
       domTile.style.background = 'lightblue';
     }
+    // ship dependant styling in here
   };
 
   // const updateFleet = () => {
