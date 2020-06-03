@@ -3,13 +3,13 @@ import Render from './render';
 import compStupid from './compStupid';
 
 const game = () => {
-  // ///////////////////////Game function is called in index and Players set up
+  // Game function is called in index and Players set up
   const human = Player('human');
   const computer = Player('computer');
-  // ///////////////////////Create render object
+  // Create render object
   const render = Render();
 
-  // ///////////////////////Place ships (to be replaced with random + choice)
+  // Place ships (to be replaced with random + choice)
   const compShip1 = computer.gameboard.getFleet()[0];
   const compShip2 = computer.gameboard.getFleet()[1];
   const compShip3 = computer.gameboard.getFleet()[2];
@@ -44,10 +44,11 @@ const game = () => {
   human.gameboard.placeShip(humanShip7, 7, 7);
   human.gameboard.placeShip(humanShip8, 5, 7);
 
-  // ////////////////////// Render start player board for ship placement
+  // Render start player board for ship placement
   render.renderGrid(human.gameboard);
 
-  // ///////////////////// Game flow functions and listeners
+  // // // // // // Game flow functions and listeners
+
   const processTurnComputer = () => {
     const computerChoice = compStupid(human.gameboard);
     const domDataRef = `${computerChoice.x},${computerChoice.y}`;
@@ -55,22 +56,26 @@ const game = () => {
     const arrayTile = human.gameboard.getTileInfo(computerChoice);
     computer.makeAttack(human, computerChoice);
     render.updateTile(targetDom, arrayTile);
+    // eslint-disable-next-line no-use-before-define
+    addTileListeners();
   };
 
-  // ///////////////////// Process Turn on shot being made
+  // Process Turn on shot being made
   const processTurnHuman = (e) => {
     const dataRef = e.target.getAttribute('data-xy-ref').split(',');
     const coordObj = { x: Number(dataRef[0]), y: Number(dataRef[1]) };
     human.makeAttack(computer, coordObj);
     const arrayTile = computer.gameboard.getTileInfo(coordObj);
     render.updateTile(e.target, arrayTile);
+    // eslint-disable-next-line no-use-before-define
+    disableListeners();
     // render.updateFleet in here
     setTimeout(() => {
       processTurnComputer();
     }, 1000);
   };
 
-  // ////////////////////// Add Tile eventListeners that call processTurnHuman on click
+  // Add Tile eventListeners that call processTurnHuman on click
   const addTileListeners = () => {
     const compTiles = document.querySelectorAll('#computer-grid .tile-div');
     compTiles.forEach((tile) => {
@@ -78,7 +83,15 @@ const game = () => {
     });
   };
 
-  // Game begin
+  // Disable listeners immediately following turn
+  const disableListeners = () => {
+    const compTiles = document.querySelectorAll('#computer-grid .tile-div');
+    compTiles.forEach((tile) => {
+      tile.removeEventListener('click', processTurnHuman);
+    });
+  };
+
+  // Game begins (and tileListeners added) on start button press
   const gameBegin = () => {
     const fleetPlaced = human.gameboard.getFleet()
       .every((element) => element.placed === true);
@@ -90,7 +103,6 @@ const game = () => {
     }
   };
 
-  // Game begins (and tileListeners added) on start button press
   const button = document.querySelector('button');
   button.addEventListener('click', gameBegin);
 
