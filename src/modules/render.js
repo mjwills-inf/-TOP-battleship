@@ -40,6 +40,24 @@ const Render = () => {
     target.classList.add('player-start-grid');
   };
 
+  const renderEnemyFleet = (enemy) => {
+    const target = document.querySelector('#enemy-fleet');
+    const fleet = enemy.gameboard.getFleet();
+    for (let i = 0; i < fleet.length; i += 1) {
+      const fleetShip = document.createElement('div');
+      fleetShip.classList.add('fleet-ship');
+      fleetShip.setAttribute('ShipRef', fleet[i].getName());
+      const fleetShipLength = fleet[i].getLength();
+      for (let j = 0; j < fleetShipLength; j += 1) {
+        const shipSection = document.createElement('span');
+        const ref = `${fleet[i].getName()}${j}`;
+        shipSection.setAttribute('ship-section', ref);
+        fleetShip.appendChild(shipSection);
+      }
+      target.appendChild(fleetShip);
+    }
+  };
+
   const updateTile = (domElement, arrayTile) => {
     const domTile = domElement;
     if (arrayTile.occupied === true) {
@@ -47,7 +65,7 @@ const Render = () => {
     } else {
       domTile.style.background = 'lightblue';
     }
-    // ship dependant styling in here
+    // ship dependant styling in here?
   };
 
   // const updateFleet = () => {
@@ -61,6 +79,7 @@ const Render = () => {
   return {
     renderGrid,
     renderStart,
+    renderEnemyFleet,
     updateTile,
   };
 };

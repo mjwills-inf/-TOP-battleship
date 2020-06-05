@@ -44,7 +44,7 @@ const game = () => {
   human.gameboard.placeShip(humanShip7, 7, 7);
   human.gameboard.placeShip(humanShip8, 5, 7);
 
-  // Render start player board for ship placement
+  // Render start player board for ship placement (will be above placing ships)
   render.renderGrid(human.gameboard);
 
   // // // // // // Game flow functions and listeners
@@ -98,7 +98,7 @@ const game = () => {
     if (fleetPlaced) {
       render.renderGrid(computer.gameboard);
       render.renderStart();
-      // render.renderFleet in here
+      render.renderEnemyFleet(computer);
       addTileListeners();
     }
   };
