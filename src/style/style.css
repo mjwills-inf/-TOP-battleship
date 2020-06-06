@@ -1,3 +1,4 @@
+/* render both grids as per */
 .rendered-grid-div {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -8,6 +9,7 @@
   margin: 5px;
 }
 
+/* change player grid display on start */
 .player-start-grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -18,10 +20,38 @@
   margin: 5px;
 }
  
+/* tiles */
 .tile-div {
   border: black solid 1px;
 }
-
 .occupied {
   background-color: coral;
+}
+.hit {
+background: purple;
+}
+.miss {
+  background: lightblue;
+}
+
+/* enemy fleet */
+#enemy-fleet {
+  margin: 5px;  
+}
+
+.fleet-ship {
+  margin: 1px;
+}
+
+.ship-section {
+  display: inline-block;
+  margin: 1px;
+  border: 1px black solid;
+  height: 10px;
+  width: 15px;
+  background: lightgrey;  
+}
+
+.section-hit {
+  background: maroon;
 }

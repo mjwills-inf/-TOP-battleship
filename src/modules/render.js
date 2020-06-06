@@ -51,7 +51,8 @@ const Render = () => {
       for (let j = 0; j < fleetShipLength; j += 1) {
         const shipSection = document.createElement('span');
         const ref = `${fleet[i].getName()}${j}`;
-        shipSection.setAttribute('ship-section', ref);
+        shipSection.setAttribute('data-section-ref', ref);
+        shipSection.classList.add('ship-section');
         fleetShip.appendChild(shipSection);
       }
       target.appendChild(fleetShip);
@@ -61,15 +62,23 @@ const Render = () => {
   const updateTile = (domElement, arrayTile) => {
     const domTile = domElement;
     if (arrayTile.occupied === true) {
-      domTile.style.background = 'purple';
+      domTile.classList.add('hit');
     } else {
-      domTile.style.background = 'lightblue';
+      domTile.classList.add('miss');
     }
     // ship dependant styling in here?
   };
 
-  // const updateFleet = () => {
-  //   const
+  const updateFleet = (arrayTile) => {
+    if (arrayTile.occupied) {
+      const ref = `${arrayTile.shipNameRef}${arrayTile.shipSectionIndexRef}`;
+      const targetElement = document.querySelector(`[data-section-ref="${ref}"]`);
+      targetElement.classList.add('section-hit');
+    }
+  };
+
+  // const changeStartButton = () => {
+
   // }
 
   // const gameOver = () => {
@@ -81,6 +90,7 @@ const Render = () => {
     renderStart,
     renderEnemyFleet,
     updateTile,
+    updateFleet,
   };
 };
 

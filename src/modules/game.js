@@ -69,17 +69,20 @@ const game = () => {
     render.updateTile(e.target, arrayTile);
     // eslint-disable-next-line no-use-before-define
     disableListeners();
-    // render.updateFleet in here
+    render.updateFleet(arrayTile);
     setTimeout(() => {
       processTurnComputer();
     }, 1000);
   };
 
   // Add Tile eventListeners that call processTurnHuman on click
+  // if tile not alreay fired at (with hit or miss in classList)
   const addTileListeners = () => {
     const compTiles = document.querySelectorAll('#computer-grid .tile-div');
     compTiles.forEach((tile) => {
-      tile.addEventListener('click', processTurnHuman);
+      if ((!tile.classList.contains('hit')) && (!tile.classList.contains('miss'))) {
+        tile.addEventListener('click', processTurnHuman);
+      }
     });
   };
 
