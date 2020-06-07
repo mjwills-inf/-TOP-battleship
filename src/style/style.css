@@ -1,4 +1,4 @@
-/* render both grids as per */
+/* render both grids as per point in game */
 .rendered-grid-div {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -8,6 +8,68 @@
   background-color: blue;
   margin: 5px;
 }
+
+/* drag and drop fleet */
+#human-fleet {
+  margin-left: 10px;
+}
+#drag-carrier {
+  margin: 2px;
+  border: 1px solid black;
+  height: 25px;
+  width: 125px;
+  background: orangered;
+}
+#drag-battleship {
+  margin: 2px;
+  border: 1px solid black;
+  height: 25px;
+  width: 100px;
+  background: orangered;
+}
+#drag-cruiser {
+  margin: 2px;
+  border: 1px solid black;
+  height: 25px;
+  width: 75px;
+  background: orangered;
+}
+#drag-submarine {
+  margin: 2px;
+  border: 1px solid black;
+  height: 25px;
+  width: 75px;
+  background: orangered;
+}
+#drag-destroyer {
+  margin: 2px;
+  border: 1px solid black;
+  height: 25px;
+  width: 50px;
+  background: orangered;
+}
+#drag-frigate {
+  margin: 2px;
+  border: 1px solid black;
+  height: 25px;
+  width: 50px;
+  background: orangered;
+}
+#drag-corvette {
+  margin: 2px;
+  border: 1px solid black;
+  height: 25px;
+  width: 25px;
+  background: orangered;
+}
+#drag-gunboat {
+  margin: 2px;
+  border: 1px solid black;
+  height: 25px;
+  width: 25px;
+  background: orangered;
+}
+
 
 /* change player grid display on start */
 .player-start-grid {
