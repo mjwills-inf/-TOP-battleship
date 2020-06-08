@@ -2,7 +2,7 @@ import Player from './player';
 import Render from './render';
 import compStupid from './compStupid';
 
-const game = () => {
+const Game = () => {
   // Game function is called in index and Players set up
   const human = Player('human');
   const computer = Player('computer');
@@ -121,4 +121,4 @@ const game = () => {
 };
 
 
-export default game;
+export default Game;

@@ -13,6 +13,9 @@
 #human-fleet {
   margin-left: 10px;
 }
+.drag-ship {
+  cursor: pointer;
+}
 #drag-carrier {
   margin: 2px;
   border: 1px solid black;
