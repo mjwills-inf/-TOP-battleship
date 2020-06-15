@@ -11,7 +11,6 @@ const Render = () => {
     for (let i = 0; i < tiles.length; i += 1) {
       const tile = document.createElement('div');
       tile.classList.add('tile-div');
-
       const xyRef = `${tiles[i].x},${tiles[i].y}`;
       tile.setAttribute('data-xy-ref', xyRef);
 
