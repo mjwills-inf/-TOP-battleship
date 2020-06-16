@@ -1,22 +1,36 @@
-const Drag = () => {
-  const addDropListeners = () => {
+import Test from '../img/test.png';
+
+const Drag = (funcArg) => {
+  console.log(funcArg);
+
+  const dragStartShip = (ev) => {
+    ev.dataTransfer.setData('text', ev.target.id);
+    const img = new Image();
+    img.src = Test;
+    ev.dataTransfer.setDragImage(img, 0, 0);
+  };
+  // const dragStartTile = (ev) => {
+
+  // }
+  const dragDrop = (ev) => {
+    console.log(ev);
+  };
+
+
+  const addListeners = () => {
+    const ships = document.querySelectorAll('.drag-ship');
     const tiles = document.querySelectorAll('.tile-div');
-    tiles.forEach((tile) => {
-      tile.addEventListener('dragover', (ev) => {
-        ev.preventDefault();
-      });
+    ships.forEach((ship) => {
+      ship.addEventListener('dragstart', dragStartShip);
     });
     tiles.forEach((tile) => {
-      tile.addEventListener('drop', (ev) => {
-        // ev.preventDefault();
-        console.log(ev);
-        console.log(ev.target);
-      });
+      tile.addEventListener('drop', dragDrop);
     });
   };
 
+
   return {
-    addDropListeners,
+    addListeners,
   };
 };
 

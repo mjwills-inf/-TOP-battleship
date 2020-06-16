@@ -20,6 +20,7 @@ const Render = () => {
 
         if (tiles[i].occupied === true) {
           tile.classList.add('occupied');
+          tile.setAttribute('draggable', true); // QASFASKNOASDJ
         }
       }
       gridDiv.appendChild(tile);
