@@ -1,7 +1,7 @@
 import Player from './player';
-import Render from './render';
+import Render from './dom_stuff/render';
 import compStupid from './compStupid';
-import Drag from './drag';
+import Drag from './dom_stuff/drag';
 
 const Game = () => {
   // Game function is called in index and Players set up
@@ -123,6 +123,5 @@ const Game = () => {
   //   }
   // };
 };
-
 
 export default Game;
