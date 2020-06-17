@@ -47,5 +47,4 @@ const dragImagesObj = () => {
   return result;
 };
 
-
 export default dragImagesObj;
