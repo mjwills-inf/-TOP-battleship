@@ -11,16 +11,18 @@ const Render = () => {
     for (let i = 0; i < tiles.length; i += 1) {
       const tile = document.createElement('div');
       tile.classList.add('tile-div');
+      tile.classList.add(`js-data-xy-${tiles[i].x}-${tiles[i].y}`);
       const xyRef = `${tiles[i].x},${tiles[i].y}`;
       tile.setAttribute('data-xy-ref', xyRef);
 
       if (gameboard.getType() === 'human') {
         const shipRef = tiles[i].shipNameRef;
         tile.setAttribute('data-ship-ref', shipRef);
+        // could set axis-ref on tile here on every re render
 
         if (tiles[i].occupied === true) {
           tile.classList.add('occupied');
-          tile.setAttribute('draggable', true); // QASFASKNOASDJ
+          tile.setAttribute('draggable', true);
         }
       }
       gridDiv.appendChild(tile);

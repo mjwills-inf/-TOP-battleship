@@ -10,28 +10,20 @@ import Submarine from '../../img/submarine.png';
 const dragImagesObj = () => {
   const carrierImg = new Image();
   carrierImg.src = Carrier;
-  // result.push(carrierImg);
   const battleshipImg = new Image();
   battleshipImg.src = Battleship;
-  // result.push(battleshipImg);
   const cruiserImg = new Image();
   cruiserImg.src = Cruiser;
-  // result.push(cruiserImg);
   const submarineImg = new Image();
   submarineImg.src = Submarine;
-  // result.push(submarineImg);
   const destroyerImg = new Image();
   destroyerImg.src = Destroyer;
-  // result.push(destroyerImg);
   const frigateImg = new Image();
   frigateImg.src = Frigate;
-  // result.push(frigateImg);
   const corvetteImg = new Image();
   corvetteImg.src = Corvette;
-  // result.push(corvetteImg);
   const gunboatImg = new Image();
   gunboatImg.src = Gunboat;
-  // result.push(gunboatImg);
 
   const result = {
     'drag-carrier': carrierImg,
@@ -43,8 +35,18 @@ const dragImagesObj = () => {
     'drag-corvette': corvetteImg,
     'drag-gunboat': gunboatImg,
   };
-
   return result;
 };
 
-export default dragImagesObj;
+const shipLengthObj = {
+  'drag-carrier': 5,
+  'drag-battleship': 4,
+  'drag-cruiser': 3,
+  'drag-submarine': 3,
+  'drag-destroyer': 2,
+  'drag-frigate': 2,
+  'drag-corvette': 1,
+  'drag-gunboat': 1,
+};
+
+export { dragImagesObj, shipLengthObj };
