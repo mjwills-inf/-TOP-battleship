@@ -18,8 +18,15 @@ const Drag = (placeFunc) => {
   //   current drag and current axis variables updated
   // }
 
+  const clearHighlight = () => {
+    const tiles = document.querySelectorAll('.tile-div');
+    tiles.forEach((item) => {
+      item.classList.remove('dragenter-highlight');
+    });
+  };
 
-  const tileHighlight = (shipLength, axis, tile) => {
+  const tileHighlight = (shipLength, axis, tile, action) => {
+    clearHighlight();
     const tileCoord = tile.getAttribute('data-xy-ref').split(',');
     const currentTileX = tileCoord[0];
     const currentTileY = tileCoord[1];
@@ -27,13 +34,23 @@ const Drag = (placeFunc) => {
       for (let i = 0; i < shipLength; i += 1) {
         const highLightY = parseInt(currentTileY, 10) + i;
         const targetTile = document.querySelector(`.js-data-xy-${currentTileX}-${highLightY}`);
-        targetTile.classList.toggle('dragenter-highlight');
+        if (targetTile != null && action === 'add') {
+          targetTile.classList.add('dragenter-highlight');
+        }
+        if (action === 'remove' && highLightY <= 10) {
+          targetTile.classList.remove('dragenter-highlight');
+        }
       }
     } else if (axis === 'y') {
       for (let i = 0; i < shipLength; i += 1) {
         const highLightX = parseInt(currentTileX, 10) + i;
         const targetTile = document.querySelector(`.js-data-xy-${highLightX}-${currentTileY}`);
-        targetTile.classList.toggle('dragenter-highlight');
+        if (action === 'add' && highLightX <= 10) {
+          targetTile.classList.add('dragenter-highlight');
+        }
+        if (action === 'remove' && highLightX <= 10) {
+          targetTile.classList.remove('dragenter-highlight');
+        }
       }
     }
   };
@@ -59,12 +76,10 @@ const Drag = (placeFunc) => {
   const dragEnter = (ev) => {
     ev.target.classList.add('dragenter');
     const currentDragLength = shipLengthObj[`${currentDrag}`];
-    tileHighlight(currentDragLength, currentDragAxis, ev.target);
+    tileHighlight(currentDragLength, currentDragAxis, ev.target, 'add');
   };
 
   const dragLeave = (ev) => {
-    const currentDragLength = shipLengthObj[`${currentDrag}`];
-    tileHighlight(currentDragLength, currentDragAxis, ev.target);
     setTimeout(() => {
       ev.target.classList.remove('dragenter');
       ev.target.classList.add('dragenter-on');
