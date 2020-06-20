@@ -53,11 +53,13 @@
   background-color: rgb(106, 250, 250);
 }
 
-.dragenter-on {
-  background-color: rgb(194, 16, 194);
+.highlight-fade {
+  background-color: rgb(50, 119, 119);
 }
 
-
+.dragenter-on {
+  background-color: rgb(50, 119, 119);
+}
 
 /* change player grid display on start */
 .player-start-grid {

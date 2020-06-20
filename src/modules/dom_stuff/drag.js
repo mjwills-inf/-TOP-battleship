@@ -19,17 +19,33 @@ const Drag = (placeFunc) => {
   // }
 
   const clearHighlight = () => {
-    const tiles = document.querySelectorAll('.tile-div');
-    tiles.forEach((item) => {
-      item.classList.remove('dragenter-highlight');
+    const highlights = document.querySelectorAll('.dragenter-highlight');
+    console.log(highlights);
+    // was in the array before the change to next tile so is under this timeout removal already
+    // check on highlights if in new surrounding tiles
+
+    highlights.forEach((item) => {
+      setTimeout(() => {
+        item.classList.remove('dragenter-highlight');
+        item.classList.add('highlight-fade');
+      }, 200);
+      setTimeout(() => {
+        item.classList.remove('highlight-fade');
+      }, 400);
     });
   };
 
   const tileHighlight = (shipLength, axis, tile, action) => {
-    clearHighlight();
+    // call clearHighlight with applicable tile?
+    // make array of kept applicable tiles .......
+    // HEREEAREAR
+
     const tileCoord = tile.getAttribute('data-xy-ref').split(',');
     const currentTileX = tileCoord[0];
     const currentTileY = tileCoord[1];
+
+    clearHighlight();
+
     if (axis === 'x') {
       for (let i = 0; i < shipLength; i += 1) {
         const highLightY = parseInt(currentTileY, 10) + i;
