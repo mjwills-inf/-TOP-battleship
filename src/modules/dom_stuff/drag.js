@@ -18,12 +18,12 @@ const Drag = (placeFunc) => {
   //   current drag and current axis variables updated
   // }
 
-  const clearHighlight = () => {
+  const clearHighlight = (newHighlights) => {
     const highlights = document.querySelectorAll('.dragenter-highlight');
-    console.log(highlights);
-    // was in the array before the change to next tile so is under this timeout removal already
-    // check on highlights if in new surrounding tiles
 
+    console.log(highlights);
+    console.log(newHighlights);
+    // NEED compare 2 node list only do setTimeouts on the ones not in both lists
     highlights.forEach((item) => {
       setTimeout(() => {
         item.classList.remove('dragenter-highlight');
@@ -35,40 +35,34 @@ const Drag = (placeFunc) => {
     });
   };
 
-  const tileHighlight = (shipLength, axis, tile, action) => {
-    // call clearHighlight with applicable tile?
-    // make array of kept applicable tiles .......
-    // HEREEAREAR
-
+  const tileHighlight = (shipLength, axis, tile) => {
+    // PASSED array with tiles to highlight
+    const tilesToHighlight = [];
     const tileCoord = tile.getAttribute('data-xy-ref').split(',');
     const currentTileX = tileCoord[0];
     const currentTileY = tileCoord[1];
 
-    clearHighlight();
-
-    if (axis === 'x') {
-      for (let i = 0; i < shipLength; i += 1) {
+    for (let i = 0; i < shipLength; i += 1) {
+      if (axis === 'x') {
         const highLightY = parseInt(currentTileY, 10) + i;
         const targetTile = document.querySelector(`.js-data-xy-${currentTileX}-${highLightY}`);
-        if (targetTile != null && action === 'add') {
-          targetTile.classList.add('dragenter-highlight');
+        if (targetTile != null) {
+          tilesToHighlight.push(targetTile);
         }
-        if (action === 'remove' && highLightY <= 10) {
-          targetTile.classList.remove('dragenter-highlight');
-        }
-      }
-    } else if (axis === 'y') {
-      for (let i = 0; i < shipLength; i += 1) {
+      } else if (axis === 'y') {
         const highLightX = parseInt(currentTileX, 10) + i;
         const targetTile = document.querySelector(`.js-data-xy-${highLightX}-${currentTileY}`);
-        if (action === 'add' && highLightX <= 10) {
-          targetTile.classList.add('dragenter-highlight');
-        }
-        if (action === 'remove' && highLightX <= 10) {
-          targetTile.classList.remove('dragenter-highlight');
+        if (targetTile != null) {
+          tilesToHighlight.push(targetTile);
         }
       }
     }
+
+    clearHighlight(tilesToHighlight);
+
+    tilesToHighlight.forEach((item) => {
+      item.classList.add('dragenter-highlight');
+    });
   };
 
   const dragStartShip = (ev) => {
@@ -92,7 +86,7 @@ const Drag = (placeFunc) => {
   const dragEnter = (ev) => {
     ev.target.classList.add('dragenter');
     const currentDragLength = shipLengthObj[`${currentDrag}`];
-    tileHighlight(currentDragLength, currentDragAxis, ev.target, 'add');
+    tileHighlight(currentDragLength, currentDragAxis, ev.target);
   };
 
   const dragLeave = (ev) => {
