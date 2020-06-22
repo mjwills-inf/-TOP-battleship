@@ -7,6 +7,7 @@ const Drag = (gameboard) => {
   const getDragImage = (id) => dragImages[`${id}`];
 
   let currentDragShip;
+  let currentActiveTiles;
 
   // //////////////////////////////////////////////////////////////////////
   // const dragStartTile = (ev) => {
@@ -17,25 +18,41 @@ const Drag = (gameboard) => {
   // }
   // //////////////////////////////////////////////////////////////////////
 
-  // const dragDrop = (ev) => {
-  //   ev.preventDefault();
-  //   const data = ev.dataTransfer.getData('text');
-  //   console.log(data);
-  //   // here place ship with data
-  //   // color other occupied squares
-  //   // enable other occupied squares
-  // };
+  const dragDrop = (ev) => {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData('text');
+    console.log(data);
+    // here place ship with data
+    // color other occupied squares
+    // enable other occupied squares
+  };
 
   const makeTilesFade = (targetTiles) => {
-    targetTiles.forEach((item) => {
-      setTimeout(() => {
-        item.classList.remove('dragenter-active');
-        item.classList.add('dragleave-fade');
-      }, 100);
-      setTimeout(() => {
-        item.classList.remove('dragleave-fade');
-      }, 400);
-    });
+    if (currentActiveTiles) {
+    // filters out any tiles that will be active following new dragenter
+      const targetTilesSort = targetTiles.filter((item) => !currentActiveTiles.includes(item));
+      targetTilesSort.forEach((item) => {
+        setTimeout(() => {
+          item.classList.remove('dragenter-active');
+          item.classList.add('dragleave-fade');
+        }, 100);
+        setTimeout(() => {
+          item.classList.remove('dragleave-fade');
+        }, 400);
+      });
+      currentActiveTiles = null;
+    } else {
+    // acts as sweep for leaving tile area after setting currentActiveTiles to null
+      targetTiles.forEach((item) => {
+        setTimeout(() => {
+          item.classList.remove('dragenter-active');
+          item.classList.add('dragleave-fade');
+        }, 100);
+        setTimeout(() => {
+          item.classList.remove('dragleave-fade');
+        }, 400);
+      });
+    }
   };
 
   const makeTilesActive = (targetTiles) => {
@@ -75,6 +92,7 @@ const Drag = (gameboard) => {
 
   const dragEnter = (ev) => {
     const targetTiles = getDragGroup(ev);
+    currentActiveTiles = targetTiles;
     makeTilesActive(targetTiles);
   };
 
@@ -95,8 +113,8 @@ const Drag = (gameboard) => {
       ship.addEventListener('dragstart', dragStartShip, false);
     });
     tiles.forEach((tile) => {
-      // tile.addEventListener('dragover', (ev) => ev.preventDefault());
-      // tile.addEventListener('drop', dragDrop, false);
+      tile.addEventListener('dragover', (ev) => ev.preventDefault());
+      tile.addEventListener('drop', dragDrop, false);
       tile.addEventListener('dragenter', dragEnter, false);
       tile.addEventListener('dragleave', dragLeave, false);
     });
