@@ -1,5 +1,4 @@
-import { dragImagesObj } from './dragData';
-// , shipLengthObj
+import dragImagesObj from './dragData';
 
 const Drag = (gameboard) => {
   console.log(gameboard);
@@ -8,7 +7,6 @@ const Drag = (gameboard) => {
   const getDragImage = (id) => dragImages[`${id}`];
 
   let currentDragShip;
-
 
   // //////////////////////////////////////////////////////////////////////
   // const dragStartTile = (ev) => {
@@ -19,56 +17,8 @@ const Drag = (gameboard) => {
   // }
   // //////////////////////////////////////////////////////////////////////
 
-
-  // const clearHighlight = (newHighlights) => {
-  //   let highlights = [...document.querySelectorAll('.dragenter-highlight')];
-  //   highlights = highlights.filter((value) => !newHighlights.includes(value));
-
-  //   highlights.forEach((item) => {
-  //     setTimeout(() => {
-  //       item.classList.remove('dragenter-highlight');
-  //       item.classList.add('highlight-fade');
-  //     }, 200);
-  //     setTimeout(() => {
-  //       item.classList.remove('highlight-fade');
-  //     }, 400);
-  //   });
-  // };
-
-  // const tileHighlight = (shipLength, axis, tile) => {
-  //   // PASSED array with tiles to highlight
-  //   const tilesToHighlight = [];
-  //   const tileCoord = tile.getAttribute('data-xy-ref').split(',');
-  //   const currentTileX = tileCoord[0];
-  //   const currentTileY = tileCoord[1];
-
-  //   for (let i = 0; i < shipLength; i += 1) {
-  //     if (axis === 'x') {
-  //       const highLightY = parseInt(currentTileY, 10) + i;
-  //       const targetTile = document.querySelector(`.js-data-xy-${currentTileX}-${highLightY}`);
-  //       if (targetTile != null) {
-  //         tilesToHighlight.push(targetTile);
-  //       }
-  //     } else if (axis === 'y') {
-  //       const highLightX = parseInt(currentTileX, 10) + i;
-  //       const targetTile = document.querySelector(`.js-data-xy-${highLightX}-${currentTileY}`);
-  //       if (targetTile != null) {
-  //         tilesToHighlight.push(targetTile);
-  //       }
-  //     }
-  //   }
-
-  //   clearHighlight(tilesToHighlight);
-
-  //   tilesToHighlight.forEach((item) => {
-  //     item.classList.add('dragenter-highlight');
-  //   });
-  // };
-
-
   // const dragDrop = (ev) => {
   //   ev.preventDefault();
-  //   ev.target.classList.remove('dragenter');
   //   const data = ev.dataTransfer.getData('text');
   //   console.log(data);
   //   // here place ship with data
@@ -76,32 +26,57 @@ const Drag = (gameboard) => {
   //   // enable other occupied squares
   // };
 
-  const dragEnter = (ev) => {
-    const currentEnter = ev.target;
-    const dragEnterGroup = [];
-    const tileCoord = currentEnter.getAttribute('data-xy-ref').split(',');
+  const makeTilesFade = (targetTiles) => {
+    targetTiles.forEach((item) => {
+      setTimeout(() => {
+        item.classList.remove('dragenter-active');
+        item.classList.add('dragleave-fade');
+      }, 100);
+      setTimeout(() => {
+        item.classList.remove('dragleave-fade');
+      }, 400);
+    });
+  };
+
+  const makeTilesActive = (targetTiles) => {
+    targetTiles.forEach((item) => {
+      item.classList.add('dragenter-active');
+    });
+  };
+
+  const getDragGroup = (ev) => {
+    const dragGroup = [];
+    const tileCoord = ev.target.getAttribute('data-xy-ref').split(',');
     const currentTileX = tileCoord[0];
     const currentTileY = tileCoord[1];
 
-    console.log('dragEnter -> currentTileX', currentTileX);
-    console.log('dragEnter -> dragEnterGroup', dragEnterGroup);
-    console.log('dragEnter -> currentTileY', currentTileY);
-
-    console.log('dragEnter -> currentDragShip', currentDragShip[0]);
-
-    // const currentDragLength = shipLengthObj[`${currentDrag}`];
-    // tileHighlight(currentDragLength, currentDragAxis, ev.target);
+    for (let i = 0; i < currentDragShip[0].getLength(); i += 1) {
+      if (currentDragShip[0].getDirection() === 'xAxis') {
+        const highLightY = parseInt(currentTileY, 10) + i;
+        const targetTile = document.querySelector(`.js-data-xy-${currentTileX}-${highLightY}`);
+        if (targetTile != null) {
+          dragGroup.push(targetTile);
+        }
+      } else if (currentDragShip[0].getDirection() === 'yAxis') {
+        const highLightX = parseInt(currentTileX, 10) + i;
+        const targetTile = document.querySelector(`.js-data-xy-${highLightX}-${currentTileY}`);
+        if (targetTile != null) {
+          dragGroup.push(targetTile);
+        }
+      }
+    }
+    return dragGroup;
   };
 
-  // const dragLeave = (ev) => {
-  //   setTimeout(() => {
-  //     ev.target.classList.remove('dragenter');
-  //     ev.target.classList.add('dragenter-on');
-  //   }, 200);
-  //   setTimeout(() => {
-  //     ev.target.classList.remove('dragenter-on');
-  //   }, 400);
-  // };
+  const dragLeave = (ev) => {
+    const targetTiles = getDragGroup(ev);
+    makeTilesFade(targetTiles);
+  };
+
+  const dragEnter = (ev) => {
+    const targetTiles = getDragGroup(ev);
+    makeTilesActive(targetTiles);
+  };
 
   const dragStartShip = (ev) => {
     ev.dataTransfer.setData('text', ev.target.id);
@@ -123,7 +98,7 @@ const Drag = (gameboard) => {
       // tile.addEventListener('dragover', (ev) => ev.preventDefault());
       // tile.addEventListener('drop', dragDrop, false);
       tile.addEventListener('dragenter', dragEnter, false);
-      // tile.addEventListener('dragleave', dragLeave, false);
+      tile.addEventListener('dragleave', dragLeave, false);
     });
   };
 

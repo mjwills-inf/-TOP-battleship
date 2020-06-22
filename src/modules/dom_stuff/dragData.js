@@ -38,15 +38,5 @@ const dragImagesObj = () => {
   return result;
 };
 
-const shipLengthObj = {
-  'drag-carrier': 5,
-  'drag-battleship': 4,
-  'drag-cruiser': 3,
-  'drag-submarine': 3,
-  'drag-destroyer': 2,
-  'drag-frigate': 2,
-  'drag-corvette': 1,
-  'drag-gunboat': 1,
-};
 
-export { dragImagesObj, shipLengthObj };
+export default dragImagesObj;
