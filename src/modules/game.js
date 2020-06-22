@@ -9,7 +9,7 @@ const Game = () => {
   const computer = Player('computer');
   // Create render and drag/drop objects
   const render = Render();
-  const drag = Drag(human.gameboard.placeShip);
+  const drag = Drag(human.gameboard);
 
   // Place ships (to be replaced with random + choice)
   const compShip1 = computer.gameboard.getFleet()[0];

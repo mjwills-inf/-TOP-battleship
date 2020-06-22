@@ -2,7 +2,7 @@ const Ship = (name, length) => {
   let health = length * 1;
   let sunk = false;
   const placed = false;
-  let direction = 'xAxis';
+  let direction = 'x';
   const shipSections = Array(length).fill(1);
 
   const getName = () => name;
@@ -23,10 +23,10 @@ const Ship = (name, length) => {
   };
 
   const switchDirection = () => {
-    if (direction === 'xAxis') {
-      direction = 'yAxis';
+    if (direction === 'x') {
+      direction = 'y';
     } else {
-      direction = 'xAxis';
+      direction = 'x';
     }
   };
 
