@@ -1,7 +1,8 @@
 import dragImagesObj from './dragData';
 
-const Drag = (gameboard) => {
-  console.log(gameboard);
+const Drag = (gameboard, render) => {
+  console.log(render);
+  const fleet = gameboard.getFleet();
   // images loaded into obj before call because setDragImage
   const dragImages = dragImagesObj();
   const getDragImage = (id) => dragImages[`${id}`];
@@ -17,49 +18,6 @@ const Drag = (gameboard) => {
   //   ev.dataTransfer.setDragImage(img, 0, 0);
   // }
   // //////////////////////////////////////////////////////////////////////
-
-  const dragDrop = (ev) => {
-    ev.preventDefault();
-    const data = ev.dataTransfer.getData('text');
-    console.log(data);
-    // here place ship with data
-    // color other occupied squares
-    // enable other occupied squares
-  };
-
-  const makeTilesFade = (targetTiles) => {
-    if (currentActiveTiles) {
-    // filters out any tiles that will be active following new dragenter
-      const targetTilesSort = targetTiles.filter((item) => !currentActiveTiles.includes(item));
-      targetTilesSort.forEach((item) => {
-        setTimeout(() => {
-          item.classList.remove('dragenter-active');
-          item.classList.add('dragleave-fade');
-        }, 100);
-        setTimeout(() => {
-          item.classList.remove('dragleave-fade');
-        }, 400);
-      });
-      currentActiveTiles = null;
-    } else {
-    // acts as sweep for leaving tile area after setting currentActiveTiles to null
-      targetTiles.forEach((item) => {
-        setTimeout(() => {
-          item.classList.remove('dragenter-active');
-          item.classList.add('dragleave-fade');
-        }, 100);
-        setTimeout(() => {
-          item.classList.remove('dragleave-fade');
-        }, 400);
-      });
-    }
-  };
-
-  const makeTilesActive = (targetTiles) => {
-    targetTiles.forEach((item) => {
-      item.classList.add('dragenter-active');
-    });
-  };
 
   const getDragGroup = (ev) => {
     const dragGroup = [];
@@ -85,6 +43,62 @@ const Drag = (gameboard) => {
     return dragGroup;
   };
 
+  const makeTilesFade = (targetTiles) => {
+    if (currentActiveTiles) {
+    // filters out any tiles that will be active following new dragenter
+      const targetTilesSort = targetTiles.filter((item) => !currentActiveTiles.includes(item));
+      targetTilesSort.forEach((item) => {
+        setTimeout(() => {
+          item.classList.remove('dragenter-active');
+          item.classList.add('dragleave-fade');
+        }, 100);
+        setTimeout(() => {
+          item.classList.remove('dragleave-fade');
+        }, 400);
+      });
+      currentActiveTiles = null;
+    } else {
+    // acts as sweep for leaving tile grid area after setting currentActiveTiles to null
+      targetTiles.forEach((item) => {
+        setTimeout(() => {
+          item.classList.remove('dragenter-active');
+          item.classList.add('dragleave-fade');
+        }, 100);
+        setTimeout(() => {
+          item.classList.remove('dragleave-fade');
+        }, 400);
+      });
+    }
+  };
+
+  const makeTilesActive = (targetTiles) => {
+    targetTiles.forEach((item) => {
+      item.classList.add('dragenter-active');
+    });
+  };
+
+  const dragDrop = (ev) => {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData('text');
+    const shipRef = data.slice(5).charAt(0).toUpperCase() + data.slice(6);
+    const shipArg = fleet.filter((ship) => ship.getName() === shipRef);
+    const tileCoord = ev.target.getAttribute('data-xy-ref').split(',');
+    const x = tileCoord[0];
+    const y = tileCoord[1];
+    console.log('this is render', render);
+    if (gameboard.placeShip(shipArg[0], Number(x), Number(y))) {
+      console.log('success place');
+      console.log('carrier', fleet[0]);
+      // some function for remove drag-ship div
+      // clearGrid
+      // renderGrid
+    } else {
+      const targetTiles = getDragGroup(ev);
+      console.log(targetTiles);
+      makeTilesFade(targetTiles);
+    }
+  };
+
   const dragLeave = (ev) => {
     const targetTiles = getDragGroup(ev);
     makeTilesFade(targetTiles);
@@ -102,7 +116,6 @@ const Drag = (gameboard) => {
     // can setDragImage with a styled element here (can build it)
     ev.dataTransfer.setDragImage(img, 0, 0);
     const shipRef = ev.target.getAttribute('data-ship');
-    const fleet = gameboard.getFleet();
     currentDragShip = fleet.filter((ship) => ship.getName() === shipRef);
   };
 

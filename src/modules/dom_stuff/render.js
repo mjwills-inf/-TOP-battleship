@@ -1,4 +1,14 @@
 const Render = () => {
+  const clearGrid = (gameboard) => {
+    const humanGridDiv = document.querySelector('#human-grid');
+    const computerGridDiv = document.querySelector('#computer-grid');
+    if (gameboard.getType() === 'human') {
+      console.log(humanGridDiv);
+    } else {
+      console.log(computerGridDiv);
+    }
+  };
+
   const renderGrid = (gameboard) => {
     const tiles = gameboard.getTilesArray();
 
@@ -88,6 +98,7 @@ const Render = () => {
   // };
 
   return {
+    clearGrid,
     renderGrid,
     renderStart,
     renderEnemyFleet,

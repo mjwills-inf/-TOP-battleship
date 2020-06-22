@@ -94,6 +94,7 @@ const Gameboard = (type) => {
   };
 
   const placeShip = (ship, x, y) => {
+    let placeShipResult = false;
     const targetShip = ship;
     const validMove = placeShipValid(ship, x, y);
     const axis = ship.getDirection();
@@ -107,6 +108,7 @@ const Gameboard = (type) => {
         updateTile(targetTileIndex, true, shipName, i);
       }
       targetShip.placed = true;
+      placeShipResult = true;
     }
 
     if (validMove && axis === 'yAxis') {
@@ -116,7 +118,9 @@ const Gameboard = (type) => {
         updateTile(targetTileIndex, true, shipName, i);
       }
       targetShip.placed = true;
+      placeShipResult = true;
     }
+    return placeShipResult;
   };
 
   const shotValidCheck = (tile) => {
