@@ -3,9 +3,10 @@ const Render = () => {
     const humanGridDiv = document.querySelector('#human-grid');
     const computerGridDiv = document.querySelector('#computer-grid');
     if (gameboard.getType() === 'human') {
-      console.log(humanGridDiv);
+      humanGridDiv.innerHTML = '';
     } else {
       console.log(computerGridDiv);
+      // YERERREREREER
     }
   };
 
@@ -45,7 +46,17 @@ const Render = () => {
     }
   };
 
-  // to change appearance of players grid on start
+  // placement functions
+
+  const disablePlaceShip = (data) => {
+    console.log('disablePlaceShip', data);
+    const target = document.querySelector(`#${data}`);
+    target.style.backgroundColor = 'white';
+    target.setAttribute('draggable', false);
+    target.style.cursor = 'auto';
+  };
+
+  // game start function to change appearance of players grid on start
   const renderStart = () => {
     const target = document.querySelector('#human-grid .rendered-grid-div');
     target.classList.remove('rendered-grid-div');
@@ -104,6 +115,7 @@ const Render = () => {
     renderEnemyFleet,
     updateTile,
     updateFleet,
+    disablePlaceShip,
   };
 };
 

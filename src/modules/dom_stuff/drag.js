@@ -85,17 +85,20 @@ const Drag = (gameboard, render) => {
     const tileCoord = ev.target.getAttribute('data-xy-ref').split(',');
     const x = tileCoord[0];
     const y = tileCoord[1];
-    console.log('this is render', render);
     if (gameboard.placeShip(shipArg[0], Number(x), Number(y))) {
-      console.log('success place');
-      console.log('carrier', fleet[0]);
-      // some function for remove drag-ship div
-      // clearGrid
-      // renderGrid
+      render.disablePlaceShip(data);
+      // eslint-disable-next-line no-use-before-define
+      removeListener(data);
+      render.clearGrid(gameboard);
+      render.renderGrid(gameboard);
+      // eslint-disable-next-line no-use-before-define
+      addListeners();
     } else {
       const targetTiles = getDragGroup(ev);
       console.log(targetTiles);
       makeTilesFade(targetTiles);
+      // YEREREREREREKJHKEWJNLSKD ASKJDLKASNDLKJDSALDJKNASLKDNL
+      // DRAG ENDDDDD
     }
   };
 
@@ -117,6 +120,11 @@ const Drag = (gameboard, render) => {
     ev.dataTransfer.setDragImage(img, 0, 0);
     const shipRef = ev.target.getAttribute('data-ship');
     currentDragShip = fleet.filter((ship) => ship.getName() === shipRef);
+  };
+
+  const removeListener = (data) => {
+    const target = document.querySelector(`#${data}`);
+    target.removeEventListener('dragstart', dragStartShip);
   };
 
   const addListeners = () => {

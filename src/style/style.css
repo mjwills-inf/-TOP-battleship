@@ -44,7 +44,11 @@
 #drag-gunboat {
   width: 25px;
 }
+.drag-ship-placed {
+  background-color: white;
+}
 
+/* tiles for placment phase*/
 .dragenter-active {
   background-color: rgb(106, 250, 250);
 }
@@ -52,7 +56,6 @@
 .dragleave-fade {
   background-color: rgb(50, 119, 119);
 }
-
 
 /* change player grid display on start */
 .player-start-grid {
