@@ -1,12 +1,8 @@
 const Render = () => {
   const clearGrid = (gameboard) => {
     const humanGridDiv = document.querySelector('#human-grid');
-    const computerGridDiv = document.querySelector('#computer-grid');
     if (gameboard.getType() === 'human') {
       humanGridDiv.innerHTML = '';
-    } else {
-      console.log(computerGridDiv);
-      // YERERREREREER
     }
   };
 
@@ -29,10 +25,14 @@ const Render = () => {
       if (gameboard.getType() === 'human') {
         const shipRef = tiles[i].shipNameRef;
         tile.setAttribute('data-ship-ref', shipRef);
+        const sectionRef = tiles[i].shipSectionIndexRef;
+        tile.setAttribute('data-sec-ref', sectionRef);
         // could set axis-ref on tile here on every re render
 
         if (tiles[i].occupied === true) {
           tile.classList.add('occupied');
+        }
+        if (tiles[i].occupied === true && tiles[i].shipSectionIndexRef === 0) {
           tile.setAttribute('draggable', true);
         }
       }

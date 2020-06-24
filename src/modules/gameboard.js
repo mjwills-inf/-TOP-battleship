@@ -168,13 +168,13 @@ const Gameboard = (type) => {
     return sunk;
   };
 
-
   return {
     getType,
     getTilesArray,
     getTileInfo,
     getFleet,
     placeShip,
+    placeShipValid,
     shotHandler,
     fleetSunkCheck,
     resetTile,

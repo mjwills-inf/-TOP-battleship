@@ -29,23 +29,6 @@ const Game = () => {
   computer.gameboard.placeShip(compShip7, 4, 4);
   computer.gameboard.placeShip(compShip8, 6, 6);
 
-  // const humanShip1 = human.gameboard.getFleet()[0];
-  // const humanShip2 = human.gameboard.getFleet()[1];
-  // const humanShip3 = human.gameboard.getFleet()[2];
-  // const humanShip4 = human.gameboard.getFleet()[3];
-  // const humanShip5 = human.gameboard.getFleet()[4];
-  // const humanShip6 = human.gameboard.getFleet()[5];
-  // const humanShip7 = human.gameboard.getFleet()[6];
-  // const humanShip8 = human.gameboard.getFleet()[7];
-  // human.gameboard.placeShip(humanShip1, 1, 3);
-  // human.gameboard.placeShip(humanShip2, 3, 3);
-  // human.gameboard.placeShip(humanShip3, 5, 3);
-  // human.gameboard.placeShip(humanShip4, 7, 3);
-  // human.gameboard.placeShip(humanShip5, 9, 3);
-  // human.gameboard.placeShip(humanShip6, 9, 7);
-  // human.gameboard.placeShip(humanShip7, 7, 7);
-  // human.gameboard.placeShip(humanShip8, 5, 7);
-
   // Render start player board for ship placement (will be above placing ships)
   render.renderGrid(human.gameboard);
   drag.addListeners();

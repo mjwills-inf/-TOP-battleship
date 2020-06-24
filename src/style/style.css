@@ -44,9 +44,7 @@
 #drag-gunboat {
   width: 25px;
 }
-.drag-ship-placed {
-  background-color: white;
-}
+
 
 /* tiles for placment phase*/
 .dragenter-active {
@@ -57,16 +55,6 @@
   background-color: rgb(50, 119, 119);
 }
 
-/* change player grid display on start */
-.player-start-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  width: 200px;
-  height: 200px;
-  background-color: blue;
-  margin: 5px;
-}
  
 /* tiles */
 .tile-div {
@@ -82,6 +70,49 @@ background: purple;
   background: lightblue;
 }
 
+[data-sec-ref="0"] {
+  cursor: pointer;  
+}
+
+/* wiggle */
+.wiggle {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+
+/* change player grid display on start */
+.player-start-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: 200px;
+  height: 200px; 
+  /* BACKGROUND COLOR IS SPECIFIC HERE NEEDS TO BE CHANGED ON STYLING */
+  /* JNSAJFNLASJNOFISAHOEURP)IUWPFJSAMFPASJFPAOSFJAPFOJASPFOJASPFOJAP */
+  background-color: blue;
+  margin: 5px;
+}
 /* enemy fleet */
 #enemy-fleet {
   margin: 5px;  

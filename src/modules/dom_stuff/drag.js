@@ -10,15 +10,6 @@ const Drag = (gameboard, render) => {
   let currentDragShip;
   let currentActiveTiles;
 
-  // //////////////////////////////////////////////////////////////////////
-  // const dragStartTile = (ev) => {
-  //   const img = new Image();
-  //   const ref = ev.target.getAttribute('data-ship-ref').toLowerCase()
-  //   img.src = dragImageById(`drag-${ref}`);
-  //   ev.dataTransfer.setDragImage(img, 0, 0);
-  // }
-  // //////////////////////////////////////////////////////////////////////
-
   const getDragGroup = (ev) => {
     const dragGroup = [];
     const tileCoord = ev.target.getAttribute('data-xy-ref').split(',');
@@ -77,6 +68,15 @@ const Drag = (gameboard, render) => {
     });
   };
 
+  const hoverOccupied = (ev) => {
+    const shipRef = ev.target.getAttribute('data-ship-ref');
+    const shipTiles = [...document.querySelectorAll(`[data-ship-ref=${shipRef}]`)];
+    const targetTile = shipTiles.find((item) => item.getAttribute('data-sec-ref') === '0');
+    console.log('target HOVER', targetTile);
+    targetTile.classList.add('wiggle');
+    // MAKE IT WIGGLE BITCH
+  };
+
   const dragDrop = (ev) => {
     ev.preventDefault();
     const data = ev.dataTransfer.getData('text');
@@ -85,7 +85,9 @@ const Drag = (gameboard, render) => {
     const tileCoord = ev.target.getAttribute('data-xy-ref').split(',');
     const x = tileCoord[0];
     const y = tileCoord[1];
-    if (gameboard.placeShip(shipArg[0], Number(x), Number(y))) {
+    if (gameboard.placeShipValid(shipArg[0], Number(x), Number(y))) {
+      gameboard.resetTile(shipRef);
+      gameboard.placeShip(shipArg[0], Number(x), Number(y));
       render.disablePlaceShip(data);
       // eslint-disable-next-line no-use-before-define
       removeListener(data);
@@ -95,10 +97,11 @@ const Drag = (gameboard, render) => {
       addListeners();
     } else {
       const targetTiles = getDragGroup(ev);
-      console.log(targetTiles);
       makeTilesFade(targetTiles);
-      // YEREREREREREKJHKEWJNLSKD ASKJDLKASNDLKJDSALDJKNASLKDNL
-      // DRAG ENDDDDD
+      render.clearGrid(gameboard);
+      render.renderGrid(gameboard);
+      // eslint-disable-next-line no-use-before-define
+      addListeners();
     }
   };
 
@@ -122,6 +125,22 @@ const Drag = (gameboard, render) => {
     currentDragShip = fleet.filter((ship) => ship.getName() === shipRef);
   };
 
+  const dragStartTile = (ev) => {
+    const ref = ev.target.getAttribute('data-ship-ref').toLowerCase();
+    const img = getDragImage(`drag-${ref}`);
+    ev.dataTransfer.setDragImage(img, 0, 0);
+    // // can setDragImage with a styled element here (can build it)
+    const shipRef = ev.target.getAttribute('data-ship-ref');
+    const shipRefLc = shipRef.toLowerCase();
+    ev.dataTransfer.setData('text', `drag-${shipRefLc}`);
+    currentDragShip = fleet.filter((ship) => ship.getName() === shipRef);
+    const tiles = document.querySelectorAll(`[data-ship-ref=${shipRef}]`);
+    tiles.forEach((tile) => {
+      const target = tile;
+      target.classList.remove('occupied');
+    });
+  };
+
   const removeListener = (data) => {
     const target = document.querySelector(`#${data}`);
     target.removeEventListener('dragstart', dragStartShip);
@@ -129,7 +148,14 @@ const Drag = (gameboard, render) => {
 
   const addListeners = () => {
     const ships = document.querySelectorAll('.drag-ship');
-    const tiles = document.querySelectorAll('.tile-div');
+    const tiles = [...document.querySelectorAll('.tile-div')];
+    const occupiedTiles = tiles.filter((item) => item.classList.contains('occupied'));
+    const secondaryTiles = occupiedTiles.filter((item) => {
+      const secRef = item.getAttribute('data-sec-ref');
+      return secRef !== '0';
+    });
+    console.log('secondary tiles', secondaryTiles);
+    const primaryTiles = document.querySelectorAll('[data-sec-ref="0"]');
     ships.forEach((ship) => {
       ship.addEventListener('dragstart', dragStartShip, false);
     });
@@ -138,6 +164,12 @@ const Drag = (gameboard, render) => {
       tile.addEventListener('drop', dragDrop, false);
       tile.addEventListener('dragenter', dragEnter, false);
       tile.addEventListener('dragleave', dragLeave, false);
+    });
+    secondaryTiles.forEach((tile) => {
+      tile.addEventListener('mouseover', hoverOccupied, false);
+    });
+    primaryTiles.forEach((tile) => {
+      tile.addEventListener('dragstart', dragStartTile, false);
     });
   };
 
