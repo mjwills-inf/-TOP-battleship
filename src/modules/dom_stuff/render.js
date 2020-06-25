@@ -49,7 +49,6 @@ const Render = () => {
   // placement functions
 
   const disablePlaceShip = (data) => {
-    console.log('disablePlaceShip', data);
     const target = document.querySelector(`#${data}`);
     target.style.backgroundColor = 'white';
     target.setAttribute('draggable', false);

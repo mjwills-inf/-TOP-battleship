@@ -34,6 +34,19 @@ const Drag = (gameboard, render) => {
     return dragGroup;
   };
 
+  const getPrimaryTile = (dataShipRef) => {
+    const shipTiles = [...document.querySelectorAll(`[data-ship-ref=${dataShipRef}]`)];
+    const targetTile = shipTiles.find((item) => item.getAttribute('data-sec-ref') === '0');
+    return targetTile;
+  };
+
+  const replacePlaceship = (shipRef) => {
+    const fleetShip = fleet.filter((ship) => ship.getName() === shipRef);
+    const oldTile = getPrimaryTile(shipRef);
+    const oldTileCoord = oldTile.getAttribute('data-xy-ref').split(',');
+    gameboard.placeShip(fleetShip[0], Number(oldTileCoord[0]), Number(oldTileCoord[1]));
+  };
+
   const makeTilesFade = (targetTiles) => {
     if (currentActiveTiles) {
     // filters out any tiles that will be active following new dragenter
@@ -70,24 +83,44 @@ const Drag = (gameboard, render) => {
 
   const hoverOccupied = (ev) => {
     const shipRef = ev.target.getAttribute('data-ship-ref');
-    const shipTiles = [...document.querySelectorAll(`[data-ship-ref=${shipRef}]`)];
-    const targetTile = shipTiles.find((item) => item.getAttribute('data-sec-ref') === '0');
-    console.log('target HOVER', targetTile);
+    const targetTile = getPrimaryTile(shipRef);
     targetTile.classList.add('wiggle');
-    // MAKE IT WIGGLE BITCH
+  };
+
+  const hoverOccupiedRemove = (ev) => {
+    const shipRef = ev.target.getAttribute('data-ship-ref');
+    const targetTile = getPrimaryTile(shipRef);
+    targetTile.classList.remove('wiggle');
+  };
+
+  const dragEnd = (ev) => {
+    const tileShipRef = ev.target.getAttribute('data-ship-ref');
+    if (tileShipRef !== null) {
+      replacePlaceship(tileShipRef);
+      render.clearGrid(gameboard);
+      render.renderGrid(gameboard);
+      // eslint-disable-next-line no-use-before-define
+      addListeners();
+    }
   };
 
   const dragDrop = (ev) => {
     ev.preventDefault();
     const data = ev.dataTransfer.getData('text');
     const shipRef = data.slice(5).charAt(0).toUpperCase() + data.slice(6);
-    const shipArg = fleet.filter((ship) => ship.getName() === shipRef);
-    const tileCoord = ev.target.getAttribute('data-xy-ref').split(',');
-    const x = tileCoord[0];
-    const y = tileCoord[1];
-    if (gameboard.placeShipValid(shipArg[0], Number(x), Number(y))) {
+
+    const fleetShip = fleet.filter((ship) => ship.getName() === shipRef);
+
+    const newTileCoord = ev.target.getAttribute('data-xy-ref').split(',');
+    const oldTile = getPrimaryTile(shipRef);
+
+    if (oldTile) {
       gameboard.resetTile(shipRef);
-      gameboard.placeShip(shipArg[0], Number(x), Number(y));
+    }
+
+    if (gameboard.placeShipValid(fleetShip[0], Number(newTileCoord[0]), Number(newTileCoord[1]))) {
+      gameboard.resetTile(shipRef);
+      gameboard.placeShip(fleetShip[0], Number(newTileCoord[0]), Number(newTileCoord[1]));
       render.disablePlaceShip(data);
       // eslint-disable-next-line no-use-before-define
       removeListener(data);
@@ -98,6 +131,9 @@ const Drag = (gameboard, render) => {
     } else {
       const targetTiles = getDragGroup(ev);
       makeTilesFade(targetTiles);
+      if (oldTile) {
+        replacePlaceship(shipRef);
+      }
       render.clearGrid(gameboard);
       render.renderGrid(gameboard);
       // eslint-disable-next-line no-use-before-define
@@ -141,6 +177,18 @@ const Drag = (gameboard, render) => {
     });
   };
 
+  const dbClick = (ev) => {
+    const shipRef = ev.target.getAttribute('data-ship-ref');
+    const fleetShip = fleet.filter((ship) => ship.getName() === shipRef);
+    const coord = ev.target.getAttribute('data-xy-ref').split(',');
+    fleetShip.switchDirection();
+    gameboard.resetTile(shipRef);
+    if (gameboard.placeShipValid(fleetShip[0], Number(coord[0]), Number(coord[1]))) {
+      console.log('it valid place');
+      // YTEAREARWARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+    }
+  };
+
   const removeListener = (data) => {
     const target = document.querySelector(`#${data}`);
     target.removeEventListener('dragstart', dragStartShip);
@@ -154,7 +202,6 @@ const Drag = (gameboard, render) => {
       const secRef = item.getAttribute('data-sec-ref');
       return secRef !== '0';
     });
-    console.log('secondary tiles', secondaryTiles);
     const primaryTiles = document.querySelectorAll('[data-sec-ref="0"]');
     ships.forEach((ship) => {
       ship.addEventListener('dragstart', dragStartShip, false);
@@ -167,10 +214,13 @@ const Drag = (gameboard, render) => {
     });
     secondaryTiles.forEach((tile) => {
       tile.addEventListener('mouseover', hoverOccupied, false);
+      tile.addEventListener('mouseout', hoverOccupiedRemove, false);
     });
     primaryTiles.forEach((tile) => {
       tile.addEventListener('dragstart', dragStartTile, false);
+      tile.addEventListener('dbclick', dbClick);
     });
+    document.addEventListener('dragend', dragEnd);
   };
 
   return {
