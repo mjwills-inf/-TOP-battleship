@@ -76,15 +76,28 @@ const Drag = (gameboard, render) => {
 
   const makeTilesActive = (targetTiles) => {
     targetTiles.forEach((item) => {
-      console.log('makeTilesActive -> item', item);
       item.classList.add('dragenter-active');
     });
   };
 
   const switchTilesFade = (preSwitchTiles) => {
     const preSwitchArray = [...preSwitchTiles];
-    makeTilesActive(preSwitchArray);
-    // YARSLKNRLKASNRLKANSLFKNSALFNASLFNLKSNFLKSFNALSKFNLKNL
+    console.log('switch tiles fade after doubleclick');
+    console.log('preswitch array', preSwitchArray);
+    console.log('preswitch item dataset.xyRef =', preSwitchArray[0].dataset.xyRef);
+    const tiles = [...document.querySelectorAll('.tile-div')];
+    console.log('tiles', tiles);
+    console.log('tiles item dataset.xyRef =', tiles[0].dataset.xyRef);
+    // const targetTiles = tiles.filter((acc, ele) => {
+    //   const match = preSwitchArray.find((item) => ele.dataset.xyRef === item.dataset.xyRef);
+    //   if (match) {
+    //     acc.push(match);
+    //   }
+    //   return acc;
+    // }, []);
+    // console.log(targetTiles);
+    // // makeTilesActive(targetTiles);
+    // WHY DOES IT NOT WORK IT WAS WORKING 
   };
 
   const hoverOccupied = (ev) => {
@@ -161,7 +174,6 @@ const Drag = (gameboard, render) => {
   const dragStartShip = (ev) => {
     ev.dataTransfer.setData('text', ev.target.id);
     const img = getDragImage(ev.target.id);
-    // can setDragImage with a styled element here (can build it)
     ev.dataTransfer.setDragImage(img, 0, 0);
     const shipRef = ev.target.getAttribute('data-ship');
     currentDragShip = fleet.filter((ship) => ship.getName() === shipRef);
@@ -171,7 +183,6 @@ const Drag = (gameboard, render) => {
     const ref = ev.target.getAttribute('data-ship-ref').toLowerCase();
     const img = getDragImage(`drag-${ref}`);
     ev.dataTransfer.setDragImage(img, 0, 0);
-    // can setDragImage with a styled element here (can build it)
     const shipRef = ev.target.getAttribute('data-ship-ref');
     const shipRefLc = shipRef.toLowerCase();
     ev.dataTransfer.setData('text', `drag-${shipRefLc}`);
@@ -204,7 +215,6 @@ const Drag = (gameboard, render) => {
     addListeners();
     if (validMove === true) {
       switchTilesFade(preSwitchTiles, shipRef);
-      // WHY IS THIS NOT WORKING
     }
   };
 
