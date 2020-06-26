@@ -165,7 +165,7 @@ const Drag = (gameboard, render) => {
     const ref = ev.target.getAttribute('data-ship-ref').toLowerCase();
     const img = getDragImage(`drag-${ref}`);
     ev.dataTransfer.setDragImage(img, 0, 0);
-    // // can setDragImage with a styled element here (can build it)
+    // can setDragImage with a styled element here (can build it)
     const shipRef = ev.target.getAttribute('data-ship-ref');
     const shipRefLc = shipRef.toLowerCase();
     ev.dataTransfer.setData('text', `drag-${shipRefLc}`);
@@ -177,16 +177,23 @@ const Drag = (gameboard, render) => {
     });
   };
 
-  const dbClick = (ev) => {
+  const dblClick = (ev) => {
     const shipRef = ev.target.getAttribute('data-ship-ref');
     const fleetShip = fleet.filter((ship) => ship.getName() === shipRef);
     const coord = ev.target.getAttribute('data-xy-ref').split(',');
-    fleetShip.switchDirection();
     gameboard.resetTile(shipRef);
+    fleetShip[0].switchDirection();
     if (gameboard.placeShipValid(fleetShip[0], Number(coord[0]), Number(coord[1]))) {
       console.log('it valid place');
-      // YTEAREARWARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+      gameboard.placeShip(fleetShip[0], Number(coord[0]), Number(coord[1]));
+    } else {
+      fleetShip[0].switchDirection();
+      gameboard.placeShip(fleetShip[0], Number(coord[0]), Number(coord[1]));
     }
+    render.clearGrid(gameboard);
+    render.renderGrid(gameboard);
+    // eslint-disable-next-line no-use-before-define
+    addListeners();
   };
 
   const removeListener = (data) => {
@@ -218,7 +225,7 @@ const Drag = (gameboard, render) => {
     });
     primaryTiles.forEach((tile) => {
       tile.addEventListener('dragstart', dragStartTile, false);
-      tile.addEventListener('dbclick', dbClick);
+      tile.addEventListener('dblclick', dblClick);
     });
     document.addEventListener('dragend', dragEnd);
   };
