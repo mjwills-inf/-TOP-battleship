@@ -1,7 +1,6 @@
 import dragImagesObj from './dragData';
 
 const Drag = (gameboard, render) => {
-  console.log(render);
   const fleet = gameboard.getFleet();
   // images loaded into obj before call because setDragImage
   const dragImages = dragImagesObj();
@@ -77,8 +76,15 @@ const Drag = (gameboard, render) => {
 
   const makeTilesActive = (targetTiles) => {
     targetTiles.forEach((item) => {
+      console.log('makeTilesActive -> item', item);
       item.classList.add('dragenter-active');
     });
+  };
+
+  const switchTilesFade = (preSwitchTiles) => {
+    const preSwitchArray = [...preSwitchTiles];
+    makeTilesActive(preSwitchArray);
+    // YARSLKNRLKASNRLKANSLFKNSALFNASLFNLKSNFLKSFNALSKFNLKNL
   };
 
   const hoverOccupied = (ev) => {
@@ -178,14 +184,16 @@ const Drag = (gameboard, render) => {
   };
 
   const dblClick = (ev) => {
+    let validMove = false;
     const shipRef = ev.target.getAttribute('data-ship-ref');
+    const preSwitchTiles = document.querySelectorAll(`[data-ship-ref=${shipRef}]`);
     const fleetShip = fleet.filter((ship) => ship.getName() === shipRef);
     const coord = ev.target.getAttribute('data-xy-ref').split(',');
     gameboard.resetTile(shipRef);
     fleetShip[0].switchDirection();
     if (gameboard.placeShipValid(fleetShip[0], Number(coord[0]), Number(coord[1]))) {
-      console.log('it valid place');
       gameboard.placeShip(fleetShip[0], Number(coord[0]), Number(coord[1]));
+      validMove = true;
     } else {
       fleetShip[0].switchDirection();
       gameboard.placeShip(fleetShip[0], Number(coord[0]), Number(coord[1]));
@@ -194,6 +202,10 @@ const Drag = (gameboard, render) => {
     render.renderGrid(gameboard);
     // eslint-disable-next-line no-use-before-define
     addListeners();
+    if (validMove === true) {
+      switchTilesFade(preSwitchTiles, shipRef);
+      // WHY IS THIS NOT WORKING
+    }
   };
 
   const removeListener = (data) => {
@@ -230,8 +242,13 @@ const Drag = (gameboard, render) => {
     document.addEventListener('dragend', dragEnd);
   };
 
+  const endDrag = () => {
+    'we end';
+  };
+
   return {
     addListeners,
+    endDrag,
   };
 };
 
