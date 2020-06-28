@@ -82,22 +82,11 @@ const Drag = (gameboard, render) => {
 
   const switchTilesFade = (preSwitchTiles) => {
     const preSwitchArray = [...preSwitchTiles];
-    console.log('switch tiles fade after doubleclick');
-    console.log('preswitch array', preSwitchArray);
-    console.log('preswitch item dataset.xyRef =', preSwitchArray[0].dataset.xyRef);
     const tiles = [...document.querySelectorAll('.tile-div')];
-    console.log('tiles', tiles);
-    console.log('tiles item dataset.xyRef =', tiles[0].dataset.xyRef);
-    // const targetTiles = tiles.filter((acc, ele) => {
-    //   const match = preSwitchArray.find((item) => ele.dataset.xyRef === item.dataset.xyRef);
-    //   if (match) {
-    //     acc.push(match);
-    //   }
-    //   return acc;
-    // }, []);
-    // console.log(targetTiles);
-    // // makeTilesActive(targetTiles);
-    // WHY DOES IT NOT WORK IT WAS WORKING 
+    // eslint-disable-next-line max-len
+    const targetTiles = tiles.filter((arrayTile) => preSwitchArray.find((switchTile) => arrayTile.dataset.xyRef === switchTile.dataset.xyRef));
+    makeTilesActive(targetTiles);
+    makeTilesFade(targetTiles);
   };
 
   const hoverOccupied = (ev) => {
