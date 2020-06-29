@@ -242,7 +242,38 @@ const Drag = (gameboard, render) => {
   };
 
   const endDrag = () => {
-    'we end';
+    render.clearGrid(gameboard);
+    render.renderGrid(gameboard);
+    const primaryTiles = document.querySelectorAll('[data-sec-ref="0"]');
+    primaryTiles.forEach((tile) => {
+      const domTile = tile;
+      domTile.style.cursor = 'auto';
+    });
+    const ships = document.querySelectorAll('.drag-ship');
+    const tiles = [...document.querySelectorAll('.tile-div')];
+    const occupiedTiles = tiles.filter((item) => item.classList.contains('occupied'));
+    const secondaryTiles = occupiedTiles.filter((item) => {
+      const secRef = item.getAttribute('data-sec-ref');
+      return secRef !== '0';
+    });
+    ships.forEach((ship) => {
+      ship.removeEventListener('dragstart', dragStartShip);
+    });
+    tiles.forEach((tile) => {
+      tile.removeEventListener('dragover', (ev) => ev.preventDefault());
+      tile.removeEventListener('drop', dragDrop, false);
+      tile.removeEventListener('dragenter', dragEnter, false);
+      tile.removeEventListener('dragleave', dragLeave, false);
+    });
+    secondaryTiles.forEach((tile) => {
+      tile.removeEventListener('mouseover', hoverOccupied, false);
+      tile.removeEventListener('mouseout', hoverOccupiedRemove, false);
+    });
+    primaryTiles.forEach((tile) => {
+      tile.removeEventListener('dragstart', dragStartTile, false);
+      tile.removeEventListener('dblclick', dblClick);
+    });
+    document.removeEventListener('dragend', dragEnd);
   };
 
   return {

@@ -1,6 +1,7 @@
 import Player from './player';
 import Render from './dom_stuff/render';
 import compStupid from './compStupid';
+import compShips from './compShips';
 import Drag from './dom_stuff/drag';
 
 const Game = () => {
@@ -11,25 +12,10 @@ const Game = () => {
   const render = Render();
   const drag = Drag(human.gameboard, render);
 
-  // Place ships (to be replaced with random + choice)
-  const compShip1 = computer.gameboard.getFleet()[0];
-  const compShip2 = computer.gameboard.getFleet()[1];
-  const compShip3 = computer.gameboard.getFleet()[2];
-  const compShip4 = computer.gameboard.getFleet()[3];
-  const compShip5 = computer.gameboard.getFleet()[4];
-  const compShip6 = computer.gameboard.getFleet()[5];
-  const compShip7 = computer.gameboard.getFleet()[6];
-  const compShip8 = computer.gameboard.getFleet()[7];
-  computer.gameboard.placeShip(compShip1, 1, 1);
-  computer.gameboard.placeShip(compShip2, 3, 3);
-  computer.gameboard.placeShip(compShip3, 5, 5);
-  computer.gameboard.placeShip(compShip4, 7, 7);
-  computer.gameboard.placeShip(compShip5, 9, 9);
-  computer.gameboard.placeShip(compShip6, 2, 2);
-  computer.gameboard.placeShip(compShip7, 4, 4);
-  computer.gameboard.placeShip(compShip8, 6, 6);
+  // Place computer ships
+  compShips(computer.gameboard);
 
-  // Render start player board for ship placement (will be above placing ships)
+  // Render start player board for ship placement
   render.renderGrid(human.gameboard);
   drag.addListeners();
 
@@ -86,6 +72,7 @@ const Game = () => {
     const fleetPlaced = human.gameboard.getFleet()
       .every((element) => element.placed === true);
     if (fleetPlaced) {
+      drag.endDrag();
       render.renderGrid(computer.gameboard);
       render.renderStart();
       render.renderEnemyFleet(computer);
