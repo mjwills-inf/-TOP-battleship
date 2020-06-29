@@ -1,13 +1,14 @@
 import Player from './player';
 import Render from './dom_stuff/render';
-import compStupid from './compStupid';
 import compShips from './compShips';
 import Drag from './dom_stuff/drag';
+import CompAI from './compAI';
 
 const Game = () => {
   // Game function is called in index and Players set up
   const human = Player('human');
   const computer = Player('computer');
+  const compAI = CompAI(human.gameboard);
   // Create render and drag/drop objects
   const render = Render();
   const drag = Drag(human.gameboard, render);
@@ -22,7 +23,7 @@ const Game = () => {
   // // // // // // Game flow functions and listeners
 
   const processTurnComputer = () => {
-    const computerChoice = compStupid(human.gameboard);
+    const computerChoice = compAI.chooseTarget();
     const domDataRef = `${computerChoice.x},${computerChoice.y}`;
     const targetDom = document.querySelector(`#human-grid [data-xy-ref="${domDataRef}"]`);
     const arrayTile = human.gameboard.getTileInfo(computerChoice);
