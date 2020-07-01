@@ -1,18 +1,15 @@
 const CompAI = (gameboard) => {
-  let x; let y; let lastShotTile; let targetShip;
-  let targetShotCount = 0;
-
+  let x;
+  let y;
+  let lastShotTile;
+  let lastShotIsHit;
+  let targetShip;
+  let targetShots = [];
   const tiles = gameboard.getTilesArray();
+  const remainingTileOptions = [...tiles];
 
-  const shotOptions = [...tiles];
-
-  const checkSurroundingTiles = (tile) => {
-    // so we are here . targetShip set (not sunk), get availible tiles around ship
-    // if only one shot on ship,random pick from surrounding
-    // if 2 shots on ship, then in same axis
-    console.log('CHECKING SURROUNDING TILES');
-    const refX = tile.x;
-    const refY = tile.y;
+  // helper functions
+  const getSurroundingTiles = (refX, refY) => {
     const tileAbove = ((refX - 1) >= 1) ? tiles.find((ele) => ele.x === (refX - 1)
         && ele.y === refY) : null;
     const tileBelow = ((refX + 1) <= 10) ? tiles.find((ele) => ele.x === (refX + 1)
@@ -21,52 +18,85 @@ const CompAI = (gameboard) => {
         && ele.y === (refY - 1)) : null;
     const tileRight = ((refY + 1) <= 10) ? tiles.find((ele) => ele.x === refX
         && ele.y === (refY + 1)) : null;
+    const tileArray = [tileAbove, tileBelow, tileLeft, tileRight];
+    const surroundingTiles = [];
+    tileArray.forEach((item) => {
+      if (item !== null) {
+        surroundingTiles.push(item);
+      }
+    });
+    return surroundingTiles;
+  };
 
-    console.log('checkSurroundingTiles -> tileAbove', tileAbove);
-    console.log('checkSurroundingTiles -> tileBelow', tileBelow);
-    console.log('checkSurroundingTiles -> tileLeft', tileLeft);
-    console.log('checkSurroundingTiles -> tileRight', tileRight);
+  // if there is a target ship / if target ship is not sunk
+  const checkSurroundingTiles = (lastTile) => {
+    let tileToAnalyse;
+    let initialShot
 
-    console.log('CompAI -> targetShotCount', targetShotCount);
+    const notFiredAt = [];
+    // if only one shot on ship,random pick from surrounding
+    // if 2 shots on ship, then in same axis
+    console.log('CHECKING SURROUNDING TILES');
+    console.log('checkSurroudingTiles -> targetShip', targetShip);
 
-    // shotOptions.splice(chosenIndex, 1);
-    targetShotCount += 1;
+    if (targetShots.length === 1) {
+      tileToAnalyse = lastTile;
+
+      const refX = tileToAnalyse.x;
+      const refY = tileToAnalyse.y;
+
+      const surroundingTiles = getSurroundingTiles(refX, refY);
+
+      surroundingTiles.forEach((item) => {
+        if (item.firedAt === false) {
+          notFiredAt.push(item);
+        }
+      });
+
+      const randomIndex = Math.floor(Math.random() * (notFiredAt.length));
+      const targetTile = notFiredAt[randomIndex];
+
+      x = targetTile.x;
+      y = targetTile.y;
+    }
+
+    // remainingTileOptions.splice(chosenIndex, 1);
+    // targetShots.push(...targetTile...);
   };
 
   function getRandomCoords() {
     console.log('getRandomCoords =>', targetShip);
-    const randomIndex = Math.floor(Math.random() * (shotOptions.length + 1));
-    const targetTile = shotOptions[randomIndex];
+    const randomIndex = Math.floor(Math.random() * (remainingTileOptions.length));
+    const targetTile = remainingTileOptions[randomIndex];
     x = targetTile.x;
     y = targetTile.y;
     lastShotTile = targetTile;
-    targetShotCount = 1;
-    shotOptions.splice(randomIndex, 1);
+    if (targetTile.shipNameRef !== null) {
+      const shipName = lastShotTile.shipNameRef;
+      targetShip = gameboard.getFleet().find((ele) => ele.getName() === shipName);
+      targetShots.push(targetTile);
+    }
+    remainingTileOptions.splice(randomIndex, 1);
   }
 
   const checkShipSunk = () => {
-    console.log('CHECKING SUNK');
-    const shipName = lastShotTile.shipNameRef;
-    const ship = gameboard.getFleet().find((ele) => ele.getName() === shipName);
-    console.log('check ship sunk = ', ship);
-    if (ship.getSunk() === true) {
-      console.log(' if (ship.getSunk() === true) >>>>> call random coords');
+    console.log('check sunk');
+    if (targetShip.getSunk() === true) {
       targetShip = undefined;
+      targetShots = [];
       getRandomCoords();
     } else {
-      targetShip = ship;
       checkSurroundingTiles(lastShotTile);
     }
   };
 
+  // needs check on if target ship in place then to check surrouding tiles
+  // incase checksurrouding results is miss on possibile shots
 
   const chooseTarget = function chooseTarget() {
-    console.log('CHOOSING TARGET');
-    console.log('last shot tile = ', lastShotTile);
-    console.log('target ship =', targetShip);
     if (lastShotTile === undefined) {
       getRandomCoords();
-    } else if (lastShotTile.occupied === true) {
+    } else if (targetShip !== undefined) {
       checkShipSunk();
     } else {
       getRandomCoords();
@@ -83,31 +113,3 @@ const CompAI = (gameboard) => {
 };
 
 export default CompAI;
-
-// if ((refX - 1) >= 1) {
-//   tileAbove = tiles.find((ele) => ele.x === (refX - 1) && ele.y === refY);
-// }
-
-
-// const compStupid = (gameboard) => {
-//   let x; let y;
-
-//   const tiles = gameboard.getTilesArray();
-
-//   const shotOptions = [...tiles];
-
-//   function getRandomCoords() {
-//     const randomIndex = Math.floor(Math.random() * (shotOptions.length + 1));
-//     const targetTile = shotOptions[randomIndex];
-//     x = targetTile.x;
-//     y = targetTile.y;
-//     shotOptions.splice(randomIndex, 1);
-//   }
-
-//   getRandomCoords();
-
-//   return {
-//     x,
-//     y,
-//   };
-// };

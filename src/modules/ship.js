@@ -10,6 +10,7 @@ const Ship = (name, length) => {
   const getSunk = () => sunk;
   const getDirection = () => direction;
   const getSections = () => shipSections;
+  const gethealth = () => health;
 
   const isSunkCheck = () => {
     if (health <= 0) {
@@ -33,6 +34,7 @@ const Ship = (name, length) => {
   return {
     getName,
     getLength,
+    gethealth,
     getSunk,
     getSections,
     getDirection,
