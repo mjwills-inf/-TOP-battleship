@@ -48,6 +48,7 @@ const CompAI = (gameboard) => {
   const clearShotVariables = () => {
     targetShip = undefined;
     targetShots = [];
+    surroundingTiles = [];
   };
 
   // if only one shot on ship,random pick from surrounding
@@ -57,7 +58,12 @@ const CompAI = (gameboard) => {
 
   // ARRIVE HERE if there is a target ship / if target ship is not sunk
   const getSmartCoords = () => {
-    if (targetShots.length === 1 && lastShotIsHit === true) {
+    const targetHeath = targetShip.getHeath();
+    console.log('getSmartCoords -> targetHeath', targetHeath);
+    const targetLength = targetShip.getLength();
+    console.log('getSmartCoords -> targetLength', targetLength);
+    // first shot
+    if (targetShots.length === 1) {
       initialShotTile = lastShotTile;
 
       const refX = lastShotTile.x;
@@ -73,12 +79,15 @@ const CompAI = (gameboard) => {
 
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
-
       updateShotVariables(targetTile, randomIndex);
-
-      initialShotOptions.splice(randomIndex, 1);
-      remainingTileOptions.splice(randomIndex, 1);
     }
+    // surrounding tiles still not have hit (only 1 damage) - work through initial shot options)
+    // if (lastShotIsHit === false && targetShip.) {
+
+    // }
+    // once damage is 2, work in axis of damage continuing in same direction
+
+    // damage over 2 and a miss (then target ships actual coordinates)
   };
 
   // perhaps function check after to see if any ships have been hit but are not sunk
