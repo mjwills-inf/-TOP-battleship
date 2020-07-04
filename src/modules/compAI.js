@@ -2,6 +2,7 @@ const CompAI = (gameboard) => {
   let x;
   let y;
   let initialShotTile;
+  console.log('CompAI -> initialShotTile', initialShotTile);
   let lastShotTile;
   let lastShotIsHit;
   const initialShotOptions = [];
@@ -51,18 +52,12 @@ const CompAI = (gameboard) => {
     surroundingTiles = [];
   };
 
-  // if only one shot on ship,random pick from surrounding
-  // if 2 shots on ship, then in same axis
-  console.log(initialShotTile);
-  console.log(lastShotIsHit);
-
-  // ARRIVE HERE if there is a target ship / if target ship is not sunk
+  // /////////////////////////////////////////////////////////////////////////////////////////////
   const getSmartCoords = () => {
-    const targetHeath = targetShip.getHeath();
-    console.log('getSmartCoords -> targetHeath', targetHeath);
+    const targetHealth = targetShip.getHeath();
     const targetLength = targetShip.getLength();
-    console.log('getSmartCoords -> targetLength', targetLength);
-    // first shot
+
+    // first shot after finding a valid hit on ship
     if (targetShots.length === 1) {
       initialShotTile = lastShotTile;
 
@@ -81,14 +76,22 @@ const CompAI = (gameboard) => {
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile, randomIndex);
     }
+
     // surrounding tiles still not have hit (only 1 damage) - work through initial shot options)
-    // if (lastShotIsHit === false && targetShip.) {
-
-    // }
-    // once damage is 2, work in axis of damage continuing in same direction
-
-    // damage over 2 and a miss (then target ships actual coordinates)
+    if (lastShotIsHit === false && (targetLength % targetHealth) === 1) {
+      const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
+      const targetTile = initialShotOptions[randomIndex];
+      updateShotVariables(targetTile, randomIndex);
+    }
+    if (lastShotIsHit === true && (targetLength % targetHealth) === 2) {
+      // once damage is 2, work in axis of damage continuing in same direction
+    }
+    if (lastShotIsHit === false && (targetLength % targetHealth) > 2) {
+      // damage over 2 and a miss (then target ships actual cuz we know)
+    }
   };
+
+  // /////////////////////////////////////////////////////////////////////////////////////////////
 
   // perhaps function check after to see if any ships have been hit but are not sunk
   // incase get smart coords hits an adjacent ship (and should then know that is another target)
