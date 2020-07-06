@@ -51,8 +51,10 @@ const CompAI = (gameboard) => {
     }
 
     targetShots.push(targetTile);
-
-    const index = remainingTileOptions.findIndex((item) => item === targetTile);
+    const index = remainingTileOptions.findIndex((item) => (item.x === targetTile.x
+        && item.y === targetTile.y));
+    console.log('index test =', index);
+    console.log('index result =', remainingTileOptions[index]);
     remainingTileOptions.splice(index, 1); // Hmmmmmmmm
   };
 
@@ -66,16 +68,16 @@ const CompAI = (gameboard) => {
 
   // /////////////////////////////////////////////////////////////////////////////////////////////
   const getSmartCoords = () => {
+    console.log('get smart coords');
     const targetHealth = targetShip.getHealth();
     const targetLength = targetShip.getLength();
 
-    // first shot after finding a valid hit on ship
     if (targetShots.length === 1) {
-      initialShotTile = lastShotTile;
-
+      // first shot after finding a valid hit on ship
       const refX = lastShotTile.x;
       const refY = lastShotTile.y;
 
+      initialShotTile = lastShotTile;
       surroundingTiles = getSurroundingTiles(refX, refY);
 
       surroundingTiles.forEach((item) => {
@@ -86,25 +88,21 @@ const CompAI = (gameboard) => {
 
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
-      updateShotVariables(targetTile, randomIndex);
-    }
-
-    // surroundings not successful hit (only 1 dmg) - work through initial shot options
-    if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
+      updateShotVariables(targetTile);
+    } else if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
+      // surroundings not successful hit (only 1 dmg) - work through initial shot options
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile, randomIndex);
       initialShotOptions.splice(randomIndex, 1);
-    }
-    // once damage is 2, work in axis of damage continuing in same direction
-    if (lastShotIsTargetHit === true && (targetLength - targetHealth) === 2) {
+    } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) === 2) {
+      // once damage is 2, work in axis of damage continuing in same direction
       const direction = targetShip.getDirection().charAt(0);
       const hitShots = targetShots.filter((item) => item.occupied === true);
       console.log('hitshots on 2 damage', hitShots);
       hitShots.sort((a, b) => a[`${direction}`] - b[`${direction}`]);
       console.log('hitshots sorted', hitShots);
-    }
-    if (lastShotIsHit === false && (targetLength - targetHealth) >= 2) {
+    } else if (lastShotIsHit === false && (targetLength - targetHealth) >= 2) {
       // damage >= 2 and a miss (then target ships actual cuz we know)
     }
   };
@@ -114,6 +112,16 @@ const CompAI = (gameboard) => {
   // perhaps function check after to see if any ships have been hit but are not sunk
   // incase get smart coords hits an adjacent ship (and should then know that is another target)
 
+  const startTargeting = (targetTile) => {
+    const shipName = targetTile.shipNameRef;
+    targetShip = gameboard.getFleet().find((ele) => ele.getName() === shipName);
+    targetShots.push(targetTile);
+    lastShotIsHit = true;
+    if (lastShotIsTargetHit === undefined) {
+      lastShotIsTargetHit = true;
+    }
+  };
+
   function getRandomCoords() {
     const randomIndex = Math.floor(Math.random() * (remainingTileOptions.length));
     const targetTile = remainingTileOptions[randomIndex];
@@ -121,10 +129,7 @@ const CompAI = (gameboard) => {
     y = targetTile.y;
     lastShotTile = targetTile;
     if (targetTile.shipNameRef !== null) {
-      const shipName = lastShotTile.shipNameRef;
-      targetShip = gameboard.getFleet().find((ele) => ele.getName() === shipName);
-      targetShots.push(targetTile);
-      lastShotIsHit = true;
+      startTargeting(targetTile);
     }
     remainingTileOptions.splice(randomIndex, 1);
   }
@@ -146,6 +151,7 @@ const CompAI = (gameboard) => {
     } else {
       getRandomCoords();
     }
+    console.log(remainingTileOptions);
     return {
       x,
       y,

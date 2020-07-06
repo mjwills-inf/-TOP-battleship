@@ -276,6 +276,24 @@ const Drag = (gameboard, render) => {
     document.removeEventListener('dragend', dragEnd);
   };
 
+  // TEMP
+  const ship0 = gameboard.getFleet()[0];
+  const ship1 = gameboard.getFleet()[1];
+  const ship2 = gameboard.getFleet()[2];
+  const ship3 = gameboard.getFleet()[3];
+  const ship4 = gameboard.getFleet()[4];
+  const ship5 = gameboard.getFleet()[5];
+  const ship6 = gameboard.getFleet()[6];
+  const ship7 = gameboard.getFleet()[7];
+  gameboard.placeShip(ship0, 10, 1);
+  gameboard.placeShip(ship1, 1, 1);
+  gameboard.placeShip(ship2, 2, 2);
+  gameboard.placeShip(ship3, 3, 3);
+  gameboard.placeShip(ship4, 4, 4);
+  gameboard.placeShip(ship5, 5, 5);
+  gameboard.placeShip(ship6, 6, 6);
+  gameboard.placeShip(ship7, 7, 7);
+
   return {
     addListeners,
     endDrag,
