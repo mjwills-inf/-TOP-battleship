@@ -45,7 +45,7 @@ const Game = () => {
     render.updateFleet(arrayTile);
     setTimeout(() => {
       processTurnComputer();
-    }, 1000);
+    }, 10);
   };
 
   // Add Tile eventListeners that call processTurnHuman on click

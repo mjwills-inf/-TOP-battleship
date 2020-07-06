@@ -72,7 +72,8 @@ const CompAI = (gameboard) => {
     } else {
       arr = targetShots.filter((item) => item.x === 1 || item.x === 10);
     }
-    console.log('arr =', arr);
+    console.log('edge arr =', arr);
+    return (arr.length > 0);
   };
 
   const getSmartCoords = () => {
@@ -81,7 +82,7 @@ const CompAI = (gameboard) => {
     const targetLength = targetShip.getLength();
 
     if (targetShots.length === 1) {
-      // first shot after finding a valid hit on ship
+      console.log('SMART = first hit smart');
       const refX = lastShotTile.x;
       const refY = lastShotTile.y;
 
@@ -93,23 +94,36 @@ const CompAI = (gameboard) => {
           initialShotOptions.push(item);
         }
       });
+
+      console.log('initial shotoptions INSIDE first hit smart', initialShotOptions);
+
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile);
-    } else if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
-      // surroundings not successful hit (only 1 dmg) - work through initial shot options
-      const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
-      const targetTile = initialShotOptions[randomIndex];
-      updateShotVariables(targetTile, randomIndex);
       initialShotOptions.splice(randomIndex, 1);
-    } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) >= 2) {
-      // check edges
-      // once damage is 2, work in axis of damage continuing in same direction
+      console.log('initial shotoptions AFTER SPLICE', initialShotOptions);
+      // //
+    } else if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
+      console.log('SMART = lastShotIsTarget === false and 1 dmg');
 
+      const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
+      console.log('getSmartCoords -> randomIndex', randomIndex);
+
+      const targetTile = initialShotOptions[randomIndex];
+      console.log('getSmartCoords -> targetTile', targetTile);
+
+      updateShotVariables(targetTile);
+
+      initialShotOptions.splice(randomIndex, 1);
+      // //
+    } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) >= 2) {
+      console.log('SMART = 2 dmg now figure out axis shooting');
+      // check edges function
 
       const direction = targetShip.getDirection().charAt(0);
 
       edgeTileCheck(direction);
+      console.log('edgeTileCheck', edgeTileCheck(direction));
 
       const hitShots = targetShots.filter((item) => item.occupied === true);
 
@@ -166,7 +180,6 @@ const CompAI = (gameboard) => {
     } else {
       getRandomCoords();
     }
-    console.log(remainingTileOptions);
     return {
       x,
       y,
