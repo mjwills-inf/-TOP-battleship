@@ -96,6 +96,8 @@ const Render = () => {
       const ref = `${arrayTile.shipNameRef}${arrayTile.shipSectionIndexRef}`;
       const targetElement = document.querySelector(`[data-section-ref="${ref}"]`);
       targetElement.classList.add('section-hit');
+      // Might need to rethink this makes it easy once you know which ship section
+      // i.e. you are hitting vert/horiz direction based on which way ship is pointing
     }
   };
 

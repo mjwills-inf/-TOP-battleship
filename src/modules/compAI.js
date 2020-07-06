@@ -53,9 +53,7 @@ const CompAI = (gameboard) => {
     targetShots.push(targetTile);
     const index = remainingTileOptions.findIndex((item) => (item.x === targetTile.x
         && item.y === targetTile.y));
-    console.log('index test =', index);
-    console.log('index result =', remainingTileOptions[index]);
-    remainingTileOptions.splice(index, 1); // Hmmmmmmmm
+    remainingTileOptions.splice(index, 1);
   };
 
   const clearShotVariables = () => {
@@ -67,6 +65,16 @@ const CompAI = (gameboard) => {
   };
 
   // /////////////////////////////////////////////////////////////////////////////////////////////
+  const edgeTileCheck = (direction) => {
+    let arr;
+    if (direction === 'x') {
+      arr = targetShots.filter((item) => item.y === 1 || item.y === 10);
+    } else {
+      arr = targetShots.filter((item) => item.x === 1 || item.x === 10);
+    }
+    console.log('arr =', arr);
+  };
+
   const getSmartCoords = () => {
     console.log('get smart coords');
     const targetHealth = targetShip.getHealth();
@@ -85,7 +93,6 @@ const CompAI = (gameboard) => {
           initialShotOptions.push(item);
         }
       });
-
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile);
@@ -95,13 +102,21 @@ const CompAI = (gameboard) => {
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile, randomIndex);
       initialShotOptions.splice(randomIndex, 1);
-    } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) === 2) {
+    } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) >= 2) {
+      // check edges
       // once damage is 2, work in axis of damage continuing in same direction
+
+
       const direction = targetShip.getDirection().charAt(0);
+
+      edgeTileCheck(direction);
+
       const hitShots = targetShots.filter((item) => item.occupied === true);
+
       console.log('hitshots on 2 damage', hitShots);
-      hitShots.sort((a, b) => a[`${direction}`] - b[`${direction}`]);
-      console.log('hitshots sorted', hitShots);
+
+
+      // filler
     } else if (lastShotIsHit === false && (targetLength - targetHealth) >= 2) {
       // damage >= 2 and a miss (then target ships actual cuz we know)
     }
