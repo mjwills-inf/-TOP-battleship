@@ -5,10 +5,12 @@ const CompAI = (gameboard) => {
   console.log('CompAI -> initialShotTile', initialShotTile);
   let lastShotTile;
   let lastShotIsHit;
-  const initialShotOptions = [];
+  let lastShotIsTargetHit;
+  let initialShotOptions = [];
   let surroundingTiles = [];
   let targetShip;
   let targetShots = [];
+
   const tiles = gameboard.getTilesArray();
   const remainingTileOptions = [...tiles];
 
@@ -32,7 +34,7 @@ const CompAI = (gameboard) => {
     return returnArray;
   };
 
-  const updateShotVariables = (targetTile, targetIndex) => {
+  const updateShotVariables = (targetTile) => {
     x = targetTile.x;
     y = targetTile.y;
 
@@ -41,15 +43,25 @@ const CompAI = (gameboard) => {
     } else {
       lastShotIsHit = false;
     }
+
+    if (targetTile.shipNameRef === targetShip.getName()) {
+      lastShotIsTargetHit = true;
+    } else {
+      lastShotIsTargetHit = false;
+    }
+
     targetShots.push(targetTile);
-    initialShotOptions.splice(targetIndex, 1);
-    remainingTileOptions.splice(targetIndex, 1);
+
+    const index = remainingTileOptions.findIndex((item) => item === targetTile);
+    remainingTileOptions.splice(index, 1); // Hmmmmmmmm
   };
 
   const clearShotVariables = () => {
     targetShip = undefined;
     targetShots = [];
     surroundingTiles = [];
+    initialShotOptions = [];
+    lastShotIsTargetHit = undefined;
   };
 
   // /////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,13 +90,14 @@ const CompAI = (gameboard) => {
     }
 
     // surroundings not successful hit (only 1 dmg) - work through initial shot options
-    if (lastShotIsHit === false && (targetLength - targetHealth) === 1) {
+    if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile, randomIndex);
+      initialShotOptions.splice(randomIndex, 1);
     }
     // once damage is 2, work in axis of damage continuing in same direction
-    if (lastShotIsHit === true && (targetLength - targetHealth) === 2) {
+    if (lastShotIsTargetHit === true && (targetLength - targetHealth) === 2) {
       const direction = targetShip.getDirection().charAt(0);
       const hitShots = targetShots.filter((item) => item.occupied === true);
       console.log('hitshots on 2 damage', hitShots);

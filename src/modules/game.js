@@ -16,24 +16,6 @@ const Game = () => {
   // Place computer ships
   compShips(computer.gameboard);
 
-  // TEMP
-  const ship0 = human.gameboard.getFleet()[0];
-  const ship1 = human.gameboard.getFleet()[1];
-  const ship2 = human.gameboard.getFleet()[2];
-  const ship3 = human.gameboard.getFleet()[3];
-  const ship4 = human.gameboard.getFleet()[4];
-  const ship5 = human.gameboard.getFleet()[5];
-  const ship6 = human.gameboard.getFleet()[6];
-  const ship7 = human.gameboard.getFleet()[7];
-  human.gameboard.placeShip(ship0, 10, 1);
-  human.gameboard.placeShip(ship1, 1, 1);
-  human.gameboard.placeShip(ship2, 2, 2);
-  human.gameboard.placeShip(ship3, 3, 3);
-  human.gameboard.placeShip(ship4, 4, 4);
-  human.gameboard.placeShip(ship5, 5, 5);
-  human.gameboard.placeShip(ship6, 6, 6);
-  human.gameboard.placeShip(ship7, 7, 7);
-
   // Render start player board for ship placement
   render.renderGrid(human.gameboard);
   drag.addListeners();
