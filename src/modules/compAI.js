@@ -59,7 +59,6 @@ const CompAI = (gameboard) => {
 
     // first shot after finding a valid hit on ship
     if (targetShots.length === 1) {
-      console.log('IF first shot in surroundings');
       initialShotTile = lastShotTile;
 
       const refX = lastShotTile.x;
@@ -78,26 +77,22 @@ const CompAI = (gameboard) => {
       updateShotVariables(targetTile, randomIndex);
     }
 
-    // surrounding tiles still not have hit (only 1 damage) - work through initial shot options)
+    // surroundings not successful hit (only 1 dmg) - work through initial shot options
     if (lastShotIsHit === false && (targetLength - targetHealth) === 1) {
-      console.log('IF miss in surroundings ');
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
-      console.log('getSmartCoords -> randomIndex', randomIndex);
       const targetTile = initialShotOptions[randomIndex];
-      console.log('getSmartCoords -> targetTile', targetTile);
       updateShotVariables(targetTile, randomIndex);
     }
+    // once damage is 2, work in axis of damage continuing in same direction
     if (lastShotIsHit === true && (targetLength - targetHealth) === 2) {
-      // once damage is 2, work in axis of damage continuing in same direction
       const direction = targetShip.getDirection().charAt(0);
-      console.log('getSmartCoords -> direction', direction);
       const hitShots = targetShots.filter((item) => item.occupied === true);
-      console.log('getSmartCoords -> hitShots', hitShots);
-      // hitshots. order of up/down for the axis compare initial shot then + - based on direction
-      // YARRRRRRRRR
+      console.log('hitshots on 2 damage', hitShots);
+      hitShots.sort((a, b) => a[`${direction}`] - b[`${direction}`]);
+      console.log('hitshots sorted', hitShots);
     }
-    if (lastShotIsHit === false && (targetLength % targetHealth) > 2) {
-      // damage over 2 and a miss (then target ships actual cuz we know)
+    if (lastShotIsHit === false && (targetLength - targetHealth) >= 2) {
+      // damage >= 2 and a miss (then target ships actual cuz we know)
     }
   };
 
