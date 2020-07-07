@@ -109,6 +109,8 @@ const Render = () => {
   //   const
   // };
 
+  // SOMETHING TO SAY SORRY NOT MOBILE (MY BAD HTML5 DRAG N DROP was a poor choice)
+
   return {
     clearGrid,
     renderGrid,

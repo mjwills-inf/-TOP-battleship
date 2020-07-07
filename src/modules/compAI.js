@@ -72,15 +72,50 @@ const CompAI = (gameboard) => {
     } else {
       arr = targetShots.filter((item) => item.x === 1 || item.x === 10);
     }
-    console.log('edge arr =', arr);
     return (arr.length > 0);
+    // OR IF TILE HAS ALREADY BEEN FIRED AT EDGE OF SHIP ? YES MOTHERFUCKER
   };
 
+  const clearRemaining = () => {
+    const arr = remainingTileOptions
+      .filter((item) => item.shipNameRef === targetShip.getName());
+    const randomIndex = Math.floor(Math.random() * (arr.length));
+    const targetTile = arr[randomIndex];
+    updateShotVariables(targetTile);
+  };
+
+  const clearDirection = (direction) => {
+    const axisProp = (direction === 'x') ? 'y' : 'x';
+    console.log('axisProp CHANGE (tilexy)=', axisProp);
+    console.log('direction KEEP (tilexy)=', direction);
+    const tileAxisKeep = (lastShotTile[`${direction}`]);
+    console.log('tileAxisKeep (number)=', tileAxisKeep);
+    if (initialShotTile[`${axisProp}`] > lastShotTile[`${axisProp}`]) {
+      console.log('GOING LEFT OR UP @ initialShotTile[`$axisProp`] > lastShotTile[`$axisProp`]');
+      const tileAxisChange = ((lastShotTile[`${axisProp}`]) - 1);
+      console.log('tileAxisChange (number)=', tileAxisChange);
+      const targetTile = remainingTileOptions
+        .filter((item) => item[`${axisProp}`] === tileAxisChange
+        && item[`${direction}`] === tileAxisKeep);
+      console.log(targetTile);
+      updateShotVariables(targetTile);
+    } else {
+      console.log('GOING RIGHT OR DOWN @ else');
+      const tileAxisChange = ((lastShotTile[`${axisProp}`]) + 1);
+      console.log('tileAxisChange (number)=', tileAxisChange);
+      const targetTile = remainingTileOptions
+        .filter((item) => item[`${axisProp}`] === tileAxisChange
+        && item[`${direction}`] === tileAxisKeep);
+      console.log(targetTile);
+      updateShotVariables(targetTile[0]);
+    }
+  };
+  // /////////////////////////////////////////////////////////////////////////////////////////////
+
   const getSmartCoords = () => {
-    console.log('get smart coords');
     const targetHealth = targetShip.getHealth();
     const targetLength = targetShip.getLength();
-
+    // //
     if (targetShots.length === 1) {
       console.log('SMART = first hit smart');
       const refX = lastShotTile.x;
@@ -95,44 +130,28 @@ const CompAI = (gameboard) => {
         }
       });
 
-      console.log('initial shotoptions INSIDE first hit smart', initialShotOptions);
-
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile);
       initialShotOptions.splice(randomIndex, 1);
-      console.log('initial shotoptions AFTER SPLICE', initialShotOptions);
       // //
     } else if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
-      console.log('SMART = lastShotIsTarget === false and 1 dmg');
-
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
-      console.log('getSmartCoords -> randomIndex', randomIndex);
-
       const targetTile = initialShotOptions[randomIndex];
-      console.log('getSmartCoords -> targetTile', targetTile);
-
       updateShotVariables(targetTile);
-
       initialShotOptions.splice(randomIndex, 1);
       // //
     } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) >= 2) {
-      console.log('SMART = 2 dmg now figure out axis shooting');
-      // check edges function
-
       const direction = targetShip.getDirection().charAt(0);
 
-      edgeTileCheck(direction);
-      console.log('edgeTileCheck', edgeTileCheck(direction));
-
-      const hitShots = targetShots.filter((item) => item.occupied === true);
-
-      console.log('hitshots on 2 damage', hitShots);
-
-
-      // filler
+      if (edgeTileCheck(direction)) {
+        clearRemaining();
+      } else {
+        clearDirection(direction);
+      }
+      // //
     } else if (lastShotIsHit === false && (targetLength - targetHealth) >= 2) {
-      // damage >= 2 and a miss (then target ships actual cuz we know)
+      clearRemaining();
     }
   };
 
