@@ -120,6 +120,7 @@ const CompAI = (gameboard) => {
     // Second shot following a hit - get surrounding Tiles and target them
     // //
     if (targetShots.length === 1) {
+      console.log('getSmartCoords = 2nd shot on surroundings');
       const refX = lastShotTile.x;
       const refY = lastShotTile.y;
       surroundingTiles = getSurroundingTiles(refX, refY);
@@ -136,6 +137,7 @@ const CompAI = (gameboard) => {
       // Third shot if second missed - continue target of surrounding tiles
       // //
     } else if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
+      console.log('getSmartCoords = 3rd shot after miss on surroundings');
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile);
@@ -144,6 +146,7 @@ const CompAI = (gameboard) => {
       // Third shot onwards if second hit - continue target in axis of hits
       // //
     } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) >= 2) {
+      console.log('getSmartCoords = 3rd onwards for direction');
       const direction = targetShip.getDirection().charAt(0);
       if (edgeTileCheck(direction)) {
         clearRemaining();
@@ -153,8 +156,11 @@ const CompAI = (gameboard) => {
       // //
       // Third shot onwards if last shot has missed (and so reached boundary of ship)
       // //
-    } else if (lastShotIsHit === false && (targetLength - targetHealth) > 2) {
+    } else if (lastShotIsHit === false && (targetLength - targetHealth) >= 2) {
+      console.log('getSmartCoords = 3rd onwards for clearing ship');
       clearRemaining();
+    } else {
+      console.log('getSmartCoords = ELSE ... WHAT');
     }
   };
 
@@ -189,11 +195,25 @@ const CompAI = (gameboard) => {
     remainingTileOptions.splice(randomIndex, 1);
   }
 
+  const checkOtherTargets = () => {
+    const fleet = gameboard.getFleet();
+    const damagedShips = fleet
+      .filter((item) => item.getSunk() === false
+      && item.getHealth() < item.getLength());
+    console.log(damagedShips);
+    if (damagedShips.length === 0) {
+      getRandomCoords();
+    } else {
+      // YEARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+      // target damagedShips[0]
+    }
+  };
+
   const checkShipSunk = () => {
     console.log('checkShipSunk');
     if (targetShip.getSunk() === true) {
       clearShotVariables();
-      getRandomCoords();
+      checkOtherTargets();
     } else {
       getSmartCoords();
     }

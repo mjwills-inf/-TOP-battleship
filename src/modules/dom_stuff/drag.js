@@ -286,11 +286,11 @@ const Drag = (gameboard, render) => {
   const ship6 = gameboard.getFleet()[6];
   const ship7 = gameboard.getFleet()[7];
   gameboard.placeShip(ship0, 2, 3);
-  gameboard.placeShip(ship1, 4, 3);
+  gameboard.placeShip(ship1, 3, 3);
   gameboard.placeShip(ship2, 6, 3);
-  gameboard.placeShip(ship3, 8, 3);
-  gameboard.placeShip(ship4, 7, 9);
-  gameboard.placeShip(ship5, 8, 9);
+  gameboard.placeShip(ship3, 7, 3);
+  gameboard.placeShip(ship4, 5, 9);
+  gameboard.placeShip(ship5, 6, 9);
   gameboard.placeShip(ship6, 9, 10);
   gameboard.placeShip(ship7, 10, 10);
 
