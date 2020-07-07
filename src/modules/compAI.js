@@ -2,7 +2,6 @@ const CompAI = (gameboard) => {
   let x;
   let y;
   let initialShotTile;
-  console.log('CompAI -> initialShotTile', initialShotTile);
   let lastShotTile;
   let lastShotIsHit;
   let lastShotIsTargetHit;
@@ -54,6 +53,7 @@ const CompAI = (gameboard) => {
     const index = remainingTileOptions.findIndex((item) => (item.x === targetTile.x
         && item.y === targetTile.y));
     remainingTileOptions.splice(index, 1);
+    lastShotTile = targetTile;
   };
 
   const clearShotVariables = () => {
@@ -74,6 +74,7 @@ const CompAI = (gameboard) => {
     }
     return (arr.length > 0);
     // OR IF TILE HAS ALREADY BEEN FIRED AT EDGE OF SHIP ? YES MOTHERFUCKER
+    // HEREREHREHREHREHERH
   };
 
   const clearRemaining = () => {
@@ -86,33 +87,39 @@ const CompAI = (gameboard) => {
 
   const clearDirection = (direction) => {
     const axisProp = (direction === 'x') ? 'y' : 'x';
-    console.log('axisProp CHANGE (tilexy)=', axisProp);
-    console.log('direction KEEP (tilexy)=', direction);
+    // console.log('axisProp CHANGE (tilexy)=', axisProp);
+    // console.log('direction KEEP (tilexy)=', direction);
+
     const tileAxisKeep = (lastShotTile[`${direction}`]);
-    console.log('tileAxisKeep (number)=', tileAxisKeep);
+    // console.log('tileAxisKeep (number)=', tileAxisKeep);
+
+    console.log('initial Shot Tile (axisProp)', initialShotTile[`${axisProp}`]);
+    console.log('last Shot Tile (axisProp)', lastShotTile[`${axisProp}`]);
+    // //
     if (initialShotTile[`${axisProp}`] > lastShotTile[`${axisProp}`]) {
-      console.log('GOING LEFT OR UP @ initialShotTile[`$axisProp`] > lastShotTile[`$axisProp`]');
+      // console.log('GOING LEFT OR UP @ initialShotTile[`$axisProp`] > lastShotTile[`$axisProp`]');
       const tileAxisChange = ((lastShotTile[`${axisProp}`]) - 1);
-      console.log('tileAxisChange (number)=', tileAxisChange);
+      // console.log('tileAxisChange (number)=', tileAxisChange);
       const targetTile = remainingTileOptions
         .filter((item) => item[`${axisProp}`] === tileAxisChange
         && item[`${direction}`] === tileAxisKeep);
-      console.log(targetTile);
+      // console.log(targetTile);
       updateShotVariables(targetTile);
     } else {
-      console.log('GOING RIGHT OR DOWN @ else');
+      // console.log('GOING RIGHT OR DOWN @ else');
       const tileAxisChange = ((lastShotTile[`${axisProp}`]) + 1);
-      console.log('tileAxisChange (number)=', tileAxisChange);
+      // console.log('tileAxisChange (number)=', tileAxisChange);
       const targetTile = remainingTileOptions
         .filter((item) => item[`${axisProp}`] === tileAxisChange
         && item[`${direction}`] === tileAxisKeep);
-      console.log(targetTile);
+      // console.log(targetTile);
       updateShotVariables(targetTile[0]);
     }
   };
   // /////////////////////////////////////////////////////////////////////////////////////////////
 
   const getSmartCoords = () => {
+    console.log('intial shot Tile =', initialShotTile);
     const targetHealth = targetShip.getHealth();
     const targetLength = targetShip.getLength();
     // //
@@ -121,7 +128,6 @@ const CompAI = (gameboard) => {
       const refX = lastShotTile.x;
       const refY = lastShotTile.y;
 
-      initialShotTile = lastShotTile;
       surroundingTiles = getSurroundingTiles(refX, refY);
 
       surroundingTiles.forEach((item) => {
@@ -165,6 +171,7 @@ const CompAI = (gameboard) => {
     targetShip = gameboard.getFleet().find((ele) => ele.getName() === shipName);
     targetShots.push(targetTile);
     lastShotIsHit = true;
+    initialShotTile = targetTile;
     if (lastShotIsTargetHit === undefined) {
       lastShotIsTargetHit = true;
     }
