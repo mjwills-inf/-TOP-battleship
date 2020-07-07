@@ -34,6 +34,7 @@ const CompAI = (gameboard) => {
   };
 
   const updateShotVariables = (targetTile) => {
+    console.log('updateShotVariables');
     x = targetTile.x;
     y = targetTile.y;
 
@@ -42,13 +43,11 @@ const CompAI = (gameboard) => {
     } else {
       lastShotIsHit = false;
     }
-
     if (targetTile.shipNameRef === targetShip.getName()) {
       lastShotIsTargetHit = true;
     } else {
       lastShotIsTargetHit = false;
     }
-
     targetShots.push(targetTile);
     const index = remainingTileOptions.findIndex((item) => (item.x === targetTile.x
         && item.y === targetTile.y));
@@ -57,6 +56,7 @@ const CompAI = (gameboard) => {
   };
 
   const clearShotVariables = () => {
+    console.log('clearShotVariables');
     targetShip = undefined;
     targetShots = [];
     surroundingTiles = [];
@@ -64,8 +64,8 @@ const CompAI = (gameboard) => {
     lastShotIsTargetHit = undefined;
   };
 
-  // /////////////////////////////////////////////////////////////////////////////////////////////
   const edgeTileCheck = (direction) => {
+    console.log('edgeTileCheck');
     let arr;
     if (direction === 'x') {
       arr = targetShots.filter((item) => item.y === 1 || item.y === 10);
@@ -73,11 +73,10 @@ const CompAI = (gameboard) => {
       arr = targetShots.filter((item) => item.x === 1 || item.x === 10);
     }
     return (arr.length > 0);
-    // OR IF TILE HAS ALREADY BEEN FIRED AT EDGE OF SHIP ? YES MOTHERFUCKER
-    // HEREREHREHREHREHERH
   };
 
   const clearRemaining = () => {
+    console.log('clearRemaining');
     const arr = remainingTileOptions
       .filter((item) => item.shipNameRef === targetShip.getName());
     const randomIndex = Math.floor(Math.random() * (arr.length));
@@ -86,60 +85,55 @@ const CompAI = (gameboard) => {
   };
 
   const clearDirection = (direction) => {
+    console.log('clearDirection');
     const axisProp = (direction === 'x') ? 'y' : 'x';
-    // console.log('axisProp CHANGE (tilexy)=', axisProp);
-    // console.log('direction KEEP (tilexy)=', direction);
-
     const tileAxisKeep = (lastShotTile[`${direction}`]);
-    // console.log('tileAxisKeep (number)=', tileAxisKeep);
-
-    console.log('initial Shot Tile (axisProp)', initialShotTile[`${axisProp}`]);
-    console.log('last Shot Tile (axisProp)', lastShotTile[`${axisProp}`]);
-    // //
     if (initialShotTile[`${axisProp}`] > lastShotTile[`${axisProp}`]) {
-      // console.log('GOING LEFT OR UP @ initialShotTile[`$axisProp`] > lastShotTile[`$axisProp`]');
       const tileAxisChange = ((lastShotTile[`${axisProp}`]) - 1);
-      // console.log('tileAxisChange (number)=', tileAxisChange);
       const targetTile = remainingTileOptions
         .filter((item) => item[`${axisProp}`] === tileAxisChange
         && item[`${direction}`] === tileAxisKeep);
-      // console.log(targetTile);
-      updateShotVariables(targetTile);
+      if (targetTile.length === 1) {
+        updateShotVariables(targetTile[0]);
+      } else {
+        clearRemaining();
+      }
     } else {
-      // console.log('GOING RIGHT OR DOWN @ else');
       const tileAxisChange = ((lastShotTile[`${axisProp}`]) + 1);
-      // console.log('tileAxisChange (number)=', tileAxisChange);
       const targetTile = remainingTileOptions
         .filter((item) => item[`${axisProp}`] === tileAxisChange
         && item[`${direction}`] === tileAxisKeep);
-      // console.log(targetTile);
-      updateShotVariables(targetTile[0]);
+      if (targetTile.length === 1) {
+        updateShotVariables(targetTile[0]);
+      } else {
+        clearRemaining();
+      }
     }
   };
-  // /////////////////////////////////////////////////////////////////////////////////////////////
 
+  // ////////////////////////////////////////////////////////////////////////////////////
   const getSmartCoords = () => {
-    console.log('intial shot Tile =', initialShotTile);
+    console.log('getSmartCoords');
     const targetHealth = targetShip.getHealth();
     const targetLength = targetShip.getLength();
     // //
+    // Second shot following a hit - get surrounding Tiles and target them
+    // //
     if (targetShots.length === 1) {
-      console.log('SMART = first hit smart');
       const refX = lastShotTile.x;
       const refY = lastShotTile.y;
-
       surroundingTiles = getSurroundingTiles(refX, refY);
-
       surroundingTiles.forEach((item) => {
         if (item.firedAt === false) {
           initialShotOptions.push(item);
         }
       });
-
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile);
       initialShotOptions.splice(randomIndex, 1);
+      // //
+      // Third shot if second missed - continue target of surrounding tiles
       // //
     } else if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
@@ -147,26 +141,31 @@ const CompAI = (gameboard) => {
       updateShotVariables(targetTile);
       initialShotOptions.splice(randomIndex, 1);
       // //
+      // Third shot onwards if second hit - continue target in axis of hits
+      // //
     } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) >= 2) {
       const direction = targetShip.getDirection().charAt(0);
-
       if (edgeTileCheck(direction)) {
         clearRemaining();
       } else {
         clearDirection(direction);
       }
       // //
-    } else if (lastShotIsHit === false && (targetLength - targetHealth) >= 2) {
+      // Third shot onwards if last shot has missed (and so reached boundary of ship)
+      // //
+    } else if (lastShotIsHit === false && (targetLength - targetHealth) > 2) {
       clearRemaining();
     }
   };
 
-  // /////////////////////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////////////
 
   // perhaps function check after to see if any ships have been hit but are not sunk
-  // incase get smart coords hits an adjacent ship (and should then know that is another target)
+  // incase get smart coords hits an adjacent ship
+  // (and should then know that is another target)
 
   const startTargeting = (targetTile) => {
+    console.log('startTargeting');
     const shipName = targetTile.shipNameRef;
     targetShip = gameboard.getFleet().find((ele) => ele.getName() === shipName);
     targetShots.push(targetTile);
@@ -178,6 +177,7 @@ const CompAI = (gameboard) => {
   };
 
   function getRandomCoords() {
+    console.log('getRandomCoords');
     const randomIndex = Math.floor(Math.random() * (remainingTileOptions.length));
     const targetTile = remainingTileOptions[randomIndex];
     x = targetTile.x;
@@ -190,6 +190,7 @@ const CompAI = (gameboard) => {
   }
 
   const checkShipSunk = () => {
+    console.log('checkShipSunk');
     if (targetShip.getSunk() === true) {
       clearShotVariables();
       getRandomCoords();
@@ -206,6 +207,7 @@ const CompAI = (gameboard) => {
     } else {
       getRandomCoords();
     }
+    console.log('ENDTURNOFCHOOSETARGET.............................................');
     return {
       x,
       y,
