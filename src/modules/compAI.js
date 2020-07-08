@@ -196,6 +196,7 @@ const CompAI = (gameboard) => {
   }
 
   const checkOtherTargets = () => {
+    console.log('checkOtherTargets');
     const fleet = gameboard.getFleet();
     const damagedShips = fleet
       .filter((item) => item.getSunk() === false
@@ -204,8 +205,16 @@ const CompAI = (gameboard) => {
     if (damagedShips.length === 0) {
       getRandomCoords();
     } else {
-      // YEARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-      // target damagedShips[0]
+      targetShip = damagedShips[0];
+      const hitTile = tiles.filter((item) => item.shipNameRef === targetShip.getName()
+        && item.firedAt === true);
+      console.log('hitTile', hitTile);
+      targetShots.push(hitTile[0]);
+      lastShotTile = hitTile[0];
+      initialShotTile = hitTile[0];
+      lastShotIsHit = true;
+      lastShotIsTargetHit = true;
+      getSmartCoords();
     }
   };
 
@@ -227,6 +236,7 @@ const CompAI = (gameboard) => {
     } else {
       getRandomCoords();
     }
+    console.log('returns = ', { x, y });
     console.log('ENDTURNOFCHOOSETARGET.............................................');
     return {
       x,
