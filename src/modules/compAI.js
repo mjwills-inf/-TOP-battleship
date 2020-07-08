@@ -146,8 +146,11 @@ const CompAI = (gameboard) => {
       // Third shot onwards if second hit - continue target in axis of hits
       // //
     } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) >= 2) {
+      // GOES BACK HERE BECAUSE THE DIRECTION SHOT IS TRUE FROM CLEARREAMAING
+
       console.log('getSmartCoords = 3rd onwards for direction');
       const direction = targetShip.getDirection().charAt(0);
+      console.log('if (edgeTileCheck(direction)) =', edgeTileCheck(direction));
       if (edgeTileCheck(direction)) {
         clearRemaining();
       } else {
@@ -163,12 +166,7 @@ const CompAI = (gameboard) => {
       console.log('getSmartCoords = ELSE ... WHAT');
     }
   };
-
   // ////////////////////////////////////////////////////////////////////////////////////
-
-  // perhaps function check after to see if any ships have been hit but are not sunk
-  // incase get smart coords hits an adjacent ship
-  // (and should then know that is another target)
 
   const startTargeting = (targetTile) => {
     console.log('startTargeting');
