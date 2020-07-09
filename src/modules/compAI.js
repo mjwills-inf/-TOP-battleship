@@ -1,14 +1,15 @@
 const CompAI = (gameboard) => {
-  let x;
-  let y;
+  let identifiedPosition = false;
+  let initialShotOptions = [];
   let initialShotTile;
   let lastShotTile;
   let lastShotIsHit;
   let lastShotIsTargetHit;
-  let initialShotOptions = [];
   let surroundingTiles = [];
   let targetShip;
   let targetShots = [];
+  let x;
+  let y;
 
   const tiles = gameboard.getTilesArray();
   const remainingTileOptions = [...tiles];
@@ -34,7 +35,6 @@ const CompAI = (gameboard) => {
   };
 
   const updateShotVariables = (targetTile) => {
-    console.log('updateShotVariables');
     x = targetTile.x;
     y = targetTile.y;
 
@@ -56,16 +56,15 @@ const CompAI = (gameboard) => {
   };
 
   const clearShotVariables = () => {
-    console.log('clearShotVariables');
     targetShip = undefined;
     targetShots = [];
     surroundingTiles = [];
     initialShotOptions = [];
     lastShotIsTargetHit = undefined;
+    identifiedPosition = false;
   };
 
   const edgeTileCheck = (direction) => {
-    console.log('edgeTileCheck');
     let arr;
     if (direction === 'x') {
       arr = targetShots.filter((item) => item.y === 1 || item.y === 10);
@@ -76,16 +75,15 @@ const CompAI = (gameboard) => {
   };
 
   const clearRemaining = () => {
-    console.log('clearRemaining');
     const arr = remainingTileOptions
       .filter((item) => item.shipNameRef === targetShip.getName());
     const randomIndex = Math.floor(Math.random() * (arr.length));
     const targetTile = arr[randomIndex];
+    identifiedPosition = true;
     updateShotVariables(targetTile);
   };
 
   const clearDirection = (direction) => {
-    console.log('clearDirection');
     const axisProp = (direction === 'x') ? 'y' : 'x';
     const tileAxisKeep = (lastShotTile[`${direction}`]);
     if (initialShotTile[`${axisProp}`] > lastShotTile[`${axisProp}`]) {
@@ -113,14 +111,12 @@ const CompAI = (gameboard) => {
 
   // ////////////////////////////////////////////////////////////////////////////////////
   const getSmartCoords = () => {
-    console.log('getSmartCoords');
     const targetHealth = targetShip.getHealth();
     const targetLength = targetShip.getLength();
     // //
     // Second shot following a hit - get surrounding Tiles and target them
     // //
     if (targetShots.length === 1) {
-      console.log('getSmartCoords = 2nd shot on surroundings');
       const refX = lastShotTile.x;
       const refY = lastShotTile.y;
       surroundingTiles = getSurroundingTiles(refX, refY);
@@ -137,20 +133,19 @@ const CompAI = (gameboard) => {
       // Third shot if second missed - continue target of surrounding tiles
       // //
     } else if (lastShotIsTargetHit === false && (targetLength - targetHealth) === 1) {
-      console.log('getSmartCoords = 3rd shot after miss on surroundings');
       const randomIndex = Math.floor(Math.random() * (initialShotOptions.length));
       const targetTile = initialShotOptions[randomIndex];
       updateShotVariables(targetTile);
       initialShotOptions.splice(randomIndex, 1);
+      // LOGIC PROBLEM messy solution with identifiedPosition variable
+      // Fourth Shot onwards in before third shot logic issues
+    } else if (identifiedPosition === true) {
+      clearRemaining();
       // //
       // Third shot onwards if second hit - continue target in axis of hits
       // //
     } else if (lastShotIsTargetHit === true && (targetLength - targetHealth) >= 2) {
-      // GOES BACK HERE BECAUSE THE DIRECTION SHOT IS TRUE FROM CLEARREAMAING
-
-      console.log('getSmartCoords = 3rd onwards for direction');
       const direction = targetShip.getDirection().charAt(0);
-      console.log('if (edgeTileCheck(direction)) =', edgeTileCheck(direction));
       if (edgeTileCheck(direction)) {
         clearRemaining();
       } else {
@@ -160,16 +155,12 @@ const CompAI = (gameboard) => {
       // Third shot onwards if last shot has missed (and so reached boundary of ship)
       // //
     } else if (lastShotIsHit === false && (targetLength - targetHealth) >= 2) {
-      console.log('getSmartCoords = 3rd onwards for clearing ship');
       clearRemaining();
-    } else {
-      console.log('getSmartCoords = ELSE ... WHAT');
     }
   };
   // ////////////////////////////////////////////////////////////////////////////////////
 
   const startTargeting = (targetTile) => {
-    console.log('startTargeting');
     const shipName = targetTile.shipNameRef;
     targetShip = gameboard.getFleet().find((ele) => ele.getName() === shipName);
     targetShots.push(targetTile);
@@ -181,7 +172,6 @@ const CompAI = (gameboard) => {
   };
 
   function getRandomCoords() {
-    console.log('getRandomCoords');
     const randomIndex = Math.floor(Math.random() * (remainingTileOptions.length));
     const targetTile = remainingTileOptions[randomIndex];
     x = targetTile.x;
@@ -194,19 +184,16 @@ const CompAI = (gameboard) => {
   }
 
   const checkOtherTargets = () => {
-    console.log('checkOtherTargets');
     const fleet = gameboard.getFleet();
     const damagedShips = fleet
       .filter((item) => item.getSunk() === false
       && item.getHealth() < item.getLength());
-    console.log(damagedShips);
     if (damagedShips.length === 0) {
       getRandomCoords();
     } else {
       targetShip = damagedShips[0];
       const hitTile = tiles.filter((item) => item.shipNameRef === targetShip.getName()
         && item.firedAt === true);
-      console.log('hitTile', hitTile);
       targetShots.push(hitTile[0]);
       lastShotTile = hitTile[0];
       initialShotTile = hitTile[0];
@@ -217,7 +204,6 @@ const CompAI = (gameboard) => {
   };
 
   const checkShipSunk = () => {
-    console.log('checkShipSunk');
     if (targetShip.getSunk() === true) {
       clearShotVariables();
       checkOtherTargets();
@@ -234,8 +220,6 @@ const CompAI = (gameboard) => {
     } else {
       getRandomCoords();
     }
-    console.log('returns = ', { x, y });
-    console.log('ENDTURNOFCHOOSETARGET.............................................');
     return {
       x,
       y,
