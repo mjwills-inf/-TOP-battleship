@@ -70,11 +70,11 @@ const Render = () => {
       fleetShip.classList.add('fleet-ship');
       fleetShip.setAttribute('ShipRef', fleet[i].getName());
       const fleetShipLength = fleet[i].getLength();
-      for (let j = 0; j < fleetShipLength; j += 1) {
+      for (let j = 1; j <= fleetShipLength; j += 1) {
         const shipSection = document.createElement('span');
         const ref = `${fleet[i].getName()}${j}`;
-        shipSection.setAttribute('data-section-ref', ref);
-        shipSection.classList.add('ship-section');
+        shipSection.setAttribute('data-health-ref', ref);
+        shipSection.classList.add('ship-health');
         fleetShip.appendChild(shipSection);
       }
       target.appendChild(fleetShip);
@@ -91,13 +91,13 @@ const Render = () => {
     // ship dependant styling in here?
   };
 
-  const updateFleet = (arrayTile) => {
+  const updateFleet = (arrayTile, fleet) => {
     if (arrayTile.occupied) {
-      const ref = `${arrayTile.shipNameRef}${arrayTile.shipSectionIndexRef}`;
-      const targetElement = document.querySelector(`[data-section-ref="${ref}"]`);
-      targetElement.classList.add('section-hit');
-      // Might need to rethink this makes it easy once you know which ship section
-      // i.e. you are hitting vert/horiz direction based on which way ship is pointing
+      const ship = fleet.filter((item) => item.getName() === arrayTile.shipNameRef);
+      const healthRef = (ship[0].getHealth()) + 1;
+      const ref = `${arrayTile.shipNameRef}${healthRef}`;
+      const targetElement = document.querySelector(`[data-health-ref="${ref}"]`);
+      targetElement.classList.add('health-hit');
     }
   };
 

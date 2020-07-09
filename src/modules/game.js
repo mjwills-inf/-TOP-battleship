@@ -42,7 +42,7 @@ const Game = () => {
     render.updateTile(e.target, arrayTile);
     // eslint-disable-next-line no-use-before-define
     disableListeners();
-    render.updateFleet(arrayTile);
+    render.updateFleet(arrayTile, computer.gameboard.getFleet());
     setTimeout(() => {
       processTurnComputer();
     }, 10);
