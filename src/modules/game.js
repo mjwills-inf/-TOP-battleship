@@ -12,15 +12,28 @@ const Game = () => {
   // Create render and drag/drop objects
   const render = Render();
   const drag = Drag(human.gameboard, render);
-
   // Place computer ships
   compShips(computer.gameboard);
-
   // Render start player board for ship placement
   render.renderGrid(human.gameboard);
   drag.addListeners();
 
   // // // // // // Game flow functions and listeners
+  const endGameCheck = () => {
+    let gameOver = false;
+    if (human.gameboard.fleetSunkCheck() === true) {
+      console.log('(human.gameboard.fleetSunkCheck() === true) =>');
+      render.gameOver(human.gameboard.getType());
+      gameOver = true;
+    }
+    if (computer.gameboard.fleetSunkCheck() === true) {
+      console.log('(computer.gameboard.fleetSunkCheck() === true) =>');
+
+      render.gameOver(computer.gameboard.getType());
+      gameOver = true;
+    }
+    return gameOver;
+  };
 
   const processTurnComputer = () => {
     const computerChoice = compAI.chooseTarget();
@@ -29,8 +42,12 @@ const Game = () => {
     const arrayTile = human.gameboard.getTileInfo(computerChoice);
     computer.makeAttack(human, computerChoice);
     render.updateTile(targetDom, arrayTile);
-    // eslint-disable-next-line no-use-before-define
-    addTileListeners();
+    setTimeout(() => {
+      if (!endGameCheck()) {
+        // eslint-disable-next-line no-use-before-define
+        addTileListeners();
+      }
+    }, 10);
   };
 
   // Process Turn on shot being made
@@ -44,7 +61,9 @@ const Game = () => {
     disableListeners();
     render.updateFleet(arrayTile, computer.gameboard.getFleet());
     setTimeout(() => {
-      processTurnComputer();
+      if (!endGameCheck()) {
+        processTurnComputer();
+      }
     }, 10);
   };
 
@@ -83,16 +102,6 @@ const Game = () => {
 
   const button = document.querySelector('button');
   button.addEventListener('click', gameBegin);
-
-  // Gameflow functions
-  // const endGameCheck = () => {
-  //   if (human.gameboard.fleetSunkCheck === true) {
-  //     render.gameOver(human.gameboard.type)
-  //   }
-  //   if (computer.gameboard.fleetSunkCheck === true) {
-  //     render.gameOver(computer.gameboard.type)
-  //   }
-  // };
 };
 
 export default Game;

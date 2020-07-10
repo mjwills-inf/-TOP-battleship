@@ -161,11 +161,8 @@ const Gameboard = (type) => {
   };
 
   const fleetSunkCheck = () => {
-    let sunk;
-    fleetArray.forEach((element) => {
-      sunk = element.getSunk() !== false;
-    });
-    return sunk;
+    const isTrue = fleetArray.every((item) => item.getSunk() === true);
+    return isTrue;
   };
 
   return {

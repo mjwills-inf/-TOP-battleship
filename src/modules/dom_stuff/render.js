@@ -102,12 +102,12 @@ const Render = () => {
   };
 
   // const changeStartButton = () => {
-
   // }
 
-  // const gameOver = () => {
-  //   const
-  // };
+  const gameOver = (type) => {
+    console.trace();
+    console.log('gameover LOSER (type)=', `${type}`);
+  };
 
   // SOMETHING TO SAY SORRY NOT MOBILE (MY BAD HTML5 DRAG N DROP was a poor choice)
 
@@ -119,6 +119,7 @@ const Render = () => {
     updateTile,
     updateFleet,
     disablePlaceShip,
+    gameOver,
   };
 };
 
