@@ -56,7 +56,7 @@ const Render = () => {
   };
 
   // game start function to change appearance of players grid on start
-  const renderStart = () => {
+  const changeHumanGrid = () => {
     const target = document.querySelector('#human-grid .rendered-grid-div');
     target.classList.remove('rendered-grid-div');
     target.classList.add('player-start-grid');
@@ -101,8 +101,13 @@ const Render = () => {
     }
   };
 
-  // const changeStartButton = () => {
-  // }
+  const changeStartButton = () => {
+    const startButton = document.querySelector('#button-div button');
+    startButton.innerHTML = 'New Game';
+    startButton.addEventListener('click', () => {
+      window.location.reload();
+    });
+  };
 
   const gameOver = (type) => {
     console.trace();
@@ -114,7 +119,8 @@ const Render = () => {
   return {
     clearGrid,
     renderGrid,
-    renderStart,
+    changeHumanGrid,
+    changeStartButton,
     renderEnemyFleet,
     updateTile,
     updateFleet,

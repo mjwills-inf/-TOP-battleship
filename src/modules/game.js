@@ -93,9 +93,11 @@ const Game = () => {
       .every((element) => element.placed === true);
     if (fleetPlaced) {
       drag.endDrag();
+      drag.removeDragShips();
       render.renderGrid(computer.gameboard);
-      render.renderStart();
+      render.changeHumanGrid();
       render.renderEnemyFleet(computer);
+      render.changeStartButton();
       addTileListeners();
     }
   };

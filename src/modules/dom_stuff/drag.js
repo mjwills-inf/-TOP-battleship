@@ -276,6 +276,11 @@ const Drag = (gameboard, render) => {
     document.removeEventListener('dragend', dragEnd);
   };
 
+  const removeDragShips = () => {
+    const target = document.querySelector('#human-fleet');
+    target.parentNode.removeChild(target);
+  };
+
   // TEMP
   const ship0 = gameboard.getFleet()[0];
   const ship1 = gameboard.getFleet()[1];
@@ -297,6 +302,7 @@ const Drag = (gameboard, render) => {
   return {
     addListeners,
     endDrag,
+    removeDragShips,
   };
 };
 
