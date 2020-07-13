@@ -1,6 +1,6 @@
 import Game from './modules/game';
-import './style/reset.css';
-import './style/style.css';
+import './style/reset.scss';
+import './style/scss/style.scss';
 
 
 Game();
