@@ -1,3 +1,18 @@
+
+
+$colors: (
+  green: #19535F,
+  pine: #0b7a75,
+  dutch: #d7c9aa,
+  red: #7b2d26,
+  white: #F0F3F5,
+);
+
+@function color($color-name) {
+  @return map-get($colors, $color-name)
+}
+
+
 /* render both grids as required in game ////////*/
 .rendered-grid-div {
   display: grid;
@@ -165,7 +180,7 @@ background: purple;
 
 
 body {
-  background-color: #D7C9AA;
+  background-color: color(dutch);
   font-family: 'Courier New', Courier, monospace;
 }
 
