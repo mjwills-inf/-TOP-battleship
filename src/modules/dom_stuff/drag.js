@@ -1,10 +1,5 @@
-import dragImagesObj from './dragData';
-
 const Drag = (gameboard, render) => {
   const fleet = gameboard.getFleet();
-  // images loaded into obj before call because setDragImage
-  const dragImages = dragImagesObj();
-  const getDragImage = (id) => dragImages[`${id}`];
 
   let currentDragShip;
   let currentActiveTiles;
@@ -83,8 +78,9 @@ const Drag = (gameboard, render) => {
   const switchTilesFade = (preSwitchTiles) => {
     const preSwitchArray = [...preSwitchTiles];
     const tiles = [...document.querySelectorAll('.tile-div')];
-    // eslint-disable-next-line max-len
-    const targetTiles = tiles.filter((arrayTile) => preSwitchArray.find((switchTile) => arrayTile.dataset.xyRef === switchTile.dataset.xyRef));
+    const targetTiles = tiles
+      .filter((arrayTile) => preSwitchArray
+        .find((switchTile) => arrayTile.dataset.xyRef === switchTile.dataset.xyRef));
     makeTilesActive(targetTiles);
     makeTilesFade(targetTiles);
   };
@@ -101,7 +97,23 @@ const Drag = (gameboard, render) => {
     targetTile.classList.remove('wiggle');
   };
 
+  const makeDragImage = (shipName) => {
+    const dragDiv = document.createElement('div');
+    dragDiv.id = 'drag-image';
+    dragDiv.innerHTML = `${shipName}`;
+    document.body.appendChild(dragDiv);
+    return dragDiv;
+  };
+
+  const removeDragImage = () => {
+    const dragDiv = document.querySelector('#drag-image');
+    if (dragDiv) {
+      dragDiv.parentNode.removeChild(dragDiv);
+    }
+  };
+
   const dragEnd = (ev) => {
+    console.log('drag end called');
     const tileShipRef = ev.target.getAttribute('data-ship-ref');
     if (tileShipRef !== null) {
       replacePlaceship(tileShipRef);
@@ -110,15 +122,14 @@ const Drag = (gameboard, render) => {
       // eslint-disable-next-line no-use-before-define
       addListeners();
     }
+    removeDragImage();
   };
 
   const dragDrop = (ev) => {
     ev.preventDefault();
     const data = ev.dataTransfer.getData('text');
     const shipRef = data.slice(5).charAt(0).toUpperCase() + data.slice(6);
-
     const fleetShip = fleet.filter((ship) => ship.getName() === shipRef);
-
     const newTileCoord = ev.target.getAttribute('data-xy-ref').split(',');
     const oldTile = getPrimaryTile(shipRef);
 
@@ -147,6 +158,7 @@ const Drag = (gameboard, render) => {
       // eslint-disable-next-line no-use-before-define
       addListeners();
     }
+    removeDragImage();
   };
 
   const dragLeave = (ev) => {
@@ -162,17 +174,16 @@ const Drag = (gameboard, render) => {
 
   const dragStartShip = (ev) => {
     ev.dataTransfer.setData('text', ev.target.id);
-    const img = getDragImage(ev.target.id);
-    ev.dataTransfer.setDragImage(img, 0, 0);
     const shipRef = ev.target.getAttribute('data-ship');
+    const dragDiv = makeDragImage(shipRef);
+    ev.dataTransfer.setDragImage(dragDiv, 45, -10);
     currentDragShip = fleet.filter((ship) => ship.getName() === shipRef);
   };
 
   const dragStartTile = (ev) => {
-    const ref = ev.target.getAttribute('data-ship-ref').toLowerCase();
-    const img = getDragImage(`drag-${ref}`);
-    ev.dataTransfer.setDragImage(img, 0, 0);
     const shipRef = ev.target.getAttribute('data-ship-ref');
+    const dragDiv = makeDragImage(shipRef);
+    ev.dataTransfer.setDragImage(dragDiv, 45, -10);
     const shipRefLc = shipRef.toLowerCase();
     ev.dataTransfer.setData('text', `drag-${shipRefLc}`);
     currentDragShip = fleet.filter((ship) => ship.getName() === shipRef);

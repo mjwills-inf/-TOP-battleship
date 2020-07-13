@@ -8,10 +8,8 @@ const Render = () => {
 
   const renderGrid = (gameboard) => {
     const tiles = gameboard.getTilesArray();
-
     const humanGridDiv = document.querySelector('#human-grid');
     const computerGridDiv = document.querySelector('#computer-grid');
-
     const gridDiv = document.createElement('div');
     gridDiv.classList.add('rendered-grid-div');
 
@@ -27,7 +25,6 @@ const Render = () => {
         tile.setAttribute('data-ship-ref', shipRef);
         const sectionRef = tiles[i].shipSectionIndexRef;
         tile.setAttribute('data-sec-ref', sectionRef);
-        // could set axis-ref on tile here on every re render
 
         if (tiles[i].occupied === true) {
           tile.classList.add('occupied');
@@ -110,8 +107,10 @@ const Render = () => {
   };
 
   const gameOver = (type) => {
-    console.trace();
-    console.log('gameover LOSER (type)=', `${type}`);
+    const loser = (type === 'computer') ? 'Computer' : 'Player';
+    console.log('gameOver -> loser', loser);
+    const winner = (type === 'computer') ? 'Player' : 'Computer';
+    console.log('gameOver -> winner', winner);
   };
 
   // SOMETHING TO SAY SORRY NOT MOBILE (MY BAD HTML5 DRAG N DROP was a poor choice)

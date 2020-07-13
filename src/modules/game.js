@@ -22,13 +22,10 @@ const Game = () => {
   const endGameCheck = () => {
     let gameOver = false;
     if (human.gameboard.fleetSunkCheck() === true) {
-      console.log('(human.gameboard.fleetSunkCheck() === true) =>');
       render.gameOver(human.gameboard.getType());
       gameOver = true;
     }
     if (computer.gameboard.fleetSunkCheck() === true) {
-      console.log('(computer.gameboard.fleetSunkCheck() === true) =>');
-
       render.gameOver(computer.gameboard.getType());
       gameOver = true;
     }
@@ -88,10 +85,13 @@ const Game = () => {
 
   // Game begins (and tileListeners added) on start button press
   // (check if all ships are placed)
+  const button = document.querySelector('button');
+
   const gameBegin = () => {
     const fleetPlaced = human.gameboard.getFleet()
       .every((element) => element.placed === true);
     if (fleetPlaced) {
+      button.removeEventListener('click', gameBegin);
       drag.endDrag();
       drag.removeDragShips();
       render.renderGrid(computer.gameboard);
@@ -102,7 +102,6 @@ const Game = () => {
     }
   };
 
-  const button = document.querySelector('button');
   button.addEventListener('click', gameBegin);
 };
 
