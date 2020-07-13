@@ -113,7 +113,6 @@ const Drag = (gameboard, render) => {
   };
 
   const dragEnd = (ev) => {
-    console.log('drag end called');
     const tileShipRef = ev.target.getAttribute('data-ship-ref');
     if (tileShipRef !== null) {
       replacePlaceship(tileShipRef);
@@ -291,24 +290,6 @@ const Drag = (gameboard, render) => {
     const target = document.querySelector('#human-fleet');
     target.parentNode.removeChild(target);
   };
-
-  // TEMP
-  const ship0 = gameboard.getFleet()[0];
-  const ship1 = gameboard.getFleet()[1];
-  const ship2 = gameboard.getFleet()[2];
-  const ship3 = gameboard.getFleet()[3];
-  const ship4 = gameboard.getFleet()[4];
-  const ship5 = gameboard.getFleet()[5];
-  const ship6 = gameboard.getFleet()[6];
-  const ship7 = gameboard.getFleet()[7];
-  gameboard.placeShip(ship0, 2, 3);
-  gameboard.placeShip(ship1, 3, 3);
-  gameboard.placeShip(ship2, 6, 3);
-  gameboard.placeShip(ship3, 7, 3);
-  gameboard.placeShip(ship4, 5, 9);
-  gameboard.placeShip(ship5, 6, 9);
-  gameboard.placeShip(ship6, 9, 10);
-  gameboard.placeShip(ship7, 10, 10);
 
   return {
     addListeners,

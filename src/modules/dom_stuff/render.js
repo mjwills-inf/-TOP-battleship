@@ -47,7 +47,7 @@ const Render = () => {
 
   const disablePlaceShip = (data) => {
     const target = document.querySelector(`#${data}`);
-    target.style.backgroundColor = 'white';
+    target.style.backgroundColor = 'transparent';
     target.setAttribute('draggable', false);
     target.style.cursor = 'auto';
   };

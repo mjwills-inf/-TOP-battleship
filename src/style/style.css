@@ -18,7 +18,7 @@
   margin: 2px;
   border: 1px solid black;
   height: 25px;
-  background: orangered;
+  background: darkgray;
 }
 #drag-carrier { 
   width: 125px;
@@ -88,7 +88,7 @@
   border: black solid 1px;
 }
 .occupied {
-  background-color: coral;
+  background-color: darkgray;
 }
 .hit {
 background: purple;
@@ -132,7 +132,7 @@ background: purple;
   height: 200px; 
   /* BACKGROUND COLOR IS SPECIFIC HERE NEEDS TO BE CHANGED ON STYLING */
   /* JNSAJFNLASJNOFISAHOEURP)IUWPFJSAMFPASJFPAOSFJAPFOJASPFOJASPFOJAP */
-  background-color: blue;
+  background-color: lightgray;
   margin: 5px;
 }
 
@@ -155,5 +155,26 @@ background: purple;
 }
 
 .health-hit {
-  background: maroon;
+  background: darkgray;
+}
+
+
+/* ////////////////////////////////////////////////////////////////// */
+/* BEGIN STYLING */
+
+body {
+  background-color: #D7C9AA;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#page-container {
+  height: 100%;
+  background-color: #D7C9AA;
+  padding: 20px;
+  border: 3px solid black;
+  margin: 40px;
+}
+
+#title-div h1 {
+  font-size: 20px;
 }
