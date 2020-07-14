@@ -9,16 +9,14 @@ const Game = () => {
   const human = Player('human');
   const computer = Player('computer');
   const compAI = CompAI(human.gameboard);
-  // Create render and drag/drop objects
   const render = Render();
   const drag = Drag(human.gameboard, render);
-  // Place computer ships
+  // Place computer ships, start player board for ship placement
   compShips(computer.gameboard);
-  // Render start player board for ship placement
   render.renderGrid(human.gameboard);
   drag.addListeners();
 
-  // // // // // // Game flow functions and listeners
+  // Game flow functions and listeners
   const endGameCheck = () => {
     let gameOver = false;
     if (human.gameboard.fleetSunkCheck() === true) {
@@ -47,7 +45,6 @@ const Game = () => {
     }, 10);
   };
 
-  // Process Turn on shot being made
   const processTurnHuman = (e) => {
     const dataRef = e.target.getAttribute('data-xy-ref').split(',');
     const coordObj = { x: Number(dataRef[0]), y: Number(dataRef[1]) };
@@ -65,7 +62,6 @@ const Game = () => {
   };
 
   // Add Tile eventListeners that call processTurnHuman on click
-  // if tile not alreay fired at (with hit or miss in classList)
   const addTileListeners = () => {
     const compTiles = document.querySelectorAll('#computer-grid .tile-div');
     compTiles.forEach((tile) => {
@@ -74,8 +70,6 @@ const Game = () => {
       }
     });
   };
-
-  // Disable listeners immediately following turn
   const disableListeners = () => {
     const compTiles = document.querySelectorAll('#computer-grid .tile-div');
     compTiles.forEach((tile) => {
@@ -83,26 +77,43 @@ const Game = () => {
     });
   };
 
-  // Game begins (and tileListeners added) on start button press
+  // Auto-place human ships options
+  const autoPlaceShips = () => {
+    const fleet = human.gameboard.getFleet();
+    fleet.forEach((ship) => {
+      human.gameboard.resetTile(ship.getName());
+      const shipNameLc = ship.getName().toLowerCase();
+      const arg = `drag-${shipNameLc}`;
+      render.disablePlaceShip(arg);
+    });
+    compShips(human.gameboard);
+    render.clearGrid(human.gameboard);
+    render.renderGrid(human.gameboard);
+    drag.addListeners();
+  };
+  const autoButton = document.querySelector('#auto');
+  autoButton.addEventListener('click', autoPlaceShips);
+
+
+  // Game begins (and tileListeners added) on start Button press
   // (check if all ships are placed)
-  const button = document.querySelector('button');
+  const startButton = document.querySelector('#start');
 
   const gameBegin = () => {
     const fleetPlaced = human.gameboard.getFleet()
       .every((element) => element.placed === true);
     if (fleetPlaced) {
-      button.removeEventListener('click', gameBegin);
+      startButton.removeEventListener('click', gameBegin);
       drag.endDrag();
       drag.removeDragShips();
       render.renderGrid(computer.gameboard);
       render.changeHumanGrid();
       render.renderEnemyFleet(computer);
-      render.changeStartButton();
+      render.changeButtons();
       addTileListeners();
     }
   };
-
-  button.addEventListener('click', gameBegin);
+  startButton.addEventListener('click', gameBegin);
 };
 
 export default Game;

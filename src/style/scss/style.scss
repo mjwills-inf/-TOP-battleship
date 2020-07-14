@@ -25,42 +25,8 @@ $desktop: 1280px;
   grid-template-rows: repeat(10, 1fr);
   width: 350px;
   height: 350px;
-  background-color: color(pine);
+  background-color: color(green);
   margin: 5px;
-}
-
-/* drag and drop fleet /////////////////////////*/
-
-.drag-ship {
-  cursor: pointer;
-  margin: 2px;
-  border: 1px solid black;
-  height: 25px;
-  background: darkgray;
-}
-#drag-carrier { 
-  width: 125px;
-}
-#drag-battleship {
-  width: 100px;
-}
-#drag-cruiser {
-  width: 75px;
-}
-#drag-submarine {
-  width: 75px;
-}
-#drag-destroyer {
-  width: 50px;
-}
-#drag-frigate {
-  width: 50px;
-}
-#drag-corvette {
-  width: 25px;
-}
-#drag-gunboat {
-  width: 25px;
 }
 
 /* drag js image ////////////////////////////////*/
@@ -105,7 +71,7 @@ $desktop: 1280px;
   border: black solid 1px;
 }
 .occupied {
-  background-color: darkgray;
+  background-color: color(red);
 }
 .hit {
 background: purple;
@@ -178,13 +144,12 @@ background: purple;
 /* BEGIN STYLING */
 
 body {
-  background-color: color(dutch);
+  background-color: color(white);
   font-family: 'Courier New', Courier, monospace;
 }
 
 #page-container {
   height: 100%;
-  background-color: #D7C9AA;
 }
 
 #title-div {
@@ -196,7 +161,7 @@ body {
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: color(white);
+    background-color: color(dutch);
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -227,17 +192,15 @@ body {
   #human-fleet {
    
     .drag-ship {
-      margin: 2px;
-      border: 1px solid black;
+      border: 1px solid color(black);
       height: 25px;
-      background: darkgray;
+      background-color: color(red);
       cursor: pointer;
     }
     #drag-carrier { 
       width: 125px;
     }
     #drag-battleship {
-
       width: 100px;
     }
     #drag-cruiser, 
@@ -247,12 +210,14 @@ body {
     #drag-destroyer, 
     #drag-frigate {
       width: 50px;
-
     }
     #drag-corvette, 
     #drag-gunboat {
       width: 25px;
-
     }
+  }
+  #human-grad {
+    width: 100%;
+    margin: auto;
   }
 }

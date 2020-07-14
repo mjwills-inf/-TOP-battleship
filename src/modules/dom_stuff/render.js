@@ -47,7 +47,7 @@ const Render = () => {
 
   const disablePlaceShip = (data) => {
     const target = document.querySelector(`#${data}`);
-    target.style.backgroundColor = 'transparent';
+    target.style.backgroundColor = '#DBE2E7';
     target.setAttribute('draggable', false);
     target.style.cursor = 'auto';
   };
@@ -98,12 +98,14 @@ const Render = () => {
     }
   };
 
-  const changeStartButton = () => {
+  const changeButtons = () => {
     const startButton = document.querySelector('#button-div button');
+    const autoButton = document.querySelector('#auto');
     startButton.innerHTML = 'New Game';
     startButton.addEventListener('click', () => {
       window.location.reload();
     });
+    autoButton.parentNode.removeChild(autoButton);
   };
 
   const gameOver = (type) => {
@@ -119,7 +121,7 @@ const Render = () => {
     clearGrid,
     renderGrid,
     changeHumanGrid,
-    changeStartButton,
+    changeButtons,
     renderEnemyFleet,
     updateTile,
     updateFleet,
