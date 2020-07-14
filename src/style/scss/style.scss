@@ -1,5 +1,3 @@
-
-
 $colors: (
   green: #19535F,
   pine: #0b7a75,
@@ -10,24 +8,29 @@ $colors: (
 
 @function color($color-name) {
   @return map-get($colors, $color-name)
-}
+};
 
+$desktop: 1280px;
+
+@mixin desktop {
+  @media (min-width: #{$desktop}) {
+    @content;
+  }
+}
 
 /* render both grids as required in game ////////*/
 .rendered-grid-div {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  width: 400px;
-  height: 400px;
-  background-color: blue;
+  width: 350px;
+  height: 350px;
+  background-color: color(pine);
   margin: 5px;
 }
 
 /* drag and drop fleet /////////////////////////*/
-#human-fleet {
-  margin-left: 10px;
-}
+
 .drag-ship {
   cursor: pointer;
   margin: 2px;
@@ -103,7 +106,6 @@ $colors: (
 }
 .occupied {
   background-color: darkgray;
-  border-radius: 5px;
 }
 .hit {
 background: purple;
@@ -175,10 +177,6 @@ background: purple;
 /* //////////////////////////////////////////////*/
 /* BEGIN STYLING */
 
-
-
-
-
 body {
   background-color: color(dutch);
   font-family: 'Courier New', Courier, monospace;
@@ -187,12 +185,74 @@ body {
 #page-container {
   height: 100%;
   background-color: #D7C9AA;
-  padding: 20px;
-  border: 2px solid black;
-  margin: 40px;
 }
 
-#title-div h1 {
-  font-size: 20px;
+#title-div {
+  position: relative;
+  margin-bottom: 10px;;
 
+  .circle-shape-div {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: color(white);
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    padding: 30px 10px 10px 0px;
+    z-index: 1;
+  }
+  
+  h1 {
+    position: relative;
+    display: inline-block;
+    font-size: 25px;
+    padding: 25px 10px 10px 15px;
+    z-index: 2;
+  }
+}
+
+#instruction-div {
+  padding: 5px 5px 5px 15px;
+  
+  h2 {
+  font-size: 15px;
+  font-weight: 100;
+  }
+}
+
+#game-container {
+
+  #human-fleet {
+   
+    .drag-ship {
+      margin: 2px;
+      border: 1px solid black;
+      height: 25px;
+      background: darkgray;
+      cursor: pointer;
+    }
+    #drag-carrier { 
+      width: 125px;
+    }
+    #drag-battleship {
+
+      width: 100px;
+    }
+    #drag-cruiser, 
+    #drag-submarine {
+      width: 75px;
+    }    
+    #drag-destroyer, 
+    #drag-frigate {
+      width: 50px;
+
+    }
+    #drag-corvette, 
+    #drag-gunboat {
+      width: 25px;
+
+    }
+  }
 }
