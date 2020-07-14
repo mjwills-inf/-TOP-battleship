@@ -3,6 +3,7 @@ $colors: (
   pine: #0b7a75,
   dutch: #d7c9aa,
   red: #7b2d26,
+  red-lighten: lighten(#7b2d26, 10%),
   white: #F0F3F5,
 );
 
@@ -27,6 +28,9 @@ $desktop: 1280px;
   height: 350px;
   background-color: color(green);
   margin: 5px;
+}
+.tile-div {
+  border-radius: 3px;
 }
 
 /* drag js image ////////////////////////////////*/
@@ -72,9 +76,10 @@ $desktop: 1280px;
 }
 .occupied {
   background-color: color(red);
+  border: color(dutch) solid 1px;
 }
 .hit {
-background: purple;
+  background: purple;
 }
 .miss {
   background: lightblue;
@@ -192,11 +197,17 @@ body {
   #human-fleet {
    
     .drag-ship {
-      border: 1px solid color(black);
+      border-radius: 2px;
       height: 25px;
       background-color: color(red);
       cursor: pointer;
+
+      &:hover {
+        background-color: color(red-lighten);
+      }
     }
+
+
     #drag-carrier { 
       width: 125px;
     }
