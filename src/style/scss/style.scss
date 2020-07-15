@@ -19,132 +19,6 @@ $desktop: 1280px;
   }
 }
 
-/* render both grids as required in game ////////*/
-.rendered-grid-div {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  width: 350px;
-  height: 350px;
-  background-color: color(green);
-  margin: 5px;
-}
-.tile-div {
-  border-radius: 3px;
-}
-
-/* drag js image ////////////////////////////////*/
-#drag-image {
-  display: inline-block;
-  position: absolute;
-  top: -1000px;
-  color: antiquewhite;
-  font-family: 'Courier New', Courier, monospace;
-  padding: 1em 4em 1em 1em;
-  overflow: hidden;
-}
-#drag-image::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  -webkit-transform-origin: 100% 0;
-  -ms-transform-origin: 100% 0;
-  transform-origin: 100% 0;
-  -webkit-transform: skew(-45deg);
-  -ms-transform: skew(-45deg);
-  transform: skew(-45deg);
-  z-index: -1;  
-}
-
-
-/* tiles for placment phase /////////////////////*/
-.dragenter-active {
-  background-color: rgb(106, 250, 250);
-}
-.dragleave-fade {
-  background-color: rgb(50, 119, 119);
-}
-
- 
-/* tiles for game phase /////////////////////////*/
-.tile-div {
-  border: black solid 1px;
-}
-.occupied {
-  background-color: color(red);
-  border: color(dutch) solid 1px;
-}
-.hit {
-  background: purple;
-}
-.miss {
-  background: lightblue;
-}
-
-[data-sec-ref="0"] {
-  cursor: pointer; 
-}
-
-/* wiggle ///////////////////////////////////////*/
-.wiggle {
-  animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-@keyframes shake {
-  0% { transform: rotate(0deg); }
-  10% { transform: rotate(-10deg); }
-  20% { transform: rotate(10deg); }
-  30% { transform: rotate(0deg); }
-  40% { transform: rotate(10deg); }
-  50% { transform: rotate(-10deg); }
-  60% { transform: rotate(0deg); }
-  70% { transform: rotate(-10deg); }
-  80% { transform: rotate(10deg); }
-  90% { transform: rotate(0deg); }
-}
-
-
-/* change player grid display on start //////////*/
-.player-start-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  width: 200px;
-  height: 200px; 
-  /* BACKGROUND COLOUR - manual on making small? */
-  background-color: lightgray;
-  margin: 5px;
-}
-
-/* enemy fleet //////////////////////////////////*/
-#enemy-fleet {
-  margin: 5px;  
-}
-
-.fleet-ship {
-  margin: 1px;
-}
-
-.ship-health {
-  display: inline-block;
-  margin: 1px;
-  border: 1px black solid;
-  height: 10px;
-  width: 15px;
-  background: lightgrey;  
-}
-
-.health-hit {
-  background: darkgray;
-}
-
-
 /* //////////////////////////////////////////////*/
 /* BEGIN STYLING */
 
@@ -207,7 +81,6 @@ body {
       }
     }
 
-
     #drag-carrier { 
       width: 125px;
     }
@@ -227,8 +100,144 @@ body {
       width: 25px;
     }
   }
-  #human-grad {
-    width: 100%;
+  #human-grid {
+    width: fit-content;
     margin: auto;
   }
+  #enemy-fleet {
+    margin: 5px;  
+  }
+
+  .fleet-ship {
+    margin: 1px;
+  }
+
+  .ship-health {
+    display: inline-block;
+    margin: 1px;
+    border: 1px black solid;
+    height: 10px;
+    width: 15px;
+    background: lightgrey;  
+  }
+
+  .health-hit {
+    background: darkgray;
+  }
 }
+
+/* //////////////////////////////////////////////*/
+/* New render grid*/
+.rendered-grid-div {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: 350px;
+  height: 350px;
+  background-color: color(green);
+  margin: 5px;
+
+  .tile-div {
+    border-radius: 3px;
+    border: black solid 1px;
+  }
+  .occupied {
+    background-color: color(red);
+    border: color(dutch) solid 1px;
+  }
+  .hit {
+    background: purple;
+  }
+  .miss {
+    background: lightblue;
+  }  
+  [data-sec-ref="0"] {
+    cursor: pointer; 
+  }
+}
+
+/* //////////////////////////////////////////////*/
+/* Change player grid display on start*/
+.player-start-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: 200px;
+  height: 200px; 
+  background-color: color(pine); // CHANGE
+  margin: 5px;
+  
+  .tile-div {
+    border-radius: 3px;
+    border: black solid 1px;
+  }
+  .occupied {
+    background-color: color(red); // CHANGE
+    border: color(dutch) solid 1px; // CHANGE
+  }
+  .hit {
+    background: purple; // CHANGE
+  }
+  .miss {
+    background: lightblue; // CHANGE
+  }   
+}
+
+/* //////////////////////////////////////////////*/
+/* Drag Styling */
+#drag-image {
+  display: inline-block;
+  position: absolute;
+  top: -1000px;
+  color: antiquewhite;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 1em 4em 1em 1em;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    -webkit-transform-origin: 100% 0;
+    -ms-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+    -webkit-transform: skew(-45deg);
+    -ms-transform: skew(-45deg);
+    transform: skew(-45deg);
+    z-index: -1;  
+  }
+}
+
+.dragenter-active {
+  background-color: rgb(106, 250, 250);
+}
+.dragleave-fade {
+  background-color: rgb(50, 119, 119);
+}
+ 
+.wiggle {
+  animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-10deg); }
+  20% { transform: rotate(10deg); }
+  30% { transform: rotate(0deg); }
+  40% { transform: rotate(10deg); }
+  50% { transform: rotate(-10deg); }
+  60% { transform: rotate(0deg); }
+  70% { transform: rotate(-10deg); }
+  80% { transform: rotate(10deg); }
+  90% { transform: rotate(0deg); }
+}
+
+
+
+
