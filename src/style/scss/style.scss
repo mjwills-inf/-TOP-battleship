@@ -2,6 +2,7 @@ $colors: (
   green: #19535F,
   pine: #0b7a75,
   dutch: #d7c9aa,
+  dutch-darken: darken(#d7c9aa, 40%),
   red: #7b2d26,
   red-lighten: lighten(#7b2d26, 10%),
   white: #F0F3F5,
@@ -33,7 +34,7 @@ body {
 
 #title-div {
   position: relative;
-  margin-bottom: 10px;;
+  margin-bottom: 20px;;
 
   .circle-shape-div {
     display: inline-block;
@@ -59,72 +60,189 @@ body {
 
 #instruction-div {
   padding: 5px 5px 5px 15px;
+  width: fit-content;
+  max-width: 90%;
+  margin: 0px auto 10px auto;
+  border: 1px solid black;
+  border-radius: 3px;
   
   h2 {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 100;
   }
 }
 
 #game-container {
 
-  #human-fleet {
-   
-    .drag-ship {
-      border-radius: 2px;
-      height: 25px;
-      background-color: color(red);
-      cursor: pointer;
+  #human-section {
+    @include desktop {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
 
-      &:hover {
-        background-color: color(red-lighten);
+    #human-fleet {     
+      display: grid;
+      gap: 5px;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      width: fit-content;
+      margin: 10px auto 20px auto;
+      align-items: center;
+      justify-items: center;
+
+      @include desktop {
+        grid-area: 1 / 2 / 2 / 3;
+        margin: 40px 40px;
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 6px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(4, 1fr);
+      }
+      
+      .drag-ship {
+        border-radius: 2px;
+        border: 1px solid black;
+        height: 25px;
+        background-color: color(red);
+        cursor: pointer;
+
+        &:hover {
+          background-color: color(red-lighten);
+        }
+      }
+
+      #drag-carrier { 
+        width: 125px;
+        grid-area: 1 / 2 / 3 / 3 ;
+        @include desktop() {
+          grid-area: 1 / 2 / 2 / 3;;
+        }
+      }
+      #drag-battleship {
+        width: 100px;
+        grid-area: 2 / 2 / 4 / 3;
+        @include desktop() {
+          grid-area: 4 / 1 / 5 / 2;
+        }
+      }
+      #drag-cruiser {
+        width: 75px;
+        grid-area: 3 / 1 / 4 / 2;
+        @include desktop() {
+          grid-area: 3 / 1 / 4 / 2;
+        }
+      } 
+      #drag-submarine {
+        width: 75px;
+        grid-area: 3 / 3 / 4 / 4;
+        @include desktop() {
+          grid-area: 2 / 2 / 3 / 3;
+        }
+      }    
+      #drag-destroyer {
+        width: 50px;
+        grid-area: 2 / 1 / 3 / 2;
+        @include desktop() {
+          grid-area: 0 / 1 / 0 / 2;
+        }
+      } 
+      #drag-frigate {
+        width: 50px;
+        grid-area: 2 / 3 / 3 / 4;
+        @include desktop() {
+          grid-area: 3 / 2 / 4 / 3;
+        }
+      }
+      #drag-corvette {
+        width: 25px;
+        grid-area: 1 / 1 / 2 / 2;
+        @include desktop() {
+          grid-area: 4 / 2 / 5 / 3;
+        }
+      } 
+      #drag-gunboat {
+        width: 25px;
+        grid-area: 1 / 3 / 2 / 4;
+        @include desktop() {
+          grid-area: 1 / 1 / 2 / 2;
+        }
       }
     }
-
-    #drag-carrier { 
-      width: 125px;
-    }
-    #drag-battleship {
-      width: 100px;
-    }
-    #drag-cruiser, 
-    #drag-submarine {
-      width: 75px;
-    }    
-    #drag-destroyer, 
-    #drag-frigate {
-      width: 50px;
-    }
-    #drag-corvette, 
-    #drag-gunboat {
-      width: 25px;
-    }
   }
+
   #human-grid {
     width: fit-content;
     margin: auto;
+
+    @include desktop {
+      grid-area: 1 / 1 / 2 / 2;
+    }
   }
+
   #enemy-fleet {
-    margin: 5px;  
-  }
+    margin: 10px 25px;
+    
+    .fleet-ship {
+      margin: 1px;
 
-  .fleet-ship {
-    margin: 1px;
-  }
-
-  .ship-health {
-    display: inline-block;
-    margin: 1px;
-    border: 1px black solid;
-    height: 10px;
-    width: 15px;
-    background: lightgrey;  
-  }
-
-  .health-hit {
-    background: darkgray;
-  }
+      .ship-health {
+        display: inline-block;
+        margin: 1px;
+        border: 1px black solid;
+        height: 10px;
+        width: 15px;
+        background: lightgrey;  
+      }
+    
+      .health-hit {
+        background: blue;
+        // Maybe whole ship sunk styling
+      }
+    }
+  }  
 }
+
+#button-div {
+  display: flex;
+  justify-content: center;
+  
+    
+  #auto-place-div,
+  #start-div {
+    display: inline-block;
+    margin: 20px 15px 15px 10px;
+
+    button{
+      text-decoration: none;
+      color: color(dutch);
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 600;
+      padding: 10px;
+      border: 2px solid color(dutch-darken);
+      border-radius: 8px;
+      background-color: #251F11;
+
+      
+      &:hover {
+       
+      } 
+      &:focus {
+        outline: none;
+      }
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+
+
+}
+
+
+
 
 /* //////////////////////////////////////////////*/
 /* New render grid*/
@@ -136,6 +254,8 @@ body {
   height: 350px;
   background-color: color(green);
   margin: 5px;
+  border: 3px solid color(dutch-darken);
+  border-radius: 3px;
 
   .tile-div {
     border-radius: 3px;
@@ -157,15 +277,15 @@ body {
 }
 
 /* //////////////////////////////////////////////*/
-/* Change player grid display on start*/
+/* Change grid display on start*/
 .player-start-grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  width: 200px;
-  height: 200px; 
+  width: 150px;
+  height: 150px; 
   background-color: color(pine); // CHANGE
-  margin: 5px;
+  margin: 10px;
   
   .tile-div {
     border-radius: 3px;
@@ -181,6 +301,46 @@ body {
   .miss {
     background: lightblue; // CHANGE
   }   
+}
+
+
+.game-start-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 175px 1fr;
+
+  @include desktop {
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr;;
+  }  
+
+  #human-grid {
+    grid-area: 1 / 1 / 2 / 2;
+    position: absolute;
+    right: 50%;
+    @include desktop {
+      position: inherit;
+      grid-area: 1 / 1 / 2 / 2 ;
+    }  
+  }
+  
+
+  #enemy-fleet {
+    grid-area: 1 / 2 / 2 / 3;
+    @include desktop {
+      grid-area: 1 / 3 / 2 / 4;
+    }  
+  }
+
+  #computer-grid {
+    grid-area: 2 /1 / 3 / 3;
+    margin: auto;
+    @include desktop {
+      grid-area: 1 / 2 / 2 / 3;
+    }  
+  }
+  
+  
 }
 
 /* //////////////////////////////////////////////*/

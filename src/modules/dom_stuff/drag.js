@@ -247,6 +247,7 @@ const Drag = (gameboard, render) => {
     primaryTiles.forEach((tile) => {
       tile.addEventListener('dragstart', dragStartTile, false);
       tile.addEventListener('dblclick', dblClick);
+      tile.addEventListener('touchstart', dblClick);
     });
     document.addEventListener('dragend', dragEnd);
   };
@@ -282,6 +283,7 @@ const Drag = (gameboard, render) => {
     primaryTiles.forEach((tile) => {
       tile.removeEventListener('dragstart', dragStartTile, false);
       tile.removeEventListener('dblclick', dblClick);
+      tile.removeEventListener('touchstart', dblClick);
     });
     document.removeEventListener('dragend', dragEnd);
   };

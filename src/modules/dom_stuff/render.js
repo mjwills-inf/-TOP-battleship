@@ -61,6 +61,9 @@ const Render = () => {
 
   const renderEnemyFleet = (enemy) => {
     const target = document.querySelector('#enemy-fleet');
+    const header = document.createElement('h3');
+    header.innerText = 'Enemy Fleet';
+    target.appendChild(header);
     const fleet = enemy.gameboard.getFleet();
     for (let i = 0; i < fleet.length; i += 1) {
       const fleetShip = document.createElement('div');
@@ -98,9 +101,14 @@ const Render = () => {
     }
   };
 
+  const changeLayout = () => {
+    const gameContainerDiv = document.querySelector('#game-container');
+    gameContainerDiv.classList.add('game-start-grid');
+  };
+
   const changeButtons = () => {
-    const startButton = document.querySelector('#button-div button');
-    const autoButton = document.querySelector('#auto');
+    const startButton = document.querySelector('#start-button');
+    const autoButton = document.querySelector('#auto-place-div');
     startButton.innerHTML = 'New Game';
     startButton.addEventListener('click', () => {
       window.location.reload();
@@ -122,6 +130,7 @@ const Render = () => {
     renderGrid,
     changeHumanGrid,
     changeButtons,
+    changeLayout,
     renderEnemyFleet,
     updateTile,
     updateFleet,

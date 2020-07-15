@@ -91,13 +91,13 @@ const Game = () => {
     render.renderGrid(human.gameboard);
     drag.addListeners();
   };
-  const autoButton = document.querySelector('#auto');
+  const autoButton = document.querySelector('#auto-button');
   autoButton.addEventListener('click', autoPlaceShips);
 
 
   // Game begins (and tileListeners added) on start Button press
   // (check if all ships are placed)
-  const startButton = document.querySelector('#start');
+  const startButton = document.querySelector('#start-button');
 
   const gameBegin = () => {
     const fleetPlaced = human.gameboard.getFleet()
@@ -110,6 +110,7 @@ const Game = () => {
       render.changeHumanGrid();
       render.renderEnemyFleet(computer);
       render.changeButtons();
+      render.changeLayout();
       addTileListeners();
     }
   };
