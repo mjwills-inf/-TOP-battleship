@@ -113,7 +113,6 @@ body {
     #drag-instruction {
       display: none;
 
-
       @include desktop {
         font-size: 13px;
         grid-area: 1 / 2 / 2 / 3;
@@ -239,8 +238,9 @@ body {
 
       .ship-health {
         display: inline-block;
-        margin: 1px;
+        margin: 2px 2px 0px;
         border: 1px black solid;
+        border-radius: 1px;
         height: 10px;
         width: 15px;
         background: lightgrey;  
@@ -256,8 +256,7 @@ body {
 
 #button-div {
   display: flex;
-  justify-content: center;
-  
+  justify-content: center;  
     
   #auto-place-div,
   #start-div {
@@ -273,7 +272,6 @@ body {
       border: 2px solid color(dutch-darken);
       border-radius:20px;
       background-color: color(dutch);
-
       
       &:hover {
        

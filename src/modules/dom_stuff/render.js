@@ -58,12 +58,15 @@ const Render = () => {
   };
 
   const renderEnemyFleet = (enemy) => {
-    // TRYING TO CHANGE ORDER OF SHIPS YEARRRRRRRRRRRRRr
+    // TRYING TO CHANGE ORDER OF SHIPS
     const target = document.querySelector('#enemy-fleet');
     const header = document.createElement('h3');
     header.innerText = 'Enemy Fleet';
     target.appendChild(header);
     const fleet = enemy.gameboard.getFleet();
+
+    const domArray = [];
+
     for (let i = 0; i < fleet.length; i += 1) {
       const fleetShip = document.createElement('div');
       fleetShip.classList.add('fleet-ship');
@@ -76,8 +79,12 @@ const Render = () => {
         shipSection.classList.add('ship-health');
         fleetShip.appendChild(shipSection);
       }
-      target.appendChild(fleetShip);
+      domArray.push(fleetShip);
     }
+    domArray.reverse();
+    domArray.forEach((element) => {
+      target.appendChild(element);
+    });
   };
 
   const updateTile = (domElement, arrayTile) => {
