@@ -43,11 +43,9 @@ const Render = () => {
     }
   };
 
-  // placement functions
-
   const disablePlaceShip = (data) => {
     const target = document.querySelector(`#${data}`);
-    target.style.backgroundColor = '#DBE2E7';
+    target.style.backgroundColor = '#DBE2E7'; // MANUAL COLOR
     target.setAttribute('draggable', false);
     target.style.cursor = 'auto';
   };
@@ -60,6 +58,7 @@ const Render = () => {
   };
 
   const renderEnemyFleet = (enemy) => {
+    // TRYING TO CHANGE ORDER OF SHIPS YEARRRRRRRRRRRRRr
     const target = document.querySelector('#enemy-fleet');
     const header = document.createElement('h3');
     header.innerText = 'Enemy Fleet';
@@ -88,7 +87,6 @@ const Render = () => {
     } else {
       domTile.classList.add('miss');
     }
-    // ship dependant styling in here?
   };
 
   const updateFleet = (arrayTile, fleet) => {
@@ -104,6 +102,8 @@ const Render = () => {
   const changeLayout = () => {
     const gameContainerDiv = document.querySelector('#game-container');
     gameContainerDiv.classList.add('game-start-grid');
+    const instructions = document.querySelector('#drag-instruction');
+    instructions.parentNode.removeChild(instructions);
   };
 
   const changeButtons = () => {
@@ -122,8 +122,6 @@ const Render = () => {
     const winner = (type === 'computer') ? 'Player' : 'Computer';
     console.log('gameOver -> winner', winner);
   };
-
-  // SOMETHING TO SAY SORRY NOT MOBILE (MY BAD HTML5 DRAG N DROP was a poor choice)
 
   return {
     clearGrid,

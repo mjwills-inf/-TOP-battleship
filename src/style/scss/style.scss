@@ -40,57 +40,65 @@ body {
 }
 
 #page-container {
+
+  @include desktop {
+    padding: 40px
+   }
+   @include five {
+     padding: 40px
+   }
   height: 100vh;
 
-  #app-container {
-    @include desktop {
-     padding: 40px
-    }
-    @include five {
-      padding: 40px
-    }
-  }
-}
-
-#title-div {
-  position: relative;
-  margin-bottom: 20px;;
-
-  .circle-shape-div {
-    display: inline-block;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: color(dutch);
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    padding: 30px 10px 10px 0px;
-    z-index: 1;
-  }
-  
-  h1 {
+  #title-div {
     position: relative;
-    display: inline-block;
-    font-size: 25px;
-    padding: 25px 10px 10px 15px;
-    z-index: 2;
+    margin-bottom: 20px;;
+  
+    .circle-shape-div {
+      display: inline-block;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: color(dutch);
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      padding: 30px 10px 10px 0px;
+      z-index: 1;
+    }
+    
+    h1 {
+      position: relative;
+      display: inline-block;
+      font-size: 25px;
+      padding: 25px 10px 10px 15px;
+      z-index: 2;
+    }
   }
+   #app-wrapper {
+
+   }
+
+   #app-container {
+    
+    #instruction-div {
+      padding: 5px 5px 5px 15px;
+      width: fit-content;
+      max-width: 90%;
+      margin: 0px auto 10px auto;
+      border: 1px solid black;
+      border-radius: 3px;
+      
+      h2 {
+      font-size: 13px;
+      font-weight: 100;
+      }
+    }
+   }
 }
 
-#instruction-div {
-  padding: 5px 5px 5px 15px;
-  width: fit-content;
-  max-width: 90%;
-  margin: 0px auto 10px auto;
-  border: 1px solid black;
-  border-radius: 3px;
-  
-  h2 {
-  font-size: 13px;
-  font-weight: 100;
-  }
-}
+
+
+
 
 #game-container {
 
@@ -263,7 +271,7 @@ body {
       font-weight: 600;
       padding: 10px;
       border: 2px solid color(dutch-darken);
-      border-radius: 8px;
+      border-radius:20px;
       background-color: color(dutch);
 
       
