@@ -88,6 +88,7 @@ const Render = () => {
     // const gameContainerDiv = document.querySelector('#game-container');
     // gameContainerDiv.classList.add('game-start');
     document.querySelector('#game-container').classList.add('game-start');
+    document.querySelector('#human-section').classList.remove('pre-start');
     document.querySelector('#human-section').classList.add('game-start');
     const instructions = document.querySelector('#drag-instruction');
     instructions.parentNode.removeChild(instructions);

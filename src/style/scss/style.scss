@@ -6,10 +6,12 @@ $colors: (
   green: #19535F,
   pine: #0b7a75,
   dutch: #d7c9aa,
-  dutch-darken: darken(#d7c9aa, 40%),
+  dutch-shade: #382E1A,
+  dutch-darker: darken(#d7c9aa, 40%),
   red: #7b2d26,
   red-lighten: lighten(#7b2d26, 10%),
   white: #F0F3F5,
+  offwhite: rgb(219, 226, 231),
 );
 
 @function color($color-name) {
@@ -42,7 +44,7 @@ $fiveTitle: 500px;
   height: 350px;
   background-color: color(green);
   margin: 5px;
-  border: 3px solid color(dutch-darken);
+  border: 3px solid color(dutch-darker);
   border-radius: 3px;
 
   .tile-div {
@@ -54,10 +56,10 @@ $fiveTitle: 500px;
     border: color(dutch) solid 1px;
   }
   .hit {
-    background: purple;
+    background: color(red); // CHANGE
   }
   .miss {
-    background: lightblue;
+    background: lightblue; //CHANGE
   }  
   [data-sec-ref="0"] {
     cursor: pointer; 
@@ -99,7 +101,7 @@ body {
     }
     
     h1 {
-      color: #382E1A;
+      color: color(dutch-darken);
       position: relative;
       display: inline-block;
       font-size: 25px;
@@ -133,7 +135,7 @@ body {
   
   #game-container {
   
-    #human-section {
+    #human-section.pre-start {
       @include desktop {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -148,7 +150,7 @@ body {
           grid-area: 1 / 2 / 2 / 3;        
           width: 341px;
           margin: 5px auto 0px 20px;
-          border: 3px solid color(dutch-darken);
+          border: 3px solid color(dutch-darker);
           padding: 10px;
           font-size: 13px;
         }
@@ -171,7 +173,7 @@ body {
           grid-area: 2 / 2 / 3 / 3;
           margin: 20px 20px 5px 20px;
           padding: 10px 40px;
-          border: 3px solid color(dutch-darken);
+          border: 3px solid color(dutch-darker);
           border-radius: 3px;
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -272,7 +274,7 @@ body {
         font-family: 'Courier New', Courier, monospace;
         font-weight: 600;
         padding: 10px;
-        border: 2px solid color(dutch-darken);
+        border: 2px solid color(dutch-darker);
         border-radius:20px;
         color: #251F11;
         background-color: color(dutch);
@@ -301,10 +303,11 @@ body {
   grid-template-rows: repeat(10, 1fr);
   width: 150px;
   height: 150px; 
-  background-color: color(pine); // CHANGE
+  background-color: color(green); // CHANGE
   margin: 10px;
   @include desktop {
-
+    width: 200px;
+    height: 200px; 
   }
   
   .tile-div {
@@ -312,14 +315,15 @@ body {
     border: black solid 1px;
   }
   .occupied {
-    background-color: color(red); // CHANGE
-    border: color(dutch) solid 1px; // CHANGE
+    background-color: color(offwhite); // CHANGE
+    border: black solid 1px; // CHANGE
   }
   .hit {
-    background: purple; // CHANGE
+    background: color(red);
+    border: color(dutch) solid 1px;
   }
   .miss {
-    background: lightblue; // CHANGE
+    background: color(dutch-darker); // CHANGE
   }
 }
 
@@ -331,20 +335,25 @@ body {
   @include desktop {
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1fr;;
+    align-items: center;
+    margin: 40px 20px 20px;
   }
-
-  
 
   #enemy-fleet {
     grid-area: 1 / 2 / 2 / 3;
     margin: 10px 25px;
     @include desktop {
       grid-area: 1 / 3 / 2 / 4;
+      margin: 20px auto;
+      height: 200px;
+      width: 200px;
+      padding: 20px;
+      border: 3px solid color(dutch-darker);
+      border-radius: 3px; 
     }  
 
     #enemy-title {
-      // color: #251F11;
-      color: #382E1A;
+      color: color(dutch-darken);
     }
     
     .fleet-ship {
@@ -357,11 +366,11 @@ body {
         border-radius: 1px;
         height: 10px;
         width: 15px;
-        background: lightgrey;  
+        background: color(offwhite)  
       }
     
       .health-hit {
-        background: blue;
+        background: color(red);
         // Maybe whole ship sunk styling
       }
     }
@@ -377,10 +386,10 @@ body {
   
 }
 
-#game-container.game-start #human-section.game-start {
+#human-section.game-start {
   @include desktop{
-    background-color: black;
     display: block;
+    right: 0px;
   }
 }
 
