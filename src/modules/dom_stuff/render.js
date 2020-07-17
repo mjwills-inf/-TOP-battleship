@@ -50,23 +50,15 @@ const Render = () => {
     target.style.cursor = 'auto';
   };
 
-  // game start function to change appearance of players grid on start
-  const changeHumanGrid = () => {
-    const target = document.querySelector('#human-grid .rendered-grid-div');
-    target.classList.remove('rendered-grid-div');
-    target.classList.add('player-start-grid');
-  };
-
+  // start display functions to change appearance of players grid on start
   const renderEnemyFleet = (enemy) => {
-    // TRYING TO CHANGE ORDER OF SHIPS
     const target = document.querySelector('#enemy-fleet');
     const header = document.createElement('h3');
     header.innerText = 'Enemy Fleet';
+    header.id = 'enemy-title';
     target.appendChild(header);
     const fleet = enemy.gameboard.getFleet();
-
     const domArray = [];
-
     for (let i = 0; i < fleet.length; i += 1) {
       const fleetShip = document.createElement('div');
       fleetShip.classList.add('fleet-ship');
@@ -85,6 +77,31 @@ const Render = () => {
     domArray.forEach((element) => {
       target.appendChild(element);
     });
+  };
+
+  const changeHumanGrid = () => {
+    const target = document.querySelector('#human-grid .rendered-grid-div');
+    target.classList.add('game-start');
+  };
+
+  const changeLayout = () => {
+    // const gameContainerDiv = document.querySelector('#game-container');
+    // gameContainerDiv.classList.add('game-start');
+    document.querySelector('#game-container').classList.add('game-start');
+    document.querySelector('#human-section').classList.add('game-start');
+    const instructions = document.querySelector('#drag-instruction');
+    instructions.parentNode.removeChild(instructions);
+    // const humanSection
+  };
+
+  const changeButtons = () => {
+    const startButton = document.querySelector('#start-button');
+    const autoButton = document.querySelector('#auto-place-div');
+    startButton.innerHTML = 'New Game';
+    startButton.addEventListener('click', () => {
+      window.location.reload();
+    });
+    autoButton.parentNode.removeChild(autoButton);
   };
 
   const updateTile = (domElement, arrayTile) => {
@@ -106,23 +123,7 @@ const Render = () => {
     }
   };
 
-  const changeLayout = () => {
-    const gameContainerDiv = document.querySelector('#game-container');
-    gameContainerDiv.classList.add('game-start-grid');
-    const instructions = document.querySelector('#drag-instruction');
-    instructions.parentNode.removeChild(instructions);
-  };
-
-  const changeButtons = () => {
-    const startButton = document.querySelector('#start-button');
-    const autoButton = document.querySelector('#auto-place-div');
-    startButton.innerHTML = 'New Game';
-    startButton.addEventListener('click', () => {
-      window.location.reload();
-    });
-    autoButton.parentNode.removeChild(autoButton);
-  };
-
+  // Game Over
   const gameOver = (type) => {
     const loser = (type === 'computer') ? 'Computer' : 'Player';
     console.log('gameOver -> loser', loser);
