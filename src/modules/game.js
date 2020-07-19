@@ -115,6 +115,7 @@ const Game = () => {
     }
   };
   startButton.addEventListener('click', gameBegin);
+  render.instructionTyper('Place your ships..... or auto place (sorry mobile)');
 };
 
 export default Game;

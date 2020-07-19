@@ -1,4 +1,18 @@
 const Render = () => {
+  const instructionTyper = (string) => {
+    const instructionText = document.querySelector('.instrution-h2');
+    instructionText.innerText = '';
+    let counter = 0;
+    const type = () => {
+      if (counter < string.length) {
+        instructionText.innerHTML += string.charAt(counter);
+        counter += 1;
+        setTimeout(type, 50);
+      }
+    };
+    type();
+  };
+
   const clearGrid = (gameboard) => {
     const humanGridDiv = document.querySelector('#human-grid');
     if (gameboard.getType() === 'human') {
@@ -133,6 +147,7 @@ const Render = () => {
   };
 
   return {
+    instructionTyper,
     clearGrid,
     renderGrid,
     changeHumanGrid,

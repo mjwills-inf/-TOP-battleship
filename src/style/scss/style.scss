@@ -121,13 +121,19 @@ body {
 
 #app-container {
   #instruction-div {
-    padding: 5px 5px 5px 15px;
+    overflow-wrap: normal;
     width: fit-content;
-    max-width: 90%;
+    max-width: 80%;
+    min-height: 40px;
     margin: 0px auto 10px auto;
     border-radius: 3px;
+
+    @include desktop {
+      max-width: 60%;
+      margin-bottom: 0px
+    }
     
-    h2 {
+    .instrution-h2 {
     font-size: 14px;
     font-weight: 100;
     }
