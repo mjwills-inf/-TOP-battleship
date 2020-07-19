@@ -123,10 +123,11 @@ body {
   #instruction-div {
     overflow-wrap: normal;
     width: fit-content;
-    max-width: 80%;
-    min-height: 40px;
-    margin: 0px auto 10px auto;
+    max-width: 350px;
+    min-height: 35px;
+    margin: auto;
     border-radius: 3px;
+    border: 1px solid red;
 
     @include desktop {
       max-width: 60%;
@@ -134,8 +135,12 @@ body {
     }
     
     .instrution-h2 {
+    margin: auto;
+    width: fit-content;
     font-size: 14px;
     font-weight: 100;
+    border: 1px solid blue;
+    text-align: center;
     }
   }
   
