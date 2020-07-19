@@ -123,11 +123,10 @@ body {
   #instruction-div {
     overflow-wrap: normal;
     width: fit-content;
-    max-width: 350px;
+    max-width: 300px;
     min-height: 35px;
     margin: auto;
     border-radius: 3px;
-    border: 1px solid red;
 
     @include desktop {
       max-width: 60%;
@@ -139,7 +138,6 @@ body {
     width: fit-content;
     font-size: 14px;
     font-weight: 100;
-    border: 1px solid blue;
     text-align: center;
     }
   }

@@ -7,7 +7,7 @@ const Render = () => {
       if (counter < string.length) {
         instructionText.innerHTML += string.charAt(counter);
         counter += 1;
-        setTimeout(type, 50);
+        setTimeout(type, 40);
       }
     };
     type();
