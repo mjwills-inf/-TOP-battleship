@@ -1,16 +1,8 @@
+import announce from './announce';
+
 const Render = () => {
   const instructionTyper = (string) => {
-    const instructionText = document.querySelector('.instrution-h2');
-    instructionText.innerText = '';
-    let counter = 0;
-    const type = () => {
-      if (counter < string.length) {
-        instructionText.innerHTML += string.charAt(counter);
-        counter += 1;
-        setTimeout(type, 40);
-      }
-    };
-    type();
+    announce(string);
   };
 
   const clearGrid = (gameboard) => {

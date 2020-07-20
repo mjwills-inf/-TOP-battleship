@@ -90,6 +90,7 @@ const Game = () => {
     render.clearGrid(human.gameboard);
     render.renderGrid(human.gameboard);
     drag.addListeners();
+    render.instructionTyper('Fleet positioned. Battle.');
   };
   const autoButton = document.querySelector('#auto-button');
   autoButton.addEventListener('click', autoPlaceShips);
@@ -111,6 +112,7 @@ const Game = () => {
       render.renderEnemyFleet(computer);
       render.changeButtons();
       render.changeLayout();
+      render.instructionTyper('Engage the Enemy');
       addTileListeners();
     }
   };

@@ -3,6 +3,8 @@ const Drag = (gameboard, render) => {
 
   let currentDragShip;
   let currentActiveTiles;
+  let announced = false;
+
 
   const getDragGroup = (ev) => {
     const dragGroup = [];
@@ -112,6 +114,15 @@ const Drag = (gameboard, render) => {
     }
   };
 
+  const checkReadyInstruction = () => {
+    const fleetPlaced = gameboard.getFleet()
+      .every((element) => element.placed === true);
+    if (fleetPlaced && announced === false) {
+      render.instructionTyper('Fleet positioned. Battle.');
+      announced = true;
+    }
+  };
+
   const dragEnd = (ev) => {
     const tileShipRef = ev.target.getAttribute('data-ship-ref');
     if (tileShipRef !== null) {
@@ -146,6 +157,7 @@ const Drag = (gameboard, render) => {
       render.renderGrid(gameboard);
       // eslint-disable-next-line no-use-before-define
       addListeners();
+      checkReadyInstruction();
     } else {
       const targetTiles = getDragGroup(ev);
       makeTilesFade(targetTiles);
