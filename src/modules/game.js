@@ -49,6 +49,10 @@ const Game = () => {
     const dataRef = e.target.getAttribute('data-xy-ref').split(',');
     const coordObj = { x: Number(dataRef[0]), y: Number(dataRef[1]) };
     human.makeAttack(computer, coordObj);
+
+    console.log('coordObj');
+    // announce.shipCheck(computer, tile)
+
     const arrayTile = computer.gameboard.getTileInfo(coordObj);
     render.updateTile(e.target, arrayTile);
     // eslint-disable-next-line no-use-before-define

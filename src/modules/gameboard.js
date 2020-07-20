@@ -145,6 +145,7 @@ const Gameboard = (type) => {
       const targetShip = fleetArray[fleetIndex];
       targetShip.hit(shipSection);
       shotHit = true;
+      console.log(this);
     }
     return shotHit;
   };

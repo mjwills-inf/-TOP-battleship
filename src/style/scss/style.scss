@@ -390,6 +390,12 @@ body {
     }
     .rendered-grid-div {
       background-color: color(blue);
+      cursor: pointer;
+
+      .miss {
+        border-radius: 10px;
+       
+      }
     }  
   }
   
