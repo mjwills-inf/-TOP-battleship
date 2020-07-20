@@ -1,5 +1,6 @@
 $colors: (
   green: #19535F,
+  blue: #0B3579,
   pine: #0b7a75,
   dutch: #d7c9aa,
   dutch-shade: #382E1A,
@@ -55,7 +56,7 @@ $fiveTitle: 500px;
     background: color(red); // CHANGE
   }
   .miss {
-    background: lightblue; //CHANGE
+    background: color(dutch);
   }  
   [data-sec-ref="0"] {
     cursor: pointer; 
@@ -320,15 +321,15 @@ body {
     border: black solid 1px;
   }
   .occupied {
-    background-color: color(offwhite); // CHANGE
-    border: black solid 1px; // CHANGE
+    background: color(blue);
+    border: color(offwhite) solid 1px;
   }
   .hit {
-    background: color(red);
-    border: color(dutch) solid 1px;
+    background-color: color(red); 
+    border: color(offwhite) solid 1px;
   }
   .miss {
-    background: color(dutch-darker); // CHANGE
+    background: color(dutch); // CHANGE
   }
 }
 
@@ -386,6 +387,9 @@ body {
     margin: auto;
     @include desktop {
       grid-area: 1 / 2 / 2 / 3;
+    }
+    .rendered-grid-div {
+      background-color: color(blue);
     }  
   }
   
