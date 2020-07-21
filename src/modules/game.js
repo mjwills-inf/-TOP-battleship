@@ -36,24 +36,26 @@ const Game = () => {
     const targetDom = document.querySelector(`#human-grid [data-xy-ref="${domDataRef}"]`);
     const arrayTile = human.gameboard.getTileInfo(computerChoice);
     computer.makeAttack(human, computerChoice);
+    if (human.gameboard.shipSunkCheck(arrayTile.shipNameRef)) {
+      render.instructionTyper(`Player's ${arrayTile.shipNameRef} is Sunk`);
+    }
     render.updateTile(targetDom, arrayTile);
     setTimeout(() => {
       if (!endGameCheck()) {
         // eslint-disable-next-line no-use-before-define
         addTileListeners();
       }
-    }, 10);
+    }, 100);
   };
 
   const processTurnHuman = (e) => {
     const dataRef = e.target.getAttribute('data-xy-ref').split(',');
     const coordObj = { x: Number(dataRef[0]), y: Number(dataRef[1]) };
     human.makeAttack(computer, coordObj);
-
-    console.log('coordObj');
-    // announce.shipCheck(computer, tile)
-
     const arrayTile = computer.gameboard.getTileInfo(coordObj);
+    if (computer.gameboard.shipSunkCheck(arrayTile.shipNameRef)) {
+      render.instructionTyper(`Enemy ${arrayTile.shipNameRef} is Sunk`);
+    }
     render.updateTile(e.target, arrayTile);
     // eslint-disable-next-line no-use-before-define
     disableListeners();

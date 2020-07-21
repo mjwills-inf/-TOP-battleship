@@ -18,6 +18,8 @@ const Render = () => {
     const computerGridDiv = document.querySelector('#computer-grid');
     const gridDiv = document.createElement('div');
     gridDiv.classList.add('rendered-grid-div');
+    const canvas = document.createElement('canvas');
+    gridDiv.appendChild(canvas);
 
     for (let i = 0; i < tiles.length; i += 1) {
       const tile = document.createElement('div');
@@ -39,6 +41,8 @@ const Render = () => {
           tile.setAttribute('draggable', true);
         }
       }
+      const peg = document.createElement('span');
+      tile.appendChild(peg);
       gridDiv.appendChild(tile);
     }
 
@@ -132,10 +136,12 @@ const Render = () => {
 
   // Game Over
   const gameOver = (type) => {
-    const loser = (type === 'computer') ? 'Computer' : 'Player';
-    console.log('gameOver -> loser', loser);
     const winner = (type === 'computer') ? 'Player' : 'Computer';
-    console.log('gameOver -> winner', winner);
+    if (winner === 'Player') {
+      instructionTyper('VICTORY!');
+    } else {
+      instructionTyper('Defeat. Enemy destroyed your fleet.');
+    }
   };
 
   return {

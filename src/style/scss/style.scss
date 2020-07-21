@@ -1,5 +1,6 @@
 $colors: (
   green: #19535F,
+  green-tint: #BDE6EE,
   blue: #0B3579,
   pine: #0b7a75,
   dutch: #d7c9aa,
@@ -47,16 +48,26 @@ $fiveTitle: 500px;
   .tile-div {
     border-radius: 3px;
     border: black solid 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .occupied {
     background-color: color(red);
     border: color(dutch) solid 1px;
   }
   .hit {
-    background: color(red); // CHANGE
+    background: color(red);
+    border: 1px solid color(dutch);
+
   }
   .miss {
-    background: color(dutch);
+    span {
+      background: color(dutch);
+      border-radius: 50%;
+      height: 10px;
+      width: 10px;
+    }
   }  
   [data-sec-ref="0"] {
     cursor: pointer; 
@@ -329,7 +340,17 @@ body {
     border: color(offwhite) solid 1px;
   }
   .miss {
-    background: color(dutch); // CHANGE
+    span {
+      background: color(dutch);
+      border-radius: 50%;
+      height: 7px;
+      width: 7px;
+      
+      @include desktop {
+        width: 10px;
+        height: 10px; 
+      }
+    }
   }
 }
 
@@ -466,6 +487,8 @@ body {
   90% { transform: rotate(0deg); }
 }
 
-
+canvas {
+  position: absolute;
+}
 
 

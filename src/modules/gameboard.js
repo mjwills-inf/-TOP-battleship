@@ -145,7 +145,6 @@ const Gameboard = (type) => {
       const targetShip = fleetArray[fleetIndex];
       targetShip.hit(shipSection);
       shotHit = true;
-      console.log(this);
     }
     return shotHit;
   };
@@ -166,6 +165,16 @@ const Gameboard = (type) => {
     return isTrue;
   };
 
+  const shipSunkCheck = (ship) => {
+    let result = false;
+    const targetCheck = fleetArray
+      .find((item) => item.getName() === ship);
+    if (targetCheck !== undefined) {
+      result = targetCheck.getSunk();
+    }
+    return result;
+  };
+
   return {
     getType,
     getTilesArray,
@@ -175,6 +184,7 @@ const Gameboard = (type) => {
     placeShipValid,
     shotHandler,
     fleetSunkCheck,
+    shipSunkCheck,
     resetTile,
   };
 };
