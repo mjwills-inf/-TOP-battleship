@@ -333,7 +333,7 @@ body {
   }
   .occupied {
     background: color(blue);
-    border: color(offwhite) solid 1px;
+    border: color(dutch) solid 1px;
   }
   .hit {
     background-color: color(red); 
@@ -414,12 +414,10 @@ body {
       cursor: pointer;
 
       .miss {
-        border-radius: 10px;
-       
+        border-radius: 10px;       
       }
     }  
-  }
-  
+  }  
 }
 
 #human-section.game-start {
@@ -489,6 +487,7 @@ body {
 
 canvas {
   position: absolute;
+  z-index: -9999;
 }
 
 

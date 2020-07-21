@@ -64,7 +64,7 @@ const Game = () => {
       if (!endGameCheck()) {
         processTurnComputer();
       }
-    }, 10);
+    }, 200);
   };
 
   // Add Tile eventListeners that call processTurnHuman on click

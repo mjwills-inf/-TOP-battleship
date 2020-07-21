@@ -1,10 +1,10 @@
+import highlight from './highlight';
+
 const Drag = (gameboard, render) => {
   const fleet = gameboard.getFleet();
-
   let currentDragShip;
   let currentActiveTiles;
   let announced = false;
-
 
   const getDragGroup = (ev) => {
     const dragGroup = [];
@@ -251,6 +251,7 @@ const Drag = (gameboard, render) => {
       tile.addEventListener('drop', dragDrop, false);
       tile.addEventListener('dragenter', dragEnter, false);
       tile.addEventListener('dragleave', dragLeave, false);
+      tile.addEventListener('touchstart', highlight);
     });
     secondaryTiles.forEach((tile) => {
       tile.addEventListener('mouseover', hoverOccupied, false);
