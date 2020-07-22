@@ -1,5 +1,18 @@
-const change = (tile) => {
-  console.log('change THIS =>', tile);
+const removeChange = (tile) => {
+  setTimeout(() => {
+    tile.classList.remove('stagger-highlight');
+  }, 500);
+};
+
+const change = (tile, i) => {
+  const time = 50 * i;
+  console.log('change THIS =>', tile, time);
+  if (tile.getAttribute('data-ship-ref') === 'null') {
+    setTimeout(() => {
+      tile.classList.add('stagger-highlight');
+      removeChange(tile);
+    }, time);
+  }
 };
 
 console.log(change);
@@ -39,18 +52,19 @@ const highlight = (eve) => {
       rightTiles.push(targetTile);
     }
   }
+
   for (let i = 0; i < 10; i += 1) {
     if (downTiles[i]) {
-      change(downTiles[i]);
+      change(downTiles[i], i);
     }
     if (upTiles[i]) {
-      change(upTiles[i]);
+      change(upTiles[i], i);
     }
     if (leftTiles[i]) {
-      change(leftTiles[i]);
+      change(leftTiles[i], i);
     }
     if (rightTiles[i]) {
-      change(rightTiles[i]);
+      change(rightTiles[i], i);
     }
   }
 };
