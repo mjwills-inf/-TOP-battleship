@@ -1,7 +1,7 @@
 const removeChange = (tile) => {
   setTimeout(() => {
     tile.classList.remove('stagger-highlight');
-  }, 500);
+  }, 200);
 };
 
 const change = (tile, i) => {
