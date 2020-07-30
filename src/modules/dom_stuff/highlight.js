@@ -6,7 +6,6 @@ const removeChange = (tile) => {
 
 const change = (tile, i) => {
   const time = 50 * i;
-  console.log('change THIS =>', tile, time);
   if (tile.getAttribute('data-ship-ref') === 'null') {
     setTimeout(() => {
       tile.classList.add('stagger-highlight');
@@ -15,7 +14,6 @@ const change = (tile, i) => {
   }
 };
 
-console.log(change);
 
 const highlight = (eve) => {
   const shipRef = eve.target.getAttribute('data-ship-ref');
